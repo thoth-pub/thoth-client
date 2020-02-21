@@ -5,6 +5,6 @@ python:
   - "3.7"
   - "3.8"
 install:
-  - pip install flake8 -r ./config/requirements.txt
+  - pip install flake8 -r requirements.txt
 script:
   - flake8
