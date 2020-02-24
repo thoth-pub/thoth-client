@@ -69,7 +69,7 @@ class ThothMutation():
                 ("license", True),
                 ("copyrightHolder", True),
                 ("landingPage", True),
-                ("lccn", True),
+                ("lccn", False),
                 ("oclc", False),
                 ("shortAbstract", True),
                 ("longAbstract", True),
