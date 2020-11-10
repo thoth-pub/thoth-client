@@ -8,6 +8,7 @@ it under the terms of the Apache License v2.0.
 
 
 from graphqlclient import GraphQLClient
+from .auth import ThothAuthenticator
 from .mutation import ThothMutation
 
 
@@ -17,9 +18,17 @@ class ThothClient():
     def __init__(self, thoth_endpoint):
         """Returns new ThothClient object at the specified GraphQL endpoint
 
-        thoth_endpoint: Must be the full URL (eg. 'http://localhost/graphql').
+        thoth_endpoint: Must be the full URL (eg. 'http://localhost').
         """
-        self.client = GraphQLClient(thoth_endpoint)
+        self.auth_endpoint = "{}/account/login".format(thoth_endpoint)
+        self.graphql_endpoint = "{}/graphql".format(thoth_endpoint)
+        self.client = GraphQLClient(self.graphql_endpoint)
+
+    def login(self, email, password):
+        """Obtain an authentication token"""
+        auth = ThothAuthenticator(self.auth_endpoint, email, password)
+        bearer = "Bearer {}".format(auth.get_token())
+        self.client.inject_token(bearer)
 
     def mutation(self, mutation_name, data):
         """Instantiate a thoth mutation and execute"""
