@@ -18,7 +18,7 @@ setup(
     author="Javier Arias",
     author_email="javier@arias.re",
     packages=["thothlibrary"],
-    install_requires=["graphqlclient"],
+    install_requires=["graphqlclient", "requests"],
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     license=__license__,
