@@ -151,7 +151,10 @@ class ThothMutation():
                 ("contributionType", False),
                 ("mainContribution", False),
                 ("biography", True),
-                ("institution", True)
+                ("institution", True),
+                ("firstName", True),
+                ("lastName", True),
+                ("fullName", True)
             ],
             "return_value": "workId"
         }
