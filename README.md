@@ -4,5 +4,5 @@ Python client for Thoth's GraphQL API
 
 
 ```
-python3 -m pip install thothlibrary==0.2
+python3 -m pip install thothlibrary==0.3
 ```
