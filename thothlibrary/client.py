@@ -16,7 +16,7 @@ from .query import ThothQuery
 class ThothClient():
     """Client to Thoth's GraphQL API"""
 
-    def __init__(self, thoth_endpoint):
+    def __init__(self, thoth_endpoint="https://api.thoth.pub"):
         """Returns new ThothClient object at the specified GraphQL endpoint
 
         thoth_endpoint: Must be the full URL (eg. 'http://localhost').
