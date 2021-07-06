@@ -10,12 +10,13 @@ it under the terms of the Apache License v2.0.
 from graphqlclient import GraphQLClient
 from .auth import ThothAuthenticator
 from .mutation import ThothMutation
+from .query import ThothQuery
 
 
 class ThothClient():
     """Client to Thoth's GraphQL API"""
 
-    def __init__(self, thoth_endpoint):
+    def __init__(self, thoth_endpoint="https://api.thoth.pub"):
         """Returns new ThothClient object at the specified GraphQL endpoint
 
         thoth_endpoint: Must be the full URL (eg. 'http://localhost').
@@ -34,6 +35,20 @@ class ThothClient():
         """Instantiate a thoth mutation and execute"""
         mutation = ThothMutation(mutation_name, data)
         return mutation.run(self.client)
+
+    def query(self, query_name, parameters):
+        """Instantiate a thoth query and execute"""
+        query = ThothQuery(query_name, parameters)
+        return query.run(self.client)
+
+    def works(self, limit: int = 100, offset: int = 0, filter_str: str = ""):
+        """Construct and trigger a query to obtain all works"""
+        parameters = {
+            "limit": limit,
+            "offset": offset,
+            "filter": filter_str,
+        }
+        return self.query("works", parameters)
 
     def create_publisher(self, publisher):
         """Construct and trigger a mutation to add a new publisher object"""
