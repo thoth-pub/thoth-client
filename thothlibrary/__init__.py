@@ -9,5 +9,6 @@ __license__ = "Apache 2.0"
 from .client import ThothClient
 from .errors import ThothError
 from .mutation import ThothMutation
+from .query import ThothQuery
 
-__all__ = ["ThothClient", "ThothMutation", "ThothError"]
+__all__ = ["ThothClient", "ThothQuery", "ThothMutation", "ThothError"]
