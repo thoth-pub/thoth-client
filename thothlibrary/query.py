@@ -64,7 +64,9 @@ class ThothQuery():
                 "generalNote",
                 "toc",
                 "coverUrl",
-                "coverCaption"
+                "coverCaption",
+                "publications { isbn publicationType }",
+                "contributions { fullName contributionType mainContribution }"
             ]
         }
     }
