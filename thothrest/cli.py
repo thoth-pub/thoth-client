@@ -27,6 +27,14 @@ def format(identifier, json=False):
     print(_client().format(identifier, json))
 
 
+def specifications(json=False):
+    """
+    Full list of metadata specifications that can be output by Thoth
+    @param json: whether to return JSON or an object (default)
+    """
+    print(_client().specifications(json))
+
+
 if __name__ == '__main__':
     import fire
     fire.Fire()

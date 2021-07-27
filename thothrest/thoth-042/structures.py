@@ -6,7 +6,8 @@ it under the terms of the Apache License v2.0.
 from munch import Munch
 
 default_fields = {'formats': 'id',
-                  'format': 'name'}
+                  'format': 'name',
+                  'specifications': 'name'}
 
 
 class StructureBuilder:

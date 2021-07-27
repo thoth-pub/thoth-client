@@ -39,6 +39,14 @@ class ThothRESTClient:
         """
         return self._api_request('format', '/formats/{0}'.format(identifier), return_json)
 
+    def specifications(self, return_json=False):
+        """
+        Full list of metadata specifications that can be output by Thoth
+        @param return_json: whether to return JSON or an object (default)
+        @return: an object or JSON
+        """
+        return self._api_request('specifications', '/specifications/', return_json)
+
     def _api_request(self, endpoint_name, url_suffix, return_json=False):
         """
         Makes a request to the API
