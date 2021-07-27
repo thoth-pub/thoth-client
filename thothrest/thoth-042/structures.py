@@ -8,7 +8,8 @@ from munch import Munch
 default_fields = {'formats': 'id',
                   'format': 'name',
                   'specifications': 'name',
-                  'specification': 'name'}
+                  'specification': 'name',
+                  'platforms': 'name'}
 
 
 class StructureBuilder:
@@ -34,6 +35,11 @@ class StructureBuilder:
         return structures
 
     def _munch(self, item):
+        """
+        Converts our JSON or dict object into an addressable object
+        @param item: the item to convert
+        @return: a converted object with string representation
+        """
         x = Munch.fromDict(item)
         if self.structure in default_fields.keys():
             struct = default_fields[self.structure]

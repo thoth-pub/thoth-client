@@ -56,6 +56,14 @@ class ThothRESTClient:
         """
         return self._api_request('specification', '/specifications/{0}'.format(identifier), return_json)
 
+    def platforms(self, return_json=False):
+        """
+        Full list of platforms supported by Thoth's outputs
+        @param return_json: whether to return JSON or an object (default)
+        @return: an object or JSON
+        """
+        return self._api_request('platforms', '/platforms/', return_json)
+
     def _api_request(self, endpoint_name, url_suffix, return_json=False):
         """
         Makes a request to the API

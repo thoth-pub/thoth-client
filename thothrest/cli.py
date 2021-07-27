@@ -44,6 +44,14 @@ def specification(identifier, json=False):
     print(_client().specification(identifier, json))
 
 
+def platforms(json=False):
+    """
+    Full list of metadata specifications that can be output by Thoth
+    @param json: whether to return JSON or an object (default)
+    """
+    print(_client().platforms(json))
+
+
 if __name__ == '__main__':
     import fire
     fire.Fire()
