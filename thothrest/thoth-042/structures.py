@@ -9,7 +9,8 @@ default_fields = {'formats': 'id',
                   'format': 'name',
                   'specifications': 'name',
                   'specification': 'name',
-                  'platforms': 'name'}
+                  'platforms': 'name',
+                  'platform': 'name'}
 
 
 class StructureBuilder:

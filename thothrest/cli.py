@@ -52,6 +52,25 @@ def platforms(json=False):
     print(_client().platforms(json))
 
 
+def platform(identifier, json=False):
+    """
+    Find the details of a platform supported by Thoth's outputs
+    @param identifier: the format ID to describe
+    @param json: whether to return JSON or an object (default)
+    """
+    print(_client().platform(identifier, json))
+
+
+def work(identifier, work):
+    """
+    Find the details of a platform supported by Thoth's outputs
+    @param identifier: the spefication ID
+    @param work: the work ID
+    @param json: whether to return JSON or an object (default)
+    """
+    print(_client().work(identifier, work))
+
+
 if __name__ == '__main__':
     import fire
     fire.Fire()

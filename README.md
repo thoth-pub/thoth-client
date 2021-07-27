@@ -31,4 +31,5 @@ print(client.formats())
 python3 ./thothrest/cli.py
 python3 ./thothrest/cli.py formats
 python3 ./thothrest/cli.py formats --return-json
+python3 ./cli.py work onix_3.0::project_muse e0f748b2-984f-45cc-8b9e-13989c31dda4
 ```
