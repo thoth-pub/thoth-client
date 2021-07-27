@@ -3,21 +3,30 @@
 This program is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
-import fire
-from client import ThothRESTClient
 
 
-class ThothCLI(object):
-    """A simple CLI for Thoth REST."""
+def _client():
+    from client import ThothRESTClient
+    return ThothRESTClient()
 
-    def formats(self, return_json=False):
-        """
-        Full list of metadata formats that can be output by Thoth
-        @param return_json: whether to return JSON or an object (default)
-        """
-        client = ThothRESTClient()
-        print(client.formats(return_json))
+
+def formats(json=False):
+    """
+    Full list of metadata formats that can be output by Thoth
+    @param json: whether to return JSON or an object (default)
+    """
+    print(_client().formats(json))
+
+
+def format(identifier, json=False):
+    """
+    Find the details of a format that can be output by Thoth
+    @param identifier: the format ID to describe
+    @param json: whether to return JSON or an object (default)
+    """
+    print(_client().format(identifier, json))
 
 
 if __name__ == '__main__':
-    fire.Fire(ThothCLI)
+    import fire
+    fire.Fire()

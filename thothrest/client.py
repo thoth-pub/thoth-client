@@ -30,6 +30,15 @@ class ThothRESTClient:
         """
         return self._api_request('formats', '/formats/', return_json)
 
+    def format(self, identifier, return_json=False):
+        """
+        Find the details of a format that can be output by Thoth
+        @param return_json: whether to return JSON or an object (default)
+        @param identifier: the format ID to describe
+        @return: an object or JSON
+        """
+        return self._api_request('format', '/formats/{0}'.format(identifier), return_json)
+
     def _api_request(self, endpoint_name, url_suffix, return_json=False):
         """
         Makes a request to the API
