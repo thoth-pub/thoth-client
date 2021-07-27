@@ -5,7 +5,8 @@ it under the terms of the Apache License v2.0.
 """
 from munch import Munch
 
-default_fields = {'formats': 'id'}
+default_fields = {'formats': 'id',
+                  'format': 'name'}
 
 
 class StructureBuilder:
@@ -20,12 +21,20 @@ class StructureBuilder:
         @return: an object
         """
         structures = []
-        for item in self.data:
-            x = Munch.fromDict(item)
-            if self.structure in default_fields.keys():
-                struct = default_fields[self.structure]
-                Munch.__repr__ = Munch.__str__
-                Munch.__str__ = lambda self: self[struct]
-            structures.append(x)
+        if isinstance(self.data, list):
+            for item in self.data:
+                x = self._munch(item)
+                structures.append(x)
+        else:
+            x = self._munch(self.data)
+            return x
 
         return structures
+
+    def _munch(self, item):
+        x = Munch.fromDict(item)
+        if self.structure in default_fields.keys():
+            struct = default_fields[self.structure]
+            Munch.__repr__ = Munch.__str__
+            Munch.__str__ = lambda self: self[struct]
+        return x
