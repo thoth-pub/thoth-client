@@ -61,16 +61,25 @@ def platform(identifier, json=False):
     print(_client().platform(identifier, json))
 
 
-def work(identifier, work):
+def work(identifier, work_identifier):
     """
     Find the details of a platform supported by Thoth's outputs
-    @param identifier: the spefication ID
-    @param work: the work ID
-    @param json: whether to return JSON or an object (default)
+    @param identifier: the specification ID
+    @param work_identifier: the work ID
     """
-    print(_client().work(identifier, work))
+    print(_client().work(identifier, work_identifier))
+
+
+def works(identifier, publisher):
+    """
+    Obtain a metadata record that adheres to a particular specification for all of a given publisher's works
+    @param identifier: the specification ID
+    @param publisher: the publisher ID
+    """
+    print(_client().works(identifier, publisher))
 
 
 if __name__ == '__main__':
     import fire
+
     fire.Fire()

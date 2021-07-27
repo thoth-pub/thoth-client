@@ -3,6 +3,8 @@
 This program is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
+import sys
+
 import requests
 from errors import ThothRESTError
 import importlib
@@ -22,66 +24,11 @@ class ThothRESTClient:
         self.endpoint = endpoint
         self.version = version.replace('.', '')
 
-    def formats(self, return_json=False):
-        """
-        Full list of metadata formats that can be output by Thoth
-        @param return_json: whether to return JSON or an object (default)
-        @return: an object or JSON
-        """
-        return self._api_request('formats', '/formats/', return_json)
-
-    def format(self, identifier, return_json=False):
-        """
-        Find the details of a format that can be output by Thoth
-        @param return_json: whether to return JSON or an object (default)
-        @param identifier: the format ID to describe
-        @return: an object or JSON
-        """
-        return self._api_request('format', '/formats/{0}'.format(identifier), return_json)
-
-    def specifications(self, return_json=False):
-        """
-        Full list of metadata specifications that can be output by Thoth
-        @param return_json: whether to return JSON or an object (default)
-        @return: an object or JSON
-        """
-        return self._api_request('specifications', '/specifications/', return_json)
-
-    def specification(self, identifier, return_json=False):
-        """
-        Find the details of a metadata specification that can be output by Thoth
-        @param return_json: whether to return JSON or an object (default)
-        @param identifier: the specification ID to describe
-        @return: an object or JSON
-        """
-        return self._api_request('specification', '/specifications/{0}'.format(identifier), return_json)
-
-    def platforms(self, return_json=False):
-        """
-        Full list of platforms supported by Thoth's outputs
-        @param return_json: whether to return JSON or an object (default)
-        @return: an object or JSON
-        """
-        return self._api_request('platforms', '/platforms/', return_json)
-
-    def platform(self, identifier, return_json=False):
-        """
-        Find the details of a metadata specification that can be output by Thoth
-        @param return_json: whether to return JSON or an object (default)
-        @param identifier: the specification ID to describe
-        @return: an object or JSON
-        """
-        return self._api_request('platform', '/platforms/{0}'.format(identifier), return_json)
-
-    def work(self, identifier, work, return_json=False):
-        """
-        Obtain a metadata record that adheres to a particular specification for a given work
-        @param return_json: whether to return JSON or an object (default)
-        @param identifier: the specification ID
-        @param identifier: the work ID
-        @return: an object or JSON
-        """
-        return self._api_request('work', '/specifications/{0}/work/{1}'.format(identifier, work), False, True)
+        # this is the only magic part
+        # this basically delegates to the 'endpoints' module inside the current API version
+        # the constructor function there dynamically adds the methods that are supported in any API version
+        endpoints = importlib.import_module('thoth-{0}.endpoints'.format(self.version))
+        getattr(endpoints, 'ThothRESTClient{0}'.format(self.version))(self)
 
     def _api_request(self, endpoint_name, url_suffix, return_json=False, return_raw=False):
         """
