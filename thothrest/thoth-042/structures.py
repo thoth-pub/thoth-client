@@ -7,7 +7,8 @@ from munch import Munch
 
 default_fields = {'formats': 'id',
                   'format': 'name',
-                  'specifications': 'name'}
+                  'specifications': 'name',
+                  'specification': 'name'}
 
 
 class StructureBuilder:
