@@ -42,16 +42,14 @@ class ThothQuery:
         """Format the query request string"""
         values = {
             "query_name": self.query_name,
-            "parameters": self.param_str,
-            "fields": self.fields_str
+            "parameters": "(" + self.param_str + ")" if self.param_str else '',
+            "fields": "{" + self.fields_str + "}" if self.fields_str else ''
         }
+
         payload = """
             query {
-                %(query_name)s(
-                    %(parameters)s
-                ) {
-                    %(fields)s
-                }
+                %(query_name)s%(parameters)s
+                %(fields)s
             }
         """
         return payload % values
@@ -76,10 +74,12 @@ class ThothQuery:
             # because ORDER clauses, for instance, do not allow them
 
             parameters.append("{}: "
-                              "{}, ".format(key,
-                                            value))
+                              "{}, ".format(key, value))
         return ", ".join(parameters)
 
     def prepare_fields(self):
         """Returns a string with all query fields."""
-        return "\n".join(self.QUERIES[self.query_name]["fields"])
+        if self.query_name in self.QUERIES:
+            return "\n".join(self.QUERIES[self.query_name]["fields"])
+        else:
+            return ''

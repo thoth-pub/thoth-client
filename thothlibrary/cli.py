@@ -91,6 +91,28 @@ class ThothAPI:
                                          filter_str=filter_str,
                                          raw=raw), sep='\n')
 
+    @fire.decorators.SetParseFn(_raw_parse)
+    def publisher_count(self, publishers=None, filter_str=None, raw=False,
+                        version=None, endpoint=None):
+        """
+        A count of publishers
+        :param str publishers: a list of publishers to limit by
+        :param str filter_str: a filter string to search
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(self._client().publisher_count(publishers=publishers,
+                                             filter_str=filter_str,
+                                             raw=raw))
+
 
 if __name__ == '__main__':
     fire.Fire(ThothAPI)
