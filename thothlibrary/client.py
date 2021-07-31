@@ -100,9 +100,8 @@ class ThothClient():
         """
         Makes a request to the API
         @param endpoint_name: the name of the endpoint
-        @param url_suffix: the URL suffix
-        @param return_json: whether to return raw JSON or an object (default)
-        @param return_raw: whether to return the raw data returned
+        @param return_raw: whether to return the raw data or an object (default)
+        @param parameters: the parameters to pass to GraphQL
         @return: an object or JSON of the request
         """
         response = self.query(endpoint_name, parameters)

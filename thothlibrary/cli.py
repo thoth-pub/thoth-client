@@ -22,7 +22,7 @@ class ThothAPI:
     def _client(self):
         """
         Returns a ThothClient object
-        @return:
+        @return: a ThothClient
         """
         from client import ThothClient
         return ThothClient(version="0.4.2")
@@ -37,7 +37,7 @@ class ThothAPI:
         @param offset: the offset from which to retrieve results
         @param publishers: a list of publishers to limit by
         @param filter_str: a filter string to search
-        @param work_type: the work type (e.g. MONOGRAPH)
+        @param work_type: the work type (e.g. MONOGR++APH)
         @param work_status: the work status (e.g. ACTIVE)
         @param raw: whether to return a python object or the raw server result
         """
@@ -48,15 +48,6 @@ class ThothAPI:
                                     work_status=work_status,
                                     raw=raw), sep='\n')
 
-    def works_from_publisher(self, publishers_id=None, limit=100, offset=0):
-        """
-        Get a list of works from a specific publisher
-        @param publishers_id: the ID of the publishers
-        @param limit: the maximum number of results to return (-1 for all)
-        @param offset: the offset from which to return results
-        """
-        print(_client().works(limit=limit, publishers=publishers_id,
-                              offset=offset))
 
     def publishers(self, json=False):
         """
