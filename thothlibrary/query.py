@@ -77,8 +77,7 @@ class ThothQuery:
 
             parameters.append("{}: "
                               "{}, ".format(key,
-                                            json.dumps(value).
-                                            strip('"').strip("'")))
+                                            value))
         return ", ".join(parameters)
 
     def prepare_fields(self):
