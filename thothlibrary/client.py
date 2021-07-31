@@ -123,7 +123,7 @@ class ThothClient():
         builder = structures.StructureBuilder(endpoint_name, data)
         return builder.create_structure()
 
-    def _dictionary_append(self, dict, key, value):
+    def _dictionary_append(self, input_dict, key, value):
         if value:
-            dict[key] = value
-        return dict
+            input_dict[key] = value
+        return input_dict
