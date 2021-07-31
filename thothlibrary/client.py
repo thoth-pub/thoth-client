@@ -5,18 +5,18 @@ GraphQL client for Thoth
 This programme is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
-
+import importlib
 
 from graphqlclient import GraphQLClient
-from .auth import ThothAuthenticator
-from .mutation import ThothMutation
-from .query import ThothQuery
+from auth import ThothAuthenticator
+from mutation import ThothMutation
+from query import ThothQuery
 
 
 class ThothClient():
     """Client to Thoth's GraphQL API"""
 
-    def __init__(self, thoth_endpoint="https://api.thoth.pub"):
+    def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
         """Returns new ThothClient object at the specified GraphQL endpoint
 
         thoth_endpoint: Must be the full URL (eg. 'http://localhost').
@@ -24,6 +24,16 @@ class ThothClient():
         self.auth_endpoint = "{}/account/login".format(thoth_endpoint)
         self.graphql_endpoint = "{}/graphql".format(thoth_endpoint)
         self.client = GraphQLClient(self.graphql_endpoint)
+        self.version = version.replace('.', '_')
+
+        # this is the only magic part for queries
+        # it delegates to the 'endpoints' module inside the current API version
+        # the constructor function there dynamically adds the methods that are
+        # supported in any API version
+        if issubclass(ThothClient, type(self)):
+            endpoints = importlib.import_module('thoth-{0}.end'
+                                                'points'.format(self.version))
+            getattr(endpoints, 'ThothClient{0}'.format(self.version))(self)
 
     def login(self, email, password):
         """Obtain an authentication token"""
@@ -38,17 +48,8 @@ class ThothClient():
 
     def query(self, query_name, parameters):
         """Instantiate a thoth query and execute"""
-        query = ThothQuery(query_name, parameters)
+        query = ThothQuery(query_name, parameters, self.QUERIES)
         return query.run(self.client)
-
-    def works(self, limit: int = 100, offset: int = 0, filter_str: str = ""):
-        """Construct and trigger a query to obtain all works"""
-        parameters = {
-            "limit": limit,
-            "offset": offset,
-            "filter": filter_str,
-        }
-        return self.query("works", parameters)
 
     def create_publisher(self, publisher):
         """Construct and trigger a mutation to add a new publisher object"""
@@ -93,3 +94,32 @@ class ThothClient():
     def create_contribution(self, contribution):
         """Construct and trigger a mutation to add a new contribution object"""
         return self.mutation("createContribution", contribution)
+
+    def _api_request(self, endpoint_name: str, parameters,
+                     return_raw: bool = False):
+        """
+        Makes a request to the API
+        @param endpoint_name: the name of the endpoint
+        @param url_suffix: the URL suffix
+        @param return_json: whether to return raw JSON or an object (default)
+        @param return_raw: whether to return the raw data returned
+        @return: an object or JSON of the request
+        """
+        response = self.query(endpoint_name, parameters)
+
+        if return_raw:
+            return response
+        else:
+            return self._build_structure(endpoint_name, response)
+
+    def _build_structure(self, endpoint_name, data):
+        """
+        Builds an object structure for an endpoint
+        @param endpoint_name: the name of the endpoint
+        @param data: the data
+        @return: an object form of the output
+        """
+        structures = \
+            importlib.import_module('thoth-{0}.structures'.format(self.version))
+        builder = structures.StructureBuilder(endpoint_name, data)
+        return builder.create_structure()

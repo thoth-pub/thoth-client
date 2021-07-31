@@ -13,10 +13,15 @@ python3 -m pip install thothlibrary==0.5.0
 ```python
 from thothlibrary import ThothClient
 
-thoth = ThothClient()
-all_works = thoth.works()
-print(all_works)
+thoth = ThothClient(version="0.4.2")
+print(thoth.works())
 ```
+
+### CLI GraphQL Usage
+```sh
+python3 ./cli.py works --limit=10 --order='{field: PUBLICATION_DATE, direction: DESC}' --work_status=ACTIVE --work_type=MONOGRAPH --offset=1
+```
+
 
 ### REST Usage
 ```python

@@ -10,74 +10,28 @@ it under the terms of the Apache License v2.0.
 
 import json
 import urllib
-from .errors import ThothError
+
+from errors import ThothError
 
 
-class ThothQuery():
+class ThothQuery:
     """GraphQL query in Thoth
 
-       Queries are specified in the QUERIES list, which specifies
-       their fields and desired return value 'fields' must be a list of
-       tuples (str, bool) where the string represents the attribute and the
+       Queries are specified in the QUERIES list of the API version, which
+       specifies their fields and desired return value 'fields' must be a list
+       of tuples (str, bool) where the string represents the attribute and the
        boolean represents whether the values should be enclosed with quotes
        and sanitised.
     """
 
-    QUERIES = {
-        "works": {
-            "parameters": [
-                "limit",
-                "offset",
-                "filter",
-                "order",
-                "publishers",
-                "workType",
-                "workStatus"
-            ],
-            "fields": [
-                "workType",
-                "workStatus",
-                "fullTitle",
-                "title",
-                "subtitle",
-                "reference",
-                "edition",
-                "imprintId",
-                "doi",
-                "publicationDate",
-                "place",
-                "width",
-                "height",
-                "pageCount",
-                "pageBreakdown",
-                "imageCount",
-                "tableCount",
-                "audioCount",
-                "videoCount",
-                "license",
-                "copyrightHolder",
-                "landingPage",
-                "lccn",
-                "oclc",
-                "shortAbstract",
-                "longAbstract",
-                "generalNote",
-                "toc",
-                "coverUrl",
-                "coverCaption",
-                "publications { isbn publicationType }",
-                "contributions { fullName contributionType mainContribution }"
-            ]
-        }
-    }
-
-    def __init__(self, query_name, parameters):
-        """Returns new ThothMutation object with specified mutation data
+    def __init__(self, query_name, parameters, queries):
+        """Returns new ThothQuery object
 
         mutation_name: Must match one of the keys found in MUTATIONS.
 
         mutation_data: Dictionary of mutation fields and their values.
         """
+        self.QUERIES = queries
         self.query_name = query_name
         self.parameters = parameters
         self.param_str = self.prepare_parameters()
@@ -118,7 +72,13 @@ class ThothQuery():
         """Returns a string with all query parameters."""
         parameters = []
         for key, value in self.parameters.items():
-            parameters.append("{}: {}, ".format(key, json.dumps(value)))
+            # note that we strip out extraneous quotation marks from parameters
+            # because ORDER clauses, for instance, do not allow them
+
+            parameters.append("{}: "
+                              "{}, ".format(key,
+                                            json.dumps(value).
+                                            strip('"').strip("'")))
         return ", ".join(parameters)
 
     def prepare_fields(self):
