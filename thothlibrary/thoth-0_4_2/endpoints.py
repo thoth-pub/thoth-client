@@ -79,7 +79,14 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
-        "publishercount": {
+        "publisherCount": {
+            "parameters": [
+                "filter",
+                "publishers",
+            ],
+        },
+
+        "workCount": {
             "parameters": [
                 "filter",
                 "publishers",
@@ -98,6 +105,7 @@ class ThothClient0_4_2(ThothClient):
         input_class.works = getattr(self, 'works')
         input_class.publishers = getattr(self, 'publishers')
         input_class.publisher_count = getattr(self, 'publisher_count')
+        input_class.work_count = getattr(self, 'work_count')
         input_class.QUERIES = getattr(self, 'QUERIES')
 
     def works(self, limit: int = 100, offset: int = 0, filter_str: str = "",
@@ -154,3 +162,16 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("publisherCount", parameters, return_raw=raw)
+
+    def work_count(self, filter_str: str = "", publishers: str = None,
+                   work_type: str = None, work_status: str = None,
+                   raw: bool = False):
+        """Construct and trigger a query to obtain all publishers"""
+        parameters = {}
+
+        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'workType', work_type)
+        self._dictionary_append(parameters, 'workStatus', work_status)
+
+        return self._api_request("workCount", parameters, return_raw=raw)

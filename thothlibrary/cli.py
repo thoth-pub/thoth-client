@@ -46,7 +46,7 @@ class ThothAPI:
         :param int offset: the offset from which to retrieve results (default: 0)
         :param str publishers: a list of publishers to limit by
         :param str filter_str: a filter string to search
-        :param str work_type: the work type (e.g. MONOGR++APH)
+        :param str work_type: the work type (e.g. MONOGRAPH)
         :param str work_status: the work status (e.g. ACTIVE)
         :param bool raw: whether to return a python object or the raw server result
         :param str version: a custom Thoth version
@@ -112,6 +112,33 @@ class ThothAPI:
         print(self._client().publisher_count(publishers=publishers,
                                              filter_str=filter_str,
                                              raw=raw))
+
+    @fire.decorators.SetParseFn(_raw_parse)
+    def work_count(self, publishers=None, filter_str=None, raw=False,
+                   work_type=None, work_status=None, version=None,
+                   endpoint=None):
+        """
+        A count of works
+        :param str publishers: a list of publishers to limit by
+        :param str filter_str: a filter string to search
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str work_type: the work type (e.g. MONOGRAPH)
+        :param str work_status: the work status (e.g. ACTIVE)
+        :param str endpoint: a custom Thoth endpoint
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(self._client().work_count(publishers=publishers,
+                                        filter_str=filter_str,
+                                        work_type=work_type,
+                                        work_status=work_status,
+                                        raw=raw))
 
 
 if __name__ == '__main__':

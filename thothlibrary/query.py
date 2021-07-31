@@ -79,7 +79,8 @@ class ThothQuery:
 
     def prepare_fields(self):
         """Returns a string with all query fields."""
-        if self.query_name in self.QUERIES:
+        if self.query_name in self.QUERIES and \
+                'fields' in self.QUERIES[self.query_name]:
             return "\n".join(self.QUERIES[self.query_name]["fields"])
         else:
             return ''
