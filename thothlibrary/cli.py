@@ -12,35 +12,52 @@ def _raw_parse(value):
     This function overrides fire's default argument parsing using decorators.
     We need this because, otherwise, fire converts '{field: x}' to a
     dictionary object, which messes with GraphQL parameters.
-    @param value: the input value
-    @return: the parsed value
+    :param value: the input value
+    :return: the parsed value
     """
     return value
 
 
 class ThothAPI:
+
+    def __init__(self):
+        """
+        A Thoth CLI client
+        """
+        self.endpoint = "https://api.thoth.pub"
+        self.version = "0.4.2"
+
     def _client(self):
         """
         Returns a ThothClient object
-        @return: a ThothClient
+        :return: a ThothClient
         """
         from client import ThothClient
-        return ThothClient(version="0.4.2")
+        return ThothClient(version=self.version, thoth_endpoint=self.endpoint)
 
     @fire.decorators.SetParseFn(_raw_parse)
     def works(self, limit=100, order=None, offset=0, publishers=None,
-              filter_str=None, work_type=None, work_status=None, raw=False):
+              filter_str=None, work_type=None, work_status=None, raw=False,
+              version=None, endpoint=None):
         """
-        A list of works
-        @param limit: the maximum number of results to return
-        @param order: a GraphQL order query statement
-        @param offset: the offset from which to retrieve results
-        @param publishers: a list of publishers to limit by
-        @param filter_str: a filter string to search
-        @param work_type: the work type (e.g. MONOGR++APH)
-        @param work_status: the work status (e.g. ACTIVE)
-        @param raw: whether to return a python object or the raw server result
+        Retrieves works from a Thoth instance
+        :param int limit: the maximum number of results to return (default: 100)
+        :param int order: a GraphQL order query statement
+        :param int offset: the offset from which to retrieve results (default: 0)
+        :param str publishers: a list of publishers to limit by
+        :param str filter_str: a filter string to search
+        :param str work_type: the work type (e.g. MONOGR++APH)
+        :param str work_status: the work status (e.g. ACTIVE)
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
         """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
         print(*self._client().works(limit=limit, order=order, offset=offset,
                                     publishers=publishers,
                                     filter_str=filter_str,
@@ -48,13 +65,31 @@ class ThothAPI:
                                     work_status=work_status,
                                     raw=raw), sep='\n')
 
+    @fire.decorators.SetParseFn(_raw_parse)
+    def publishers(self, limit=100, order=None, offset=0, publishers=None,
+                   filter_str=None, raw=False, version=None, endpoint=None):
+        """
+        Retrieves publishers from a Thoth instance
+        :param int limit: the maximum number of results to return (default: 100)
+        :param int order: a GraphQL order query statement
+        :param int offset: the offset from which to retrieve results (default: 0)
+        :param str publishers: a list of publishers to limit by
+        :param str filter_str: a filter string to search
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        """
 
-    def publishers(self, json=False):
-        """
-        Full list of metadata formats that can be output by Thoth
-        @param json: whether to return JSON or an object (default)
-        """
-        print(_client().publishers())
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(*self._client().publishers(limit=limit, order=order,
+                                         offset=offset, publishers=publishers,
+                                         filter_str=filter_str,
+                                         raw=raw), sep='\n')
 
 
 if __name__ == '__main__':

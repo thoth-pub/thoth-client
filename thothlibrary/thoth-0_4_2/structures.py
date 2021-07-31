@@ -46,7 +46,8 @@ def _parse_authors(obj):
     return authors
 
 
-default_fields = {'works': lambda self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if self.__typename == 'Work' else f'{muncher(self)}'}
+default_fields = {'works': lambda self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if self.__typename == 'Work' else f'{muncher(self)}',
+                  'publishers': lambda self: f'{self.publisherName} ({self.publisherId})' if self.__typename == 'Publisher' else f'{muncher(self)}'}
 
 munch_local = Munch.__repr__
 

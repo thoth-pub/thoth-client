@@ -122,3 +122,8 @@ class ThothClient():
             importlib.import_module('thoth-{0}.structures'.format(self.version))
         builder = structures.StructureBuilder(endpoint_name, data)
         return builder.create_structure()
+
+    def _dictionary_append(self, dict, key, value):
+        if value:
+            dict[key] = value
+        return dict

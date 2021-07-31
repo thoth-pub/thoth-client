@@ -7,7 +7,9 @@ from client import ThothClient
 
 
 class ThothClient0_4_2(ThothClient):
-
+    # the QUERIES field defines the fields that GraphQL will return
+    # note: every query should contain the field "__typename" if auto-object
+    # __str__ representation is to work
     QUERIES = {
         "works": {
             "parameters": [
@@ -64,8 +66,6 @@ class ThothClient0_4_2(ThothClient):
                 "filter",
                 "order",
                 "publishers",
-                "workType",
-                "workStatus"
             ],
             "fields": [
                 "imprints { imprintUrl imprintId imprintName}"
@@ -75,21 +75,38 @@ class ThothClient0_4_2(ThothClient):
                 "publisherName",
                 "publisherShortname",
                 "publisherUrl",
+                "__typename"
             ]
         }
     }
 
     def __init__(self, input_class):
+        """
+        Creates an instance of Thoth 0.4.2 endpoints
+        @param input_class: the ThothClient instance to be versioned
+        """
         super().__init__()
 
         # this is the magic dynamic generation part that wires up the methods
         input_class.works = getattr(self, 'works')
+        input_class.publishers = getattr(self, 'publishers')
         input_class.QUERIES = getattr(self, 'QUERIES')
 
     def works(self, limit: int = 100, offset: int = 0, filter_str: str = "",
               order: str = None, publishers: str = None, work_type: str = None,
               work_status: str = None, raw: bool = False):
-        """Construct and trigger a query to obtain all works"""
+        """
+        Returns a works list
+        @param limit: the maximum number of results to return (default: 100)
+        @param order: a GraphQL order query statement
+        @param offset: the offset from which to retrieve results (default: 0)
+        @param publishers: a list of publishers to limit by
+        @param filter_str: a filter string to search
+        @param work_type: the work type (e.g. MONOGR++APH)
+        @param work_status: the work status (e.g. ACTIVE)
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
         if order is None:
             order = {}
         parameters = {
@@ -97,29 +114,25 @@ class ThothClient0_4_2(ThothClient):
             "limit": limit,
         }
 
-        if filter_str:
-            parameters["filter"] = filter_str
-
-        if order:
-            parameters["order"] = order
-
-        if publishers:
-            parameters["publishers"] = publishers
-
-        if work_type:
-            parameters["workType"] = work_type
-
-        if work_status:
-            parameters["workStatus"] = work_status
+        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'workType', work_type)
+        self._dictionary_append(parameters, 'workStatus', work_status)
 
         return self._api_request("works", parameters, return_raw=raw)
 
-    def publishers(self, limit: int = 100, offset: int = 0,
-                   filter_str: str = ""):
+    def publishers(self, limit: int = 100, offset: int = 0, order: str = None,
+                   filter_str: str = "", publishers: str = None,
+                   raw: bool = False):
         """Construct and trigger a query to obtain all publishers"""
         parameters = {
             "limit": limit,
             "offset": offset,
-            "filter": filter_str,
         }
-        return self.query("publishers", parameters)
+
+        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+
+        return self._api_request("publishers", parameters, return_raw=raw)
