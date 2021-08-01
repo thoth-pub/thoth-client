@@ -25,6 +25,7 @@ python3 ./cli.py publications --limit=10 --publishers='["85fd969a-a16c-480b-b641
 python3 ./cli.py work --doi="https://doi.org/10.11647/OBP.0222"
 python3 ./cli.py publisher_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 ./cli.py work_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
+python3 ./cli.py publication_count --publication_type="HARDBACK"
 ```
 
 

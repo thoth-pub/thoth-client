@@ -158,6 +158,31 @@ class ThothAPI:
                                         raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def publication_count(self, publishers=None, filter_str=None, raw=False,
+                          publication_type=None, version=None, endpoint=None):
+        """
+        A count of works
+        :param str publishers: a list of publishers to limit by
+        :param str filter_str: a filter string to search
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str publication_type: the work type (e.g. MONOGRAPH)
+        :param str endpoint: a custom Thoth endpoint
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(self._client().publication_count(publishers=publishers,
+                                               filter_str=filter_str,
+                                               publication_type=publication_type,
+                                               raw=raw))
+
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def publications(self, limit=100, order=None, offset=0, publishers=None,
                      filter_str=None, publication_type=None, raw=False,
                      version=None, endpoint=None):

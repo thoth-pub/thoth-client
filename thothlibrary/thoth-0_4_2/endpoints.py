@@ -155,6 +155,16 @@ class ThothClient0_4_2(ThothClient):
             "parameters": [
                 "filter",
                 "publishers",
+                "workType",
+                "workStatus",
+            ],
+        },
+
+        "publicationCount": {
+            "parameters": [
+                "filter",
+                "publishers",
+                "publicationType"
             ],
         }
     }
@@ -173,6 +183,7 @@ class ThothClient0_4_2(ThothClient):
         input_class.publications = getattr(self, 'publications')
         input_class.publisher_count = getattr(self, 'publisher_count')
         input_class.work_count = getattr(self, 'work_count')
+        input_class.publication_count = getattr(self, 'publication_count')
         input_class.QUERIES = getattr(self, 'QUERIES')
 
     def publications(self, limit: int = 100, offset: int = 0,
@@ -264,7 +275,7 @@ class ThothClient0_4_2(ThothClient):
 
     def publisher_count(self, filter_str: str = "", publishers: str = None,
                         raw: bool = False):
-        """Construct and trigger a query to obtain all publishers"""
+        """Construct and trigger a query to count publishers"""
         parameters = {}
 
         self._dictionary_append(parameters, 'filter', filter_str)
@@ -275,7 +286,7 @@ class ThothClient0_4_2(ThothClient):
     def work_count(self, filter_str: str = "", publishers: str = None,
                    work_type: str = None, work_status: str = None,
                    raw: bool = False):
-        """Construct and trigger a query to obtain all publishers"""
+        """Construct and trigger a query to count works"""
         parameters = {}
 
         self._dictionary_append(parameters, 'filter', filter_str)
@@ -284,3 +295,14 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'workStatus', work_status)
 
         return self._api_request("workCount", parameters, return_raw=raw)
+
+    def publication_count(self, filter_str: str = "", publishers: str = None,
+                          publication_type: str = None, raw: bool = False):
+        """Construct and trigger a query to count publications"""
+        parameters = {}
+
+        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'publicationType', publication_type)
+
+        return self._api_request("publicationCount", parameters, return_raw=raw)
