@@ -144,6 +144,22 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "publisher": {
+            "parameters": [
+                "publisherId",
+            ],
+            "fields": [
+                "imprints { imprintUrl imprintId imprintName}"
+                "updatedAt",
+                "createdAt",
+                "publisherId",
+                "publisherName",
+                "publisherShortname",
+                "publisherUrl",
+                "__typename"
+            ]
+        },
+
         "publisherCount": {
             "parameters": [
                 "filter",
@@ -180,6 +196,7 @@ class ThothClient0_4_2(ThothClient):
         input_class.works = getattr(self, 'works')
         input_class.work_by_doi = getattr(self, 'work_by_doi')
         input_class.publishers = getattr(self, 'publishers')
+        input_class.publisher = getattr(self, 'publisher')
         input_class.publications = getattr(self, 'publications')
         input_class.publisher_count = getattr(self, 'publisher_count')
         input_class.work_count = getattr(self, 'work_count')
@@ -257,6 +274,19 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("workByDoi", parameters, return_raw=raw)
+
+    def publisher(self, publisher_id: str, raw: bool = False):
+        """
+        Returns a work by DOI
+        @param publisher_id: the publisher
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'publisherId': '"' + publisher_id + '"'
+        }
+
+        return self._api_request("publisher", parameters, return_raw=raw)
 
     def publishers(self, limit: int = 100, offset: int = 0, order: str = None,
                    filter_str: str = "", publishers: str = None,

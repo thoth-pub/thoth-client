@@ -88,6 +88,23 @@ class ThothAPI:
         print(self._client().work_by_doi(doi=doi, raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def publisher(self, publisher_id, raw=False, version=None, endpoint=None):
+        """
+        Retrieves a work by DOI from a Thoth instance
+        :param str publisher_id: the publisher to fetch
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(self._client().publisher(publisher_id=publisher_id, raw=raw))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def publishers(self, limit=100, order=None, offset=0, publishers=None,
                    filter_str=None, raw=False, version=None, endpoint=None):
         """
