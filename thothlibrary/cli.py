@@ -19,6 +19,11 @@ def _raw_parse(value):
 
 
 class ThothAPI:
+    """
+    A command line interface for the Thoth python API client.
+    This tool allows you to query a Thoth API for publications, works, authors
+    and other endpoints.
+    """
 
     def __init__(self):
         """
