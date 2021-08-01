@@ -124,6 +124,31 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "contributions": {
+            "parameters": [
+                "limit",
+                "offset",
+                "filter",
+                "order",
+                "publishers",
+                "contributionType",
+            ],
+            "fields": [
+                "contributionId",
+                "contributionType",
+                "mainContribution",
+                "biography",
+                "institution",
+                "__typename",
+                "firstName",
+                "lastName",
+                "fullName",
+                "contributionOrdinal",
+                "workId",
+                "contributor {firstName lastName fullName orcid __typename website contributorId}"
+            ]
+        },
+
         "publishers": {
             "parameters": [
                 "limit",
@@ -182,6 +207,14 @@ class ThothClient0_4_2(ThothClient):
                 "publishers",
                 "publicationType"
             ],
+        },
+
+        "contributionCount": {
+            "parameters": [
+                "filter",
+                "publishers",
+                "contributionType"
+            ],
         }
     }
 
@@ -198,7 +231,9 @@ class ThothClient0_4_2(ThothClient):
         input_class.publishers = getattr(self, 'publishers')
         input_class.publisher = getattr(self, 'publisher')
         input_class.publications = getattr(self, 'publications')
+        input_class.contributions = getattr(self, 'contributions')
         input_class.publisher_count = getattr(self, 'publisher_count')
+        input_class.contribution_count = getattr(self, 'contribution_count')
         input_class.work_count = getattr(self, 'work_count')
         input_class.publication_count = getattr(self, 'publication_count')
         input_class.QUERIES = getattr(self, 'QUERIES')
@@ -231,6 +266,35 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'publicationType', publication_type)
 
         return self._api_request("publications", parameters, return_raw=raw)
+
+    def contributions(self, limit: int = 100, offset: int = 0,
+                      filter_str: str = "", order: str = None,
+                      publishers: str = None, contribution_type: str = None,
+                      raw: bool = False):
+        """
+        Returns a contributions list
+        @param limit: the maximum number of results to return (default: 100)
+        @param order: a GraphQL order query statement
+        @param offset: the offset from which to retrieve results (default: 0)
+        @param publishers: a list of publishers to limit by
+        @param filter_str: a filter string to search
+        @param contribution_type: the contribution type (e.g. AUTHOR)
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        if order is None:
+            order = {}
+        parameters = {
+            "offset": offset,
+            "limit": limit,
+        }
+
+        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'contributionType', contribution_type)
+
+        return self._api_request("contributions", parameters, return_raw=raw)
 
     def works(self, limit: int = 100, offset: int = 0, filter_str: str = "",
               order: str = None, publishers: str = None, work_type: str = None,
@@ -325,6 +389,18 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'workStatus', work_status)
 
         return self._api_request("workCount", parameters, return_raw=raw)
+
+    def contribution_count(self, filter_str: str = "", publishers: str = None,
+                           contribution_type: str = None, raw: bool = False):
+        """Construct and trigger a query to count contribution count"""
+        parameters = {}
+
+        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'contributionType',
+                                contribution_type)
+
+        return self._api_request("contributionCount", parameters, return_raw=raw)
 
     def publication_count(self, filter_str: str = "", publishers: str = None,
                           publication_type: str = None, raw: bool = False):
