@@ -112,7 +112,7 @@ class ThothAPI:
     def publisher_count(self, publishers=None, filter_str=None, raw=False,
                         version=None, endpoint=None):
         """
-        A count of publishers
+        Retrieves a count of publishers from a Thoth instance
         :param str publishers: a list of publishers to limit by
         :param str filter_str: a filter string to search
         :param bool raw: whether to return a python object or the raw server result
@@ -135,7 +135,7 @@ class ThothAPI:
                    work_type=None, work_status=None, version=None,
                    endpoint=None):
         """
-        A count of works
+        Retrieves a count of works from a Thoth instance
         :param str publishers: a list of publishers to limit by
         :param str filter_str: a filter string to search
         :param bool raw: whether to return a python object or the raw server result
@@ -161,7 +161,7 @@ class ThothAPI:
     def publication_count(self, publishers=None, filter_str=None, raw=False,
                           publication_type=None, version=None, endpoint=None):
         """
-        A count of works
+        Retrieves a count of publications from a Thoth instance
         :param str publishers: a list of publishers to limit by
         :param str filter_str: a filter string to search
         :param bool raw: whether to return a python object or the raw server result
