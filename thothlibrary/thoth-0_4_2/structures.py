@@ -50,6 +50,7 @@ def _parse_authors(obj):
 # __str__ methods. They let us create nice-looking string representations
 # of objects, such as books
 default_fields = {'works': lambda self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if self.__typename == 'Work' else f'{muncher(self)}',
+                  'workByDoi': lambda self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if self.__typename == 'Work' else f'{muncher(self)}',
                   'publishers': lambda self: f'{self.publisherName} ({self.publisherId})' if self.__typename == 'Publisher' else f'{muncher(self)}'}
 
 # this stores the original function pointer of Munch.__repr__ so that we can

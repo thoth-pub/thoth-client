@@ -59,6 +59,48 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "workByDoi": {
+            "parameters": [
+                "doi"
+            ],
+            "fields": [
+                "workType",
+                "workStatus",
+                "fullTitle",
+                "title",
+                "subtitle",
+                "reference",
+                "edition",
+                "imprintId",
+                "doi",
+                "publicationDate",
+                "place",
+                "width",
+                "height",
+                "pageCount",
+                "pageBreakdown",
+                "imageCount",
+                "tableCount",
+                "audioCount",
+                "videoCount",
+                "license",
+                "copyrightHolder",
+                "landingPage",
+                "lccn",
+                "oclc",
+                "shortAbstract",
+                "longAbstract",
+                "generalNote",
+                "toc",
+                "coverUrl",
+                "coverCaption",
+                "publications { isbn publicationType }",
+                "contributions { fullName contributionType mainContribution contributionOrdinal }",
+                "imprint { publisher { publisherName publisherId } }",
+                "__typename"
+            ]
+        },
+
         "publishers": {
             "parameters": [
                 "limit",
@@ -103,6 +145,7 @@ class ThothClient0_4_2(ThothClient):
 
         # this is the magic dynamic generation part that wires up the methods
         input_class.works = getattr(self, 'works')
+        input_class.work_by_doi = getattr(self, 'work_by_doi')
         input_class.publishers = getattr(self, 'publishers')
         input_class.publisher_count = getattr(self, 'publisher_count')
         input_class.work_count = getattr(self, 'work_count')
@@ -137,6 +180,19 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'workStatus', work_status)
 
         return self._api_request("works", parameters, return_raw=raw)
+
+    def work_by_doi(self, doi: str, raw: bool = False):
+        """
+        Returns a work by DOI
+        @param doi: the DOI to fetch
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'doi': '"' + doi + '"'
+        }
+
+        return self._api_request("workByDoi", parameters, return_raw=raw)
 
     def publishers(self, limit: int = 100, offset: int = 0, order: str = None,
                    filter_str: str = "", publishers: str = None,
