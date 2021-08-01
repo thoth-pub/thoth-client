@@ -157,6 +157,34 @@ class ThothAPI:
                                         work_status=work_status,
                                         raw=raw))
 
+    @fire.decorators.SetParseFn(_raw_parse)
+    def publications(self, limit=100, order=None, offset=0, publishers=None,
+                     filter_str=None, publication_type=None, raw=False,
+                     version=None, endpoint=None):
+        """
+        Retrieves publications from a Thoth instance
+        :param int limit: the maximum number of results to return (default: 100)
+        :param int order: a GraphQL order query statement
+        :param int offset: the offset from which to retrieve results (default: 0)
+        :param str publishers: a list of publishers to limit by
+        :param str filter_str: a filter string to search
+        :param str publication_type: the work type (e.g. PAPERBACK)
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(*self._client().publications(limit=limit, order=order,
+                                           offset=offset, publishers=publishers,
+                                           filter_str=filter_str,
+                                           publication_type=publication_type,
+                                           raw=raw), sep='\n')
+
 
 if __name__ == '__main__':
     fire.Fire(ThothAPI)

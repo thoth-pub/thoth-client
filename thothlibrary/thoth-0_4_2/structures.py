@@ -45,13 +45,23 @@ def _parse_authors(obj):
 
     return authors
 
+
+def __price_parser(prices):
+    if len(prices) > 0:
+        return '({0}{1})'.format(prices[0].unitPrice, prices[0].currencyCode)
+    else:
+        return ''
+
+
 # these are lambda function formatting statements for the endpoints
 # they are injected to replace the default dictionary (Munch) __repr__ and
 # __str__ methods. They let us create nice-looking string representations
 # of objects, such as books
-default_fields = {'works': lambda self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if self.__typename == 'Work' else f'{muncher(self)}',
-                  'workByDoi': lambda self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if self.__typename == 'Work' else f'{muncher(self)}',
-                  'publishers': lambda self: f'{self.publisherName} ({self.publisherId})' if self.__typename == 'Publisher' else f'{muncher(self)}'}
+default_fields = {'works': lambda self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if self.__typename == 'Work' else f'{_muncher_repr(self)}',
+                  'publications': lambda self: f'{_parse_authors(self.work)}{self.work.fullTitle} ({self.work.place}: {self.work.imprint.publisher.publisherName}, {datetime.strptime(self.work.publicationDate, "%Y-%m-%d").year if self.work.publicationDate else "n.d."}) '
+                                               f'[{self.publicationType}] {__price_parser(self.prices)} [{self.publicationId}]' if self.__typename == 'Publication' else f'{_muncher_repr(self)}',
+                  'workByDoi': lambda self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if self.__typename == 'Work' else f'{_muncher_repr(self)}',
+                  'publishers': lambda self: f'{self.publisherName} ({self.publisherId})' if self.__typename == 'Publisher' else f'{_muncher_repr(self)}'}
 
 # this stores the original function pointer of Munch.__repr__ so that we can
 # reinect it above in "muncher"

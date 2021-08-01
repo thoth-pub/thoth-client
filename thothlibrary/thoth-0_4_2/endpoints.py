@@ -59,6 +59,29 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "publications": {
+            "parameters": [
+                "limit",
+                "offset",
+                "filter",
+                "order",
+                "publishers",
+                "publicationType",
+            ],
+            "fields": [
+                "publicationId",
+                "publicationType",
+                "workId",
+                "isbn",
+                "publicationUrl",
+                "createdAt",
+                "updatedAt",
+                "prices { currencyCode unitPrice __typename}",
+                "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+                "__typename"
+            ]
+        },
+
         "workByDoi": {
             "parameters": [
                 "doi"
@@ -147,9 +170,39 @@ class ThothClient0_4_2(ThothClient):
         input_class.works = getattr(self, 'works')
         input_class.work_by_doi = getattr(self, 'work_by_doi')
         input_class.publishers = getattr(self, 'publishers')
+        input_class.publications = getattr(self, 'publications')
         input_class.publisher_count = getattr(self, 'publisher_count')
         input_class.work_count = getattr(self, 'work_count')
         input_class.QUERIES = getattr(self, 'QUERIES')
+
+    def publications(self, limit: int = 100, offset: int = 0,
+                     filter_str: str = "", order: str = None,
+                     publishers: str = None, publication_type: str = None,
+                     raw: bool = False):
+        """
+        Returns a publications list
+        @param limit: the maximum number of results to return (default: 100)
+        @param order: a GraphQL order query statement
+        @param offset: the offset from which to retrieve results (default: 0)
+        @param publishers: a list of publishers to limit by
+        @param filter_str: a filter string to search
+        @param publication_type: the work type (e.g. PAPERBACK)
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        if order is None:
+            order = {}
+        parameters = {
+            "offset": offset,
+            "limit": limit,
+        }
+
+        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'publicationType', publication_type)
+
+        return self._api_request("publications", parameters, return_raw=raw)
 
     def works(self, limit: int = 100, offset: int = 0, filter_str: str = "",
               order: str = None, publishers: str = None, work_type: str = None,
@@ -161,7 +214,7 @@ class ThothClient0_4_2(ThothClient):
         @param offset: the offset from which to retrieve results (default: 0)
         @param publishers: a list of publishers to limit by
         @param filter_str: a filter string to search
-        @param work_type: the work type (e.g. MONOGR++APH)
+        @param work_type: the work type (e.g. MONOGRAPH)
         @param work_status: the work status (e.g. ACTIVE)
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
