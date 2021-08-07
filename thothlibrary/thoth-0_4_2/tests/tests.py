@@ -169,7 +169,7 @@ class Thoth042Tests(unittest.TestCase):
         Sets up a mocker object by reading a json fixture
         @param endpoint: the file to read in the fixtures dir (no extension)
         @param m: the requests Mocker object
-        @return: the mock string
+        @return: the mock string, a Thoth client for this version
         """
         with open("fixtures/{0}.json".format(endpoint), "r") as input_file:
             mock_response = input_file.read()
