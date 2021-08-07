@@ -17,5 +17,6 @@ bash -c "python3 -m thothlibrary.cli contributions --version=0.4.2 --limit=2 --s
 bash -c "python3 -m thothlibrary.cli works --version=0.4.2 --limit=2 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/works.pickle"
 bash -c "python3 -m thothlibrary.cli publications --version=0.4.2 --limit=2 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/publications.pickle"
 bash -c "python3 -m thothlibrary.cli publishers --version=0.4.2 --limit=4 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/publishers.pickle"
+bash -c "python3 -m thothlibrary.cli publisher --version=0.4.2 --publisher_id=85fd969a-a16c-480b-b641-cb9adf979c3b --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/publisher.pickle"
 bash -c "python3 -m thothlibrary.cli work --version=0.4.2 --work_id=e0f748b2-984f-45cc-8b9e-13989c31dda4 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/work.pickle"
 bash -c "python3 -m thothlibrary.cli work --version=0.4.2 --doi=https://doi.org/10.21983/P3.0314.1.00 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/workByDoi.pickle"
