@@ -5,6 +5,7 @@ it under the terms of the Apache License v2.0.
 """
 
 import fire
+import pickle
 
 
 def _raw_parse(value):
@@ -43,7 +44,7 @@ class ThothAPI:
     @fire.decorators.SetParseFn(_raw_parse)
     def contributions(self, limit=100, order=None, offset=0, publishers=None,
                       filter_str=None, contribution_type=None, raw=False,
-                      version=None, endpoint=None):
+                      version=None, endpoint=None, serialize=False):
         """
         Retrieves works from a Thoth instance
         :param int limit: the maximum number of results to return (default: 100)
@@ -55,6 +56,7 @@ class ThothAPI:
         :param bool raw: whether to return a python object or the raw server result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
         """
         if endpoint:
             self.endpoint = endpoint
@@ -72,13 +74,15 @@ class ThothAPI:
 
         if not raw:
             print(*contribs, sep='\n')
+        elif serialize:
+            print(pickle.dumps(contribs))
         else:
             print(contribs)
 
     @fire.decorators.SetParseFn(_raw_parse)
     def works(self, limit=100, order=None, offset=0, publishers=None,
               filter_str=None, work_type=None, work_status=None, raw=False,
-              version=None, endpoint=None):
+              version=None, endpoint=None, serialize=False):
         """
         Retrieves works from a Thoth instance
         :param int limit: the maximum number of results to return (default: 100)
@@ -91,6 +95,7 @@ class ThothAPI:
         :param bool raw: whether to return a python object or the raw server result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
         """
         if endpoint:
             self.endpoint = endpoint
@@ -104,19 +109,23 @@ class ThothAPI:
                                      work_type=work_type,
                                      work_status=work_status,
                                      raw=raw)
-        if not raw:
+        if not raw and not pickle:
             print(*works, sep='\n')
-        else:
+        elif serialize:
+            print(pickle.dumps(works))
+        elif raw:
             print(works)
 
     @fire.decorators.SetParseFn(_raw_parse)
-    def work(self, doi, raw=False, version=None, endpoint=None):
+    def work(self, doi, raw=False, version=None, endpoint=None,
+             serialize=False):
         """
         Retrieves a work by DOI from a Thoth instance
         :param str doi: the doi to fetch
         :param bool raw: whether to return a python object or the raw server result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
         """
         if endpoint:
             self.endpoint = endpoint
@@ -124,16 +133,23 @@ class ThothAPI:
         if version:
             self.version = version
 
-        print(self._client().work_by_doi(doi=doi, raw=raw))
+        work = self._client().work_by_doi(doi=doi, raw=raw)
+
+        if not serialize:
+            print(work)
+        else:
+            print(pickle.dumps(work))
 
     @fire.decorators.SetParseFn(_raw_parse)
-    def publisher(self, publisher_id, raw=False, version=None, endpoint=None):
+    def publisher(self, publisher_id, raw=False, version=None, endpoint=None,
+                  serialize=False):
         """
         Retrieves a work by DOI from a Thoth instance
         :param str publisher_id: the publisher to fetch
         :param bool raw: whether to return a python object or the raw server result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
         """
         if endpoint:
             self.endpoint = endpoint
@@ -141,11 +157,17 @@ class ThothAPI:
         if version:
             self.version = version
 
-        print(self._client().publisher(publisher_id=publisher_id, raw=raw))
+        publisher = self._client().publisher(publisher_id=publisher_id, raw=raw)
+
+        if not serialize:
+            print(publisher)
+        else:
+            print(pickle.dumps(publisher))
 
     @fire.decorators.SetParseFn(_raw_parse)
     def publishers(self, limit=100, order=None, offset=0, publishers=None,
-                   filter_str=None, raw=False, version=None, endpoint=None):
+                   filter_str=None, raw=False, version=None, endpoint=None,
+                   serialize=False):
         """
         Retrieves publishers from a Thoth instance
         :param int limit: the maximum number of results to return (default: 100)
@@ -156,6 +178,7 @@ class ThothAPI:
         :param bool raw: whether to return a python object or the raw server result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
         """
 
         if endpoint:
@@ -170,8 +193,10 @@ class ThothAPI:
                                                filter_str=filter_str,
                                                raw=raw)
 
-        if not raw:
+        if not raw and not serialize:
             print(*publishers, sep='\n')
+        elif serialize:
+            print(pickle.dumps(publishers))
         else:
             print(publishers)
 
@@ -275,7 +300,7 @@ class ThothAPI:
     @fire.decorators.SetParseFn(_raw_parse)
     def publications(self, limit=100, order=None, offset=0, publishers=None,
                      filter_str=None, publication_type=None, raw=False,
-                     version=None, endpoint=None):
+                     version=None, endpoint=None, serialize=False):
         """
         Retrieves publications from a Thoth instance
         :param int limit: the maximum number of results to return (default: 100)
@@ -287,6 +312,7 @@ class ThothAPI:
         :param bool raw: whether to return a python object or the raw server result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
         """
         if endpoint:
             self.endpoint = endpoint
@@ -299,8 +325,10 @@ class ThothAPI:
                                            filter_str=filter_str,
                                            publication_type=publication_type,
                                            raw=raw)
-        if not raw:
+        if not raw and not serialize:
             print(*pubs, sep='\n')
+        elif serialize:
+            print(pickle.dumps(pubs))
         else:
             print(pubs)
 
