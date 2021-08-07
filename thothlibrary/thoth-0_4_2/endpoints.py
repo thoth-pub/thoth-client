@@ -295,7 +295,8 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'filter', filter_str)
         self._dictionary_append(parameters, 'order', order)
         self._dictionary_append(parameters, 'publishers', publishers)
-        self._dictionary_append(parameters, 'contributionType', contribution_type)
+        self._dictionary_append(parameters, 'contributionType',
+                                contribution_type)
 
         return self._api_request("contributions", parameters, return_raw=raw)
 
@@ -403,7 +404,8 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'contributionType',
                                 contribution_type)
 
-        return self._api_request("contributionCount", parameters, return_raw=raw)
+        return self._api_request("contributionCount", parameters,
+                                 return_raw=raw)
 
     def publication_count(self, filter_str: str = "", publishers: str = None,
                           publication_type: str = None, raw: bool = False):
@@ -414,4 +416,5 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'publicationType', publication_type)
 
-        return self._api_request("publicationCount", parameters, return_raw=raw)
+        return self._api_request("publicationCount", parameters,
+                                 return_raw=raw)
