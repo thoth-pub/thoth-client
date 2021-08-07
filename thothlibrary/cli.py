@@ -120,7 +120,7 @@ class ThothAPI:
 
     @fire.decorators.SetParseFn(_raw_parse)
     def work(self, doi=None, work_id=None, raw=False, version=None,
-             endpoint=None, serialize=False):
+             endpoint=None, serialize=False, cover_ascii=False):
         """
         Retrieves a work by DOI from a Thoth instance
         :param str doi: the doi to fetch
@@ -128,7 +128,8 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
-        :param work_id: a workId to retrieve
+        :param str work_id: a workId to retrieve
+        :param bool cover_ascii: whether to render an ASCII art cover
         """
         if endpoint:
             self.endpoint = endpoint
@@ -148,6 +149,12 @@ class ThothAPI:
             print(work)
         else:
             print(json.dumps(work))
+
+        if cover_ascii:
+            # just for lolz
+            import ascii_magic
+            output = ascii_magic.from_url(work.coverUrl, columns=85)
+            ascii_magic.to_terminal(output)
 
     @fire.decorators.SetParseFn(_raw_parse)
     def publisher(self, publisher_id, raw=False, version=None, endpoint=None,
