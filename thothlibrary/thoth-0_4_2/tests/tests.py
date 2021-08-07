@@ -43,6 +43,27 @@ class Thoth042Tests(unittest.TestCase):
             self.raw_tester(mock_response, thoth_client.works)
         return None
 
+    def test_publications(self):
+        """
+        Tests that good input to publications produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('publications', m)
+            self.pickle_tester('publications', thoth_client.publications)
+        return None
+
+    def test_publications_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('publications_bad', m)
+            self.pickle_tester('publications', thoth_client.publications,
+                               negative=True)
+        return None
+
     def test_publications_raw(self):
         """
         A test to ensure valid passthrough of raw json
