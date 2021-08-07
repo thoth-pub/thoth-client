@@ -23,6 +23,7 @@ python3 -m thothlibrary.cli works --limit=10 --order='{field: PUBLICATION_DATE, 
 python3 -m thothlibrary.cli publishers --limit=10 --order='{field: PUBLISHER_ID, direction: ASC}' --offset=0 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli publications --limit=10 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
 python3 -m thothlibrary.cli work --doi="https://doi.org/10.11647/OBP.0222"
+python3 -m thothlibrary.cli work --work_id="e0f748b2-984f-45cc-8b9e-13989c31dda4"
 python3 -m thothlibrary.cli publisher_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli work_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
 python3 -m thothlibrary.cli publication_count --publication_type="HARDBACK"
@@ -44,3 +45,19 @@ python3 ./thothrest/cli.py formats
 python3 ./thothrest/cli.py formats --return-json
 python3 ./cli.py work onix_3.0::project_muse e0f748b2-984f-45cc-8b9e-13989c31dda4
 ```
+
+## Test Suite
+Tests for GraphQL queries are versioned in the thoth-[ver] folder of thothlibrary.
+
+Tests confirm that current code produces good, known object outputs from stored GraphQL input.
+
+## Versioning
+The Thoth API is not yet considered stable and functionality changes between versions. The recommended way to add a new version compatibility is:
+
+1. Read the latest Thoth changelog to understand the changes.
+2. Copy the latest thoth-[ver] folder to the correctly named new version.
+3. Find and replace the strings specified in genfixtures.sh and genjson.sh. Update the version string in tests and endpoints.
+4. Run genjson.sh _only_ from inside the tests directory of the new version. This will fetch the latest server JSON responses and store it inside the fixtures directory for these tests. If there are any errors, then the command line CLI has encountered a breaking change that must first be fixed.
+5. Run the test suite for the latest version and examine breakages. Fix these by subclassing the previous versions of the API and overriding broken methods. In the cases of total breakage, a non-subclassed rewrite may be more appropriate. (May also apply at major version breaks.)
+6. When the test suite passes, or a new object format has been decided and tests rewritten, run genfixtures.sh to freeze the current test suite.
+
