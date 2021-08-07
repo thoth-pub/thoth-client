@@ -66,13 +66,8 @@ default_fields = {'works': lambda self: f'{_parse_authors(self)}{self.fullTitle}
                   'publisher': lambda self: f'{self.publisherName} ({self.publisherId})' if '__typename' in self and self.__typename == 'Publisher' else f'{_muncher_repr(self)}'}
 
 
-#default_fields = {'publications': lambda self: f'HERE {self.__typename}'}
-
-
-
-
 # this stores the original function pointer of Munch.__repr__ so that we can
-# reinect it above in "muncher"
+# reinect it above in "_muncher_repr"
 munch_local = Munch.__repr__
 
 
