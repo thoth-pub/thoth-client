@@ -153,7 +153,7 @@ class ThothAPI:
     def publisher(self, publisher_id, raw=False, version=None, endpoint=None,
                   serialize=False):
         """
-        Retrieves a work by DOI from a Thoth instance
+        Retrieves a publisher by ID from a Thoth instance
         :param str publisher_id: the publisher to fetch
         :param bool raw: whether to return a python object or the raw server result
         :param str version: a custom Thoth version
