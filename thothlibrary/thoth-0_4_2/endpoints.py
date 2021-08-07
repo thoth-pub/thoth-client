@@ -53,9 +53,9 @@ class ThothClient0_4_2(ThothClient):
                 "workId",
                 "coverUrl",
                 "coverCaption",
-                "publications { isbn publicationType }",
-                "contributions { fullName contributionType mainContribution contributionOrdinal }",
-                "imprint { publisher { publisherName publisherId } }",
+                "publications { isbn publicationType __typename }",
+                "contributions { fullName contributionType mainContribution contributionOrdinal __typename }",
+                "imprint { __typename publisher { publisherName publisherId __typename } }",
                 "__typename"
             ]
         },
@@ -118,9 +118,9 @@ class ThothClient0_4_2(ThothClient):
                 "toc",
                 "coverUrl",
                 "coverCaption",
-                "publications { isbn publicationType }",
-                "contributions { fullName contributionType mainContribution contributionOrdinal }",
-                "imprint { publisher { publisherName publisherId } }",
+                "publications { isbn publicationType __typename }",
+                "contributions { fullName contributionType mainContribution contributionOrdinal __typename }",
+                "imprint { __typename publisher { publisherName publisherId __typename } }",
                 "__typename"
             ]
         },
@@ -159,7 +159,7 @@ class ThothClient0_4_2(ThothClient):
                 "publishers",
             ],
             "fields": [
-                "imprints { imprintUrl imprintId imprintName}"
+                "imprints { imprintUrl imprintId imprintName __typename}"
                 "updatedAt",
                 "createdAt",
                 "publisherId",
@@ -175,7 +175,7 @@ class ThothClient0_4_2(ThothClient):
                 "publisherId",
             ],
             "fields": [
-                "imprints { imprintUrl imprintId imprintName}"
+                "imprints { imprintUrl imprintId imprintName __typename}"
                 "updatedAt",
                 "createdAt",
                 "publisherId",

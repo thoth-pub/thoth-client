@@ -1,4 +1,6 @@
+import json
 import unittest
+import pickle
 
 import requests_mock
 from thothlibrary import ThothClient
@@ -10,6 +12,26 @@ class Thoth042Tests(unittest.TestCase):
         super().__init__(*args, **kwargs)
         self.endpoint = "https://api.test042.thoth.pub"
         self.version = "0.4.2"
+
+    def test_works(self):
+        """
+        Tests that good input to works produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('works', m)
+            self.pickle_tester('works', thoth_client.works)
+        return None
+
+    def test_works_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('works_bad', m)
+            self.pickle_tester('works', thoth_client.works, negative=True)
+        return None
 
     def test_works_raw(self):
         """
@@ -61,6 +83,17 @@ class Thoth042Tests(unittest.TestCase):
         response = method_to_call(raw=True)
         self.assertEqual(mock_response, response,
                          'Raw response was not echoed back correctly.')
+
+    def pickle_tester(self, pickle_name, endpoint, negative=False):
+        with open("fixtures/{0}.pickle".format(pickle_name)
+                , "rb") as pickle_file:
+            loaded_response = json.load(pickle_file)
+            response = json.loads(json.dumps(endpoint()))
+
+            if not negative:
+                self.assertEqual(loaded_response, response)
+            else:
+                self.assertNotEqual(loaded_response, response)
 
     def setup_mocker(self, endpoint, m):
         """
