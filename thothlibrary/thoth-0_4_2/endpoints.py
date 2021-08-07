@@ -50,6 +50,7 @@ class ThothClient0_4_2(ThothClient):
                 "longAbstract",
                 "generalNote",
                 "toc",
+                "workId",
                 "coverUrl",
                 "coverCaption",
                 "publications { isbn publicationType }",
