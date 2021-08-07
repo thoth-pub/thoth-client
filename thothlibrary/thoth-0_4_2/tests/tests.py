@@ -44,6 +44,52 @@ class Thoth042Tests(unittest.TestCase):
             self.raw_tester(mock_response, thoth_client.works)
         return None
 
+    def test_work_by_doi(self):
+        """
+        Tests that good input to work_by_doi produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('workByDoi', m)
+            self.pickle_tester('workByDoi',
+                               lambda:
+                               thoth_client.work_by_doi(doi='https://doi.org/'
+                                                            '10.21983/P3.0314.1'
+                                                            '.00'))
+        return None
+
+    def test_work_by_doi_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('workByDoi_bad', m)
+            self.pickle_tester('work',
+                               lambda: thoth_client.work_by_doi(doi='https://'
+                                                                    'doi.org/10'
+                                                                    '.21983/P3'
+                                                                    '.0314.1.'
+                                                                    '00'),
+                               negative=True)
+        return None
+
+    def test_work_by_doi_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('workByDoi', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.work_by_doi(doi='https://doi.'
+                                                                 'org/10.21983'
+                                                                 '/P3.0314.1.'
+                                                                 '00',
+                                                             raw=True),
+                            lambda_mode=True)
+        return None
+
     def test_work_by_id(self):
         """
         Tests that good input to work_by_id produces saved good output
@@ -53,9 +99,9 @@ class Thoth042Tests(unittest.TestCase):
             mock_response, thoth_client = self.setup_mocker('work', m)
             self.pickle_tester('work',
                                lambda:
-                               thoth_client.work_by_id(workId='e0f748b2-984f-'
-                                                              '45cc-8b9e-'
-                                                              '13989c31dda4'))
+                               thoth_client.work_by_id(work_id='e0f748b2-984f-'
+                                                               '45cc-8b9e-'
+                                                               '13989c31dda4'))
         return None
 
     def test_work_by_id_bad_input(self):
@@ -66,14 +112,15 @@ class Thoth042Tests(unittest.TestCase):
         with requests_mock.Mocker() as m:
             mock_response, thoth_client = self.setup_mocker('work_bad', m)
             self.pickle_tester('work',
-                               lambda: thoth_client.work_by_id(workId='e0f748b2'
-                                                                      '-'
-                                                                      '984f-'
-                                                                      '45cc-'
-                                                                      '8b9e-'
-                                                                      '13989c31'
-                                                                      'dda4')
-                               , negative=True)
+                               lambda: thoth_client.work_by_id(
+                                   work_id='e0f748b2'
+                                           '-'
+                                           '984f-'
+                                           '45cc-'
+                                           '8b9e-'
+                                           '13989c31'
+                                           'dda4'),
+                               negative=True)
         return None
 
     def test_work_by_id_raw(self):
@@ -84,13 +131,13 @@ class Thoth042Tests(unittest.TestCase):
         with requests_mock.Mocker() as m:
             mock_response, thoth_client = self.setup_mocker('work', m)
             self.raw_tester(mock_response,
-                            lambda: thoth_client.work_by_id(workId='e0f748b2'
-                                                                   '-'
-                                                                   '984f-'
-                                                                   '45cc-'
-                                                                   '8b9e-'
-                                                                   '13989c31'
-                                                                   'dda4',
+                            lambda: thoth_client.work_by_id(work_id='e0f748b2'
+                                                                    '-'
+                                                                    '984f-'
+                                                                    '45cc-'
+                                                                    '8b9e-'
+                                                                    '13989c31'
+                                                                    'dda4',
                                                             raw=True),
                             lambda_mode=True)
         return None

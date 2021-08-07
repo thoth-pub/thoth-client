@@ -386,15 +386,15 @@ class ThothClient0_4_2(ThothClient):
 
         return self._api_request("workByDoi", parameters, return_raw=raw)
 
-    def work_by_id(self, workId: str, raw: bool = False):
+    def work_by_id(self, work_id: str, raw: bool = False):
         """
         Returns a work by ID
-        @param workId: the ID to fetch
+        @param work_id: the ID to fetch
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
         """
         parameters = {
-            'workId': '"' + workId + '"'
+            'workId': '"' + work_id + '"'
         }
 
         return self._api_request("work", parameters, return_raw=raw)
