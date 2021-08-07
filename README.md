@@ -5,8 +5,18 @@ Python client for Thoth's GraphQL and REST APIs
 ## Usage
 
 ### Install
+Install is either via pip or cloning the repository.
+
+From pip: 
 ```sh
 python3 -m pip install thothlibrary==0.5.0
+```
+
+Or from the repo:
+```sh
+git clone git@github.com:dqprogramming/thoth-client.git
+cd thoth-client
+pip3 install -r ./requirements.txt
 ```
 
 ### GraphQL Usage
