@@ -3,6 +3,7 @@
 This program is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
+import json
 
 import fire
 import pickle
@@ -75,7 +76,7 @@ class ThothAPI:
         if not raw and not serialize:
             print(*contribs, sep='\n')
         elif serialize:
-            print(pickle.dumps(contribs))
+            print(json.dumps(contribs))
         else:
             print(contribs)
 
@@ -109,10 +110,10 @@ class ThothAPI:
                                      work_type=work_type,
                                      work_status=work_status,
                                      raw=raw)
-        if not raw and not pickle:
+        if not raw and not serialize:
             print(*works, sep='\n')
         elif serialize:
-            print(pickle.dumps(works))
+            print(json.dumps(works))
         elif raw:
             print(works)
 
@@ -138,7 +139,7 @@ class ThothAPI:
         if not serialize:
             print(work)
         else:
-            print(pickle.dumps(work))
+            print(json.dumps(work))
 
     @fire.decorators.SetParseFn(_raw_parse)
     def publisher(self, publisher_id, raw=False, version=None, endpoint=None,
@@ -162,7 +163,7 @@ class ThothAPI:
         if not serialize:
             print(publisher)
         else:
-            print(pickle.dumps(publisher))
+            print(json.dumps(publisher))
 
     @fire.decorators.SetParseFn(_raw_parse)
     def publishers(self, limit=100, order=None, offset=0, publishers=None,
@@ -196,7 +197,7 @@ class ThothAPI:
         if not raw and not serialize:
             print(*publishers, sep='\n')
         elif serialize:
-            print(pickle.dumps(publishers))
+            print(json.dumps(publishers))
         else:
             print(publishers)
 
@@ -328,7 +329,7 @@ class ThothAPI:
         if not raw and not serialize:
             print(*pubs, sep='\n')
         elif serialize:
-            print(pickle.dumps(pubs))
+            print(json.dumps(pubs))
         else:
             print(pubs)
 
