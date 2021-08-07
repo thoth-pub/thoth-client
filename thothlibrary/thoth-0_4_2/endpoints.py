@@ -83,6 +83,48 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "work": {
+            "parameters": [
+                "workId"
+            ],
+            "fields": [
+                "workType",
+                "workStatus",
+                "fullTitle",
+                "title",
+                "subtitle",
+                "reference",
+                "edition",
+                "imprintId",
+                "doi",
+                "publicationDate",
+                "place",
+                "width",
+                "height",
+                "pageCount",
+                "pageBreakdown",
+                "imageCount",
+                "tableCount",
+                "audioCount",
+                "videoCount",
+                "license",
+                "copyrightHolder",
+                "landingPage",
+                "lccn",
+                "oclc",
+                "shortAbstract",
+                "longAbstract",
+                "generalNote",
+                "toc",
+                "coverUrl",
+                "coverCaption",
+                "publications { isbn publicationType __typename }",
+                "contributions { fullName contributionType mainContribution contributionOrdinal __typename }",
+                "imprint { __typename publisher { publisherName publisherId __typename } }",
+                "__typename"
+            ]
+        },
+
         "workByDoi": {
             "parameters": [
                 "doi"
@@ -231,6 +273,7 @@ class ThothClient0_4_2(ThothClient):
         # this is the magic dynamic generation part that wires up the methods
         input_class.works = getattr(self, 'works')
         input_class.work_by_doi = getattr(self, 'work_by_doi')
+        input_class.work_by_id = getattr(self, 'work_by_id')
         input_class.publishers = getattr(self, 'publishers')
         input_class.publisher = getattr(self, 'publisher')
         input_class.publications = getattr(self, 'publications')
@@ -342,6 +385,19 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("workByDoi", parameters, return_raw=raw)
+
+    def work_by_id(self, workId: str, raw: bool = False):
+        """
+        Returns a work by ID
+        @param workId: the ID to fetch
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'workId': '"' + workId + '"'
+        }
+
+        return self._api_request("work", parameters, return_raw=raw)
 
     def publisher(self, publisher_id: str, raw: bool = False):
         """

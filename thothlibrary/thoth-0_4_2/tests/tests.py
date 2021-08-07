@@ -42,6 +42,57 @@ class Thoth042Tests(unittest.TestCase):
             self.raw_tester(mock_response, thoth_client.works)
         return None
 
+    def test_work_by_id(self):
+        """
+        Tests that good input to work_by_id produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('work', m)
+            self.pickle_tester('work',
+                               lambda:
+                               thoth_client.work_by_id(workId='e0f748b2-984f-'
+                                                              '45cc-8b9e-'
+                                                              '13989c31dda4'))
+        return None
+
+    def test_work_by_id_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('work_bad', m)
+            self.pickle_tester('work',
+                               lambda: thoth_client.work_by_id(workId='e0f748b2'
+                                                                      '-'
+                                                                      '984f-'
+                                                                      '45cc-'
+                                                                      '8b9e-'
+                                                                      '13989c31'
+                                                                      'dda4')
+                               , negative=True)
+        return None
+
+    def test_work_by_id_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('work', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.work_by_id(workId='e0f748b2'
+                                                                   '-'
+                                                                   '984f-'
+                                                                   '45cc-'
+                                                                   '8b9e-'
+                                                                   '13989c31'
+                                                                   'dda4',
+                                                            raw=True),
+                            lambda_mode=True)
+        return None
+
     def test_publications(self):
         """
         Tests that good input to publications produces saved good output
@@ -135,14 +186,19 @@ class Thoth042Tests(unittest.TestCase):
             self.raw_tester(mock_response, thoth_client.contributions)
         return None
 
-    def raw_tester(self, mock_response, method_to_call):
+    def raw_tester(self, mock_response, method_to_call, lambda_mode=False):
         """
         An echo test that ensures the client returns accurate raw responses
+        @param lambda_mode: whether the passed function is a complete lambda
         @param mock_response: the mock response
         @param method_to_call: the method to call
         @return: None or an assertion
         """
-        response = method_to_call(raw=True)
+        if not lambda_mode:
+            response = method_to_call(raw=True)
+        else:
+            response = method_to_call()
+
         self.assertEqual(mock_response, response,
                          'Raw response was not echoed back correctly.')
 

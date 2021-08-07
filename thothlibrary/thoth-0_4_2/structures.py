@@ -36,7 +36,8 @@ def _parse_authors(obj):
         if contributor.contributionType == 'AUTHOR':
             author_dict[contributor.contributionOrdinal] = contributor.fullName
         if contributor.contributionType == "EDITOR":
-            author_dict[contributor.contributionOrdinal] = contributor.fullName + " (ed.)"
+            author_dict[contributor.contributionOrdinal] = \
+                contributor.fullName + " (ed.)"
 
     od_authors = collections.OrderedDict(sorted(author_dict.items()))
 
@@ -61,13 +62,14 @@ default_fields = {'works': lambda self: f'{_parse_authors(self)}{self.fullTitle}
                   'publications': lambda self: f'{_parse_authors(self.work)}{self.work.fullTitle} ({self.work.place}: {self.work.imprint.publisher.publisherName}, {datetime.strptime(self.work.publicationDate, "%Y-%m-%d").year if self.work.publicationDate else "n.d."}) '
                                                f'[{self.publicationType}] {__price_parser(self.prices)} [{self.publicationId}]' if '__typename' in self and self.__typename == 'Publication' else f'{_muncher_repr(self)}',
                   'workByDoi': lambda self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if '__typename' in self and self.__typename == 'Work' else f'{_muncher_repr(self)}',
+                  'work': lambda self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if '__typename' in self and self.__typename == 'Work' else f'{_muncher_repr(self)}',
                   'publishers': lambda self: f'{self.publisherName} ({self.publisherId})' if '__typename' in self and self.__typename == 'Publisher' else f'{_muncher_repr(self)}',
                   'contributions': lambda self: f'{self.fullName} ({self.contributionType}) [{self.contributionId}]' if '__typename' in self and self.__typename == 'Contribution' else f'{_muncher_repr(self)}',
                   'publisher': lambda self: f'{self.publisherName} ({self.publisherId})' if '__typename' in self and self.__typename == 'Publisher' else f'{_muncher_repr(self)}'}
 
 
 # this stores the original function pointer of Munch.__repr__ so that we can
-# reinect it above in "_muncher_repr"
+# re-inject it above in "_muncher_repr"
 munch_local = Munch.__repr__
 
 

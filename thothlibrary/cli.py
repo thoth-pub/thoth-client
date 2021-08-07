@@ -110,6 +110,7 @@ class ThothAPI:
                                      work_type=work_type,
                                      work_status=work_status,
                                      raw=raw)
+
         if not raw and not serialize:
             print(*works, sep='\n')
         elif serialize:
@@ -118,8 +119,8 @@ class ThothAPI:
             print(works)
 
     @fire.decorators.SetParseFn(_raw_parse)
-    def work(self, doi, raw=False, version=None, endpoint=None,
-             serialize=False):
+    def work(self, doi=None, workId=None, raw=False, version=None,
+             endpoint=None, serialize=False):
         """
         Retrieves a work by DOI from a Thoth instance
         :param str doi: the doi to fetch
@@ -127,6 +128,7 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
+        :param workId: a workId to retrieve
         """
         if endpoint:
             self.endpoint = endpoint
@@ -134,7 +136,13 @@ class ThothAPI:
         if version:
             self.version = version
 
-        work = self._client().work_by_doi(doi=doi, raw=raw)
+        if not doi and not workId:
+            print("You must specify either workId or doi.")
+            return
+        elif doi:
+            work = self._client().work_by_doi(doi=doi, raw=raw)
+        else:
+            work = self._client().work_by_id(workId=workId, raw=raw)
 
         if not serialize:
             print(work)
