@@ -1,6 +1,5 @@
 import json
 import unittest
-import pickle
 
 import requests_mock
 from thothlibrary import ThothClient
@@ -59,7 +58,8 @@ class Thoth042Tests(unittest.TestCase):
         @return: None if successful
         """
         with requests_mock.Mocker() as m:
-            mock_response, thoth_client = self.setup_mocker('publications_bad', m)
+            mock_response, thoth_client = self.setup_mocker('publications_bad',
+                                                            m)
             self.pickle_tester('publications', thoth_client.publications,
                                negative=True)
         return None
@@ -147,8 +147,8 @@ class Thoth042Tests(unittest.TestCase):
                          'Raw response was not echoed back correctly.')
 
     def pickle_tester(self, pickle_name, endpoint, negative=False):
-        with open("fixtures/{0}.pickle".format(pickle_name)
-                , "rb") as pickle_file:
+        with open("fixtures/{0}.pickle".format(pickle_name),
+                  "rb") as pickle_file:
             loaded_response = json.load(pickle_file)
             response = json.loads(json.dumps(endpoint()))
 
