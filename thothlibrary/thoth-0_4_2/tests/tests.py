@@ -8,6 +8,7 @@ class Thoth042Tests(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # specify an invalid endpoint so that we don't accidentally
         self.endpoint = "https://api.test042.thoth.pub"
         self.version = "0.4.2"
 
@@ -18,11 +19,7 @@ class Thoth042Tests(unittest.TestCase):
         """
         with requests_mock.Mocker() as m:
             mock_response, thoth_client = self.setup_mocker('works', m)
-
-            response = thoth_client.works(raw=True)
-
-            self.assertEqual(mock_response, response)
-
+            self.raw_tester(mock_response, thoth_client.works)
         return None
 
     def test_publications_raw(self):
@@ -32,11 +29,7 @@ class Thoth042Tests(unittest.TestCase):
         """
         with requests_mock.Mocker() as m:
             mock_response, thoth_client = self.setup_mocker('publications', m)
-
-            response = thoth_client.publications(raw=True)
-
-            self.assertEqual(mock_response, response)
-
+            self.raw_tester(mock_response, thoth_client.publications)
         return None
 
     def test_publishers_raw(self):
@@ -46,11 +39,7 @@ class Thoth042Tests(unittest.TestCase):
         """
         with requests_mock.Mocker() as m:
             mock_response, thoth_client = self.setup_mocker('publishers', m)
-
-            response = thoth_client.publishers(raw=True)
-
-            self.assertEqual(mock_response, response)
-
+            self.raw_tester(mock_response, thoth_client.publishers)
         return None
 
     def test_contributions_raw(self):
@@ -60,12 +49,19 @@ class Thoth042Tests(unittest.TestCase):
         """
         with requests_mock.Mocker() as m:
             mock_response, thoth_client = self.setup_mocker('contributions', m)
-
-            response = thoth_client.contributions(raw=True)
-
-            self.assertEqual(mock_response, response)
-
+            self.raw_tester(mock_response, thoth_client.contributions)
         return None
+
+    def raw_tester(self, mock_response, method_to_call):
+        """
+        An echo test that ensures the client returns accurate raw responses
+        @param mock_response: the mock response
+        @param method_to_call: the method to call
+        @return: None or an assertion error
+        """
+        response = method_to_call(raw=True)
+        self.assertEqual(mock_response, response,
+                         'Raw response was not echoed back correctly.')
 
     def setup_mocker(self, endpoint, m):
         """
