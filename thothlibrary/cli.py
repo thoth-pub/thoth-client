@@ -72,7 +72,7 @@ class ThothAPI:
                                                 contribution_type,
                                                 raw=raw)
 
-        if not raw:
+        if not raw and not serialize:
             print(*contribs, sep='\n')
         elif serialize:
             print(pickle.dumps(contribs))
