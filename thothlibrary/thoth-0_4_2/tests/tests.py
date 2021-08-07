@@ -9,6 +9,8 @@ class Thoth042Tests(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # we set this fake endpoint to ensure that the tests are definitely
+        # running against the local objects, rather than the remote server
         self.endpoint = "https://api.test042.thoth.pub"
         self.version = "0.4.2"
 
