@@ -140,13 +140,20 @@ class Thoth042Tests(unittest.TestCase):
         An echo test that ensures the client returns accurate raw responses
         @param mock_response: the mock response
         @param method_to_call: the method to call
-        @return: None or an assertion error
+        @return: None or an assertion
         """
         response = method_to_call(raw=True)
         self.assertEqual(mock_response, response,
                          'Raw response was not echoed back correctly.')
 
     def pickle_tester(self, pickle_name, endpoint, negative=False):
+        """
+        A test of a function's output against a stored pickle (JSON)
+        @param pickle_name: the .pickle file in the fixtures directory
+        @param endpoint: the method to call
+        @param negative: whether to assert equal (True) or unequal (False)
+        @return: None or an assertion
+        """
         with open("fixtures/{0}.pickle".format(pickle_name),
                   "rb") as pickle_file:
             loaded_response = json.load(pickle_file)
