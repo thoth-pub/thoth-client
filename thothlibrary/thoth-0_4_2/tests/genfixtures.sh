@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# this script will generate the stored fixtures for the test suite
+# it should only be run when the program is generating the correct output
+# running this when the code produces bad output will yield the test suite
+# inoperative/inaccurate.
+
 cd ../../../
 
 bash -c "python3 -m thothlibrary.cli works --version=0.4.2 --limit=2 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/works.json"
