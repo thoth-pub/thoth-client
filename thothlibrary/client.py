@@ -21,6 +21,7 @@ class ThothClient():
 
         thoth_endpoint: Must be the full URL (eg. 'http://localhost').
         """
+        self.thoth_endpoint = thoth_endpoint
         self.auth_endpoint = "{}/account/login".format(thoth_endpoint)
         self.graphql_endpoint = "{}/graphql".format(thoth_endpoint)
         self.client = GraphQLClient(self.graphql_endpoint)
@@ -32,7 +33,9 @@ class ThothClient():
         # supported in any API version
         if issubclass(ThothClient, type(self)):
             endpoints = importlib.import_module('thothlibrary.thoth-{0}.endpoints'.format(self.version))
-            getattr(endpoints, 'ThothClient{0}'.format(self.version))(self)
+            getattr(endpoints, 'ThothClient{0}'.format(self.version))(self,
+                                                                      version=version,
+                                                                      thoth_endpoint=thoth_endpoint)
 
     def login(self, email, password):
         """Obtain an authentication token"""

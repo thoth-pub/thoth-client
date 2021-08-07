@@ -218,12 +218,14 @@ class ThothClient0_4_2(ThothClient):
         }
     }
 
-    def __init__(self, input_class):
+    def __init__(self, input_class, thoth_endpoint="https://api.thoth.pub",
+                 version="0.4.2"):
         """
         Creates an instance of Thoth 0.4.2 endpoints
         @param input_class: the ThothClient instance to be versioned
         """
-        super().__init__()
+        super().__init__(thoth_endpoint=thoth_endpoint,
+                         version=version)
 
         # this is the magic dynamic generation part that wires up the methods
         input_class.works = getattr(self, 'works')
