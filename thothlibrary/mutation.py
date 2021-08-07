@@ -10,7 +10,7 @@ it under the terms of the Apache License v2.0.
 
 import json
 import urllib
-from errors import ThothError
+from .errors import ThothError
 
 
 class ThothMutation():

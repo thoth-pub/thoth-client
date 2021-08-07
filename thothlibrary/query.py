@@ -11,7 +11,7 @@ it under the terms of the Apache License v2.0.
 import json
 import urllib
 
-from errors import ThothError
+from .errors import ThothError
 
 
 class ThothQuery:
@@ -24,7 +24,7 @@ class ThothQuery:
        and sanitised.
     """
 
-    def __init__(self, query_name, parameters, queries):
+    def __init__(self, query_name, parameters, queries, raw=False):
         """Returns new ThothQuery object
 
         mutation_name: Must match one of the keys found in MUTATIONS.
@@ -37,6 +37,7 @@ class ThothQuery:
         self.param_str = self.prepare_parameters()
         self.fields_str = self.prepare_fields()
         self.request = self.prepare_request()
+        self.raw = raw
 
     def prepare_request(self):
         """Format the query request string"""
@@ -61,6 +62,8 @@ class ThothQuery:
             result = client.execute(self.request)
             if "errors" in result:
                 raise AssertionError
+            elif self.raw:
+                return result
             return json.loads(result)["data"][self.query_name]
         except (KeyError, TypeError, ValueError, AssertionError,
                 json.decoder.JSONDecodeError, urllib.error.HTTPError):

@@ -3,7 +3,7 @@
 This program is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
-from client import ThothClient
+from thothlibrary.client import ThothClient
 
 
 class ThothClient0_4_2(ThothClient):

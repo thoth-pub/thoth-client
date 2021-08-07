@@ -7,10 +7,10 @@ it under the terms of the Apache License v2.0.
 """
 import importlib
 
-from graphqlclient import GraphQLClient
-from auth import ThothAuthenticator
-from mutation import ThothMutation
-from query import ThothQuery
+from .graphql import GraphQLClientRequests as GraphQLClient
+from .auth import ThothAuthenticator
+from .mutation import ThothMutation
+from .query import ThothQuery
 
 
 class ThothClient():
@@ -31,8 +31,7 @@ class ThothClient():
         # the constructor function there dynamically adds the methods that are
         # supported in any API version
         if issubclass(ThothClient, type(self)):
-            endpoints = importlib.import_module('thoth-{0}.end'
-                                                'points'.format(self.version))
+            endpoints = importlib.import_module('thothlibrary.thoth-{0}.endpoints'.format(self.version))
             getattr(endpoints, 'ThothClient{0}'.format(self.version))(self)
 
     def login(self, email, password):
@@ -46,9 +45,9 @@ class ThothClient():
         mutation = ThothMutation(mutation_name, data)
         return mutation.run(self.client)
 
-    def query(self, query_name, parameters):
+    def query(self, query_name, parameters, raw=False):
         """Instantiate a thoth query and execute"""
-        query = ThothQuery(query_name, parameters, self.QUERIES)
+        query = ThothQuery(query_name, parameters, self.QUERIES, raw=raw)
         return query.run(self.client)
 
     def create_publisher(self, publisher):
@@ -104,7 +103,7 @@ class ThothClient():
         @param parameters: the parameters to pass to GraphQL
         @return: an object or JSON of the request
         """
-        response = self.query(endpoint_name, parameters)
+        response = self.query(endpoint_name, parameters, raw=return_raw)
 
         if return_raw:
             return response
@@ -119,7 +118,7 @@ class ThothClient():
         @return: an object form of the output
         """
         structures = \
-            importlib.import_module('thoth-{0}.structures'.format(self.version))
+            importlib.import_module('thothlibrary.thoth-{0}.structures'.format(self.version))
         builder = structures.StructureBuilder(endpoint_name, data)
         return builder.create_structure()
 

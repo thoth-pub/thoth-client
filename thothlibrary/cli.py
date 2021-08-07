@@ -37,7 +37,7 @@ class ThothAPI:
         Returns a ThothClient object
         :return: a ThothClient
         """
-        from client import ThothClient
+        from .client import ThothClient
         return ThothClient(version=self.version, thoth_endpoint=self.endpoint)
 
     @fire.decorators.SetParseFn(_raw_parse)
@@ -62,12 +62,18 @@ class ThothAPI:
         if version:
             self.version = version
 
-        print(*self._client().contributions(limit=limit, order=order,
-                                            offset=offset,
-                                            publishers=publishers,
-                                            filter_str=filter_str,
-                                            contribution_type=contribution_type,
-                                            raw=raw), sep='\n')
+        contribs = self._client().contributions(limit=limit, order=order,
+                                                offset=offset,
+                                                publishers=publishers,
+                                                filter_str=filter_str,
+                                                contribution_type=
+                                                contribution_type,
+                                                raw=raw)
+
+        if not raw:
+            print(*contribs, sep='\n')
+        else:
+            print(contribs)
 
     @fire.decorators.SetParseFn(_raw_parse)
     def works(self, limit=100, order=None, offset=0, publishers=None,
@@ -92,12 +98,16 @@ class ThothAPI:
         if version:
             self.version = version
 
-        print(*self._client().works(limit=limit, order=order, offset=offset,
-                                    publishers=publishers,
-                                    filter_str=filter_str,
-                                    work_type=work_type,
-                                    work_status=work_status,
-                                    raw=raw), sep='\n')
+        works = self._client().works(limit=limit, order=order, offset=offset,
+                                     publishers=publishers,
+                                     filter_str=filter_str,
+                                     work_type=work_type,
+                                     work_status=work_status,
+                                     raw=raw)
+        if not raw:
+            print(*works, sep='\n')
+        else:
+            print(works)
 
     @fire.decorators.SetParseFn(_raw_parse)
     def work(self, doi, raw=False, version=None, endpoint=None):
@@ -154,10 +164,16 @@ class ThothAPI:
         if version:
             self.version = version
 
-        print(*self._client().publishers(limit=limit, order=order,
-                                         offset=offset, publishers=publishers,
-                                         filter_str=filter_str,
-                                         raw=raw), sep='\n')
+        publishers = self._client().publishers(limit=limit, order=order,
+                                               offset=offset,
+                                               publishers=publishers,
+                                               filter_str=filter_str,
+                                               raw=raw)
+
+        if not raw:
+            print(*publishers, sep='\n')
+        else:
+            print(publishers)
 
     @fire.decorators.SetParseFn(_raw_parse)
     def publisher_count(self, publishers=None, filter_str=None, raw=False,
@@ -278,11 +294,15 @@ class ThothAPI:
         if version:
             self.version = version
 
-        print(*self._client().publications(limit=limit, order=order,
+        pubs = self._client().publications(limit=limit, order=order,
                                            offset=offset, publishers=publishers,
                                            filter_str=filter_str,
                                            publication_type=publication_type,
-                                           raw=raw), sep='\n')
+                                           raw=raw)
+        if not raw:
+            print(*pubs, sep='\n')
+        else:
+            print(pubs)
 
 
 if __name__ == '__main__':

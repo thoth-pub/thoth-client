@@ -1,4 +1,4 @@
-graphqlclient==0.2.4
 requests==2.24.0
 fire
 munch
+requests_mock
