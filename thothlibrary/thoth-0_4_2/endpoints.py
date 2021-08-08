@@ -543,6 +543,12 @@ class ThothClient0_4_2(ThothClient):
             ],
         },
 
+        "priceCount": {
+            "parameters": [
+                "currencyCode",
+            ],
+        },
+
         "seriesCount": {
             "parameters": [
                 "filter",
@@ -569,7 +575,8 @@ class ThothClient0_4_2(ThothClient):
                           'contributor', 'contributor_count', 'serieses',
                           'series', 'series_count', 'issues',
                           'issue', 'issue_count', 'languages', 'language',
-                          'language_count', 'prices', 'price', 'QUERIES']
+                          'language_count', 'prices', 'price', 'price_count',
+                          'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -967,6 +974,14 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("publisherCount", parameters, return_raw=raw)
+
+    def price_count(self, currency_code: str = None, raw: bool = False):
+        """Construct and trigger a query to count publishers"""
+        parameters = {}
+
+        self._dictionary_append(parameters, 'currencyCode', currency_code)
+
+        return self._api_request("priceCount", parameters, return_raw=raw)
 
     def imprint_count(self, filter: str = "", publishers: str = None,
                       raw: bool = False):
