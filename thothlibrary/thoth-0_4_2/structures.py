@@ -63,7 +63,10 @@ def __price_parser(prices):
 default_fields = {'works': lambda
     self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."}) [{self.workId}]' if '__typename' in self and self.__typename == 'Work' else f'{_muncher_repr(self)}',
                   'prices': lambda
-                      self: f'{_parse_authors(self.publication.work)}{self.publication.work.fullTitle} ({self.publication.work.place}: {self.publication.work.imprint.publisher.publisherName}, {datetime.strptime(self.publication.work.publicationDate, "%Y-%m-%d").year if self.publication.work.publicationDate else "n.d."}) '
+                      self: f'{self.publication.work.fullTitle} ({self.publication.work.place}: {self.publication.work.imprint.publisher.publisherName}, {datetime.strptime(self.publication.work.publicationDate, "%Y-%m-%d").year if self.publication.work.publicationDate else "n.d."}) '
+                            f'costs {__price_parser(self)} [{self.priceId}]' if '__typename' in self and self.__typename == 'Price' else f'{_muncher_repr(self)}',
+                  'price': lambda
+                      self: f'{self.publication.work.fullTitle} ({self.publication.work.place}: {self.publication.work.imprint.publisher.publisherName}, {datetime.strptime(self.publication.work.publicationDate, "%Y-%m-%d").year if self.publication.work.publicationDate else "n.d."}) '
                             f'costs {__price_parser(self)} [{self.priceId}]' if '__typename' in self and self.__typename == 'Price' else f'{_muncher_repr(self)}',
                   'publications': lambda
                       self: f'{_parse_authors(self.work)}{self.work.fullTitle} ({self.work.place}: {self.work.imprint.publisher.publisherName}, {datetime.strptime(self.work.publicationDate, "%Y-%m-%d").year if self.work.publicationDate else "n.d."}) '

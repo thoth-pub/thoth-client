@@ -555,6 +555,49 @@ class Thoth042Tests(unittest.TestCase):
                             lambda_mode=True)
         return None
 
+    def test_price(self):
+        """
+        Tests that good input to price produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('price', m)
+            self.pickle_tester('price',
+                               lambda:
+                               thoth_client.price(
+                                   price_id='818567dd-7d3a-4963-8704-'
+                                            '3381b5432877'))
+        return None
+
+    def test_price_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('price_bad',
+                                                            m)
+            self.pickle_tester('price',
+                               lambda: thoth_client.price(
+                                   price_id='818567dd-7d3a-4963-8704-'
+                                            '3381b5432877'),
+                               negative=True)
+        return None
+
+    def test_price_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('price', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.price(
+                                price_id='818567dd-7d3a-4963-8704-3381b5432877',
+                                raw=True),
+                            lambda_mode=True)
+        return None
+
     def test_series(self):
         """
         Tests that good input to series produces saved good output

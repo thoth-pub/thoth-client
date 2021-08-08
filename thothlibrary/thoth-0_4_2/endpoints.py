@@ -81,6 +81,22 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "price": {
+            "parameters": [
+              "priceId",
+            ],
+            "fields": [
+                "currencyCode",
+                "publicationId",
+                "priceId",
+                "unitPrice",
+                "publication { work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+                "createdAt",
+                "updatedAt",
+                "__typename"
+            ]
+        },
+
         "publications": {
             "parameters": [
                 "limit",
@@ -553,7 +569,7 @@ class ThothClient0_4_2(ThothClient):
                           'contributor', 'contributor_count', 'serieses',
                           'series', 'series_count', 'issues',
                           'issue', 'issue_count', 'languages', 'language',
-                          'language_count', 'prices', 'QUERIES']
+                          'language_count', 'prices', 'price', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -596,6 +612,19 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("series", parameters, return_raw=raw)
+
+    def price(self, price_id: str, raw: bool = False):
+        """
+        Returns a price by ID
+        @param price_id: the ID to fetch
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'priceId': '"' + price_id + '"'
+        }
+
+        return self._api_request("price", parameters, return_raw=raw)
 
     def publication(self, publication_id: str, raw: bool = False):
         """

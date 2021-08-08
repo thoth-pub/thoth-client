@@ -365,6 +365,30 @@ class ThothAPI:
             print(json.dumps(imprint))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def price(self, price_id, raw=False, version=None, endpoint=None,
+              serialize=False):
+        """
+        Retrieves a price by ID from a Thoth instance
+        :param str price_id: the price to fetch
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        price = self._client().price(price_id=price_id, raw=raw)
+
+        if not serialize:
+            print(price)
+        else:
+            print(json.dumps(price))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def issue(self, issue_id, raw=False, version=None, endpoint=None,
               serialize=False):
         """

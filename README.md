@@ -44,6 +44,7 @@ python3 -m thothlibrary.cli issue_count
 python3 -m thothlibrary.cli language --language_id=c19e68dd-c5a3-48f1-bd56-089ee732604c
 python3 -m thothlibrary.cli languages --limit=10 --language_code=CHI
 python3 -m thothlibrary.cli language_count --language_code=CHI
+python3 -m thothlibrary.cli price --price_id=818567dd-7d3a-4963-8704-3381b5432877
 python3 -m thothlibrary.cli prices --limit=10 --currency_code=GBP
 python3 -m thothlibrary.cli publication --publication_id=34712b75-dcdd-408b-8d0c-cf29a35be2e5
 python3 -m thothlibrary.cli publications --limit=10 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
