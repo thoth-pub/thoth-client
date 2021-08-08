@@ -495,6 +495,48 @@ class Thoth042Tests(unittest.TestCase):
                             lambda_mode=True)
         return None
 
+    def test_issue(self):
+        """
+        Tests that good input to issue produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('issue', m)
+            self.pickle_tester('issue',
+                               lambda:
+                               thoth_client.issue(
+                                   issue_id='6bd31b4c-35a9-4177-8074-'
+                                            'dab4896a4a3d'))
+        return None
+
+    def test_issue_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('issue_bad', m)
+            self.pickle_tester('issue',
+                               lambda: thoth_client.issue(
+                                   issue_id='6bd31b4c-35a9-4177-8074-'
+                                            'dab4896a4a3d'),
+                               negative=True)
+        return None
+
+    def issue_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('contributioissue', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.issue(
+                                issue_id='6bd31b4c-35a9-4177-8074-dab4896a4a3d',
+                                raw=True),
+                            lambda_mode=True)
+        return None
+
     def test_contribution(self):
         """
         Tests that good input to contribution produces saved good output

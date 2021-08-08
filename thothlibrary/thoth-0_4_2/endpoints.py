@@ -324,6 +324,22 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "issue": {
+            "parameters": [
+                "issueId",
+            ],
+            "fields": [
+                "issueId",
+                "seriesId",
+                "issueOrdinal",
+                "updatedAt",
+                "createdAt",
+                "series { seriesId seriesType seriesName imprintId imprint { __typename publisher { publisherName publisherId __typename } }}",
+                "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }"
+                "__typename"
+            ]
+        },
+
         "issues": {
             "parameters": [
                 "limit",
@@ -467,7 +483,8 @@ class ThothClient0_4_2(ThothClient):
                           'publication_count', 'publication', 'imprints',
                           'imprint', 'imprint_count', 'contributors',
                           'contributor', 'contributor_count', 'serieses',
-                          'series', 'series_count', 'issues', 'QUERIES']
+                          'series', 'series_count', 'issues',
+                          'issue', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -694,6 +711,19 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("imprint", parameters, return_raw=raw)
+
+    def issue(self, issue_id: str, raw: bool = False):
+        """
+        Returns an issue by ID
+        @param issue_id: the imprint
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'issueId': '"' + issue_id + '"'
+        }
+
+        return self._api_request("issue", parameters, return_raw=raw)
 
     def publishers(self, limit: int = 100, offset: int = 0, order: str = None,
                    filter: str = "", publishers: str = None,

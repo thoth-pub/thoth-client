@@ -89,7 +89,9 @@ default_fields = {'works': lambda
                   'series': lambda
                       self: f'{self.seriesName} ({self.imprint.publisher.publisherName}) [{self.seriesId}]' if '__typename' in self and self.__typename == 'Series' else f'{_muncher_repr(self)}',
                   'issues': lambda
-                      self: f'{self.work.fullTitle} in {self.series.seriesName} ({self.series.imprint.publisher.publisherName}) [{self.seriesId}]' if '__typename' in self and self.__typename == 'Issue' else f'{_muncher_repr(self)}',
+                      self: f'{self.work.fullTitle} in {self.series.seriesName} ({self.series.imprint.publisher.publisherName}) [{self.issueId}]' if '__typename' in self and self.__typename == 'Issue' else f'{_muncher_repr(self)}',
+                  'issue': lambda
+                      self: f'{self.work.fullTitle} in {self.series.seriesName} ({self.series.imprint.publisher.publisherName}) [{self.issueId}]' if '__typename' in self and self.__typename == 'Issue' else f'{_muncher_repr(self)}',
                   'publisher': lambda
                       self: f'{self.publisherName} ({self.publisherId})' if '__typename' in self and self.__typename == 'Publisher' else f'{_muncher_repr(self)}'}
 
