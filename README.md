@@ -29,6 +29,7 @@ print(thoth.works())
 
 ### CLI GraphQL Usage
 ```sh
+python3 -m thothlibrary.cli imprints --limit=25 --offset=0 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli publisher --publisher_id=85fd969a-a16c-480b-b641-cb9adf979c3b
 python3 -m thothlibrary.cli publishers --limit=10 --order='{field: PUBLISHER_ID, direction: ASC}' --offset=0 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli publication --publication_id=34712b75-dcdd-408b-8d0c-cf29a35be2e5

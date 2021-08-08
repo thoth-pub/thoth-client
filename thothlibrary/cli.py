@@ -119,6 +119,10 @@ class ThothAPI:
             print(works)
 
     def supported_versions(self):
+        """
+        Retrieves a list of supported Thoth versions
+        @return: a list of supported Thoth versions
+        """
         return self._client().supported_versions()
 
     @fire.decorators.SetParseFn(_raw_parse)
@@ -231,18 +235,54 @@ class ThothAPI:
         if version:
             self.version = version
 
-        publishers = self._client().publishers(limit=limit, order=order,
-                                               offset=offset,
-                                               publishers=publishers,
-                                               filter_str=filter_str,
-                                               raw=raw)
+        found_publishers = self._client().publishers(limit=limit, order=order,
+                                                     offset=offset,
+                                                     publishers=publishers,
+                                                     filter_str=filter_str,
+                                                     raw=raw)
 
         if not raw and not serialize:
-            print(*publishers, sep='\n')
+            print(*found_publishers, sep='\n')
         elif serialize:
-            print(json.dumps(publishers))
+            print(json.dumps(found_publishers))
         else:
-            print(publishers)
+            print(found_publishers)
+
+    @fire.decorators.SetParseFn(_raw_parse)
+    def imprints(self, limit=100, order=None, offset=0, publishers=None,
+                 filter_str=None, raw=False, version=None, endpoint=None,
+                 serialize=False):
+        """
+        Retrieves imprints from a Thoth instance
+        :param int limit: the maximum number of results to return (default: 100)
+        :param int order: a GraphQL order query statement
+        :param int offset: the offset from which to retrieve results (default: 0)
+        :param str publishers: a list of publishers to limit by
+        :param str filter_str: a filter string to search
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        imprints = self._client().imprints(limit=limit, order=order,
+                                           offset=offset,
+                                           publishers=publishers,
+                                           filter_str=filter_str,
+                                           raw=raw)
+
+        if not raw and not serialize:
+            print(*imprints, sep='\n')
+        elif serialize:
+            print(json.dumps(imprints))
+        else:
+            print(imprints)
 
     @fire.decorators.SetParseFn(_raw_parse)
     def publisher_count(self, publishers=None, filter_str=None, raw=False,

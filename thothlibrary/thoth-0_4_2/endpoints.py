@@ -230,6 +230,27 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "imprints": {
+            "parameters": [
+                "limit",
+                "offset",
+                "filter",
+                "order",
+                "publishers",
+            ],
+            "fields": [
+                "imprintUrl",
+                "imprintId",
+                "imprintName",
+                "updatedAt",
+                "createdAt",
+                "publisherId",
+                "publisher { publisherName publisherId }",
+                "works { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }"
+                "__typename"
+            ]
+        },
+
         "publisher": {
             "parameters": [
                 "publisherId",
@@ -291,7 +312,8 @@ class ThothClient0_4_2(ThothClient):
                           'publishers', 'publisher', 'publications',
                           'contributions', 'publisher_count',
                           'contribution_count', 'work_count',
-                          'publication_count', 'publication', 'QUERIES']
+                          'publication_count', 'publication', 'imprints',
+                          'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -451,6 +473,21 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("publishers", parameters, return_raw=raw)
+
+    def imprints(self, limit: int = 100, offset: int = 0, order: str = None,
+                 filter_str: str = "", publishers: str = None,
+                 raw: bool = False):
+        """Construct and trigger a query to obtain all publishers"""
+        parameters = {
+            "limit": limit,
+            "offset": offset,
+        }
+
+        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+
+        return self._api_request("imprints", parameters, return_raw=raw)
 
     def publisher_count(self, filter_str: str = "", publishers: str = None,
                         raw: bool = False):

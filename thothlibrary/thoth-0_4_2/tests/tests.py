@@ -303,6 +303,36 @@ class Thoth042Tests(unittest.TestCase):
             self.raw_tester(mock_response, thoth_client.publishers)
         return None
 
+    def test_imprints(self):
+        """
+        Tests that good input to publishers produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('imprints', m)
+            self.pickle_tester('imprints', thoth_client.imprints)
+        return None
+
+    def test_imprints_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('imprints_bad', m)
+            self.pickle_tester('imprints', thoth_client.imprints,
+                               negative=True)
+
+    def test_imprints_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('imprints', m)
+            self.raw_tester(mock_response, thoth_client.imprints)
+        return None
+
     def test_contributions(self):
         """
         Tests that good input to contributions produces saved good output
