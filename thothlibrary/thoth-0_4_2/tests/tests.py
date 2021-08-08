@@ -451,6 +451,50 @@ class Thoth042Tests(unittest.TestCase):
                             lambda_mode=True)
         return None
 
+    def test_series(self):
+        """
+        Tests that good input to series produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('series', m)
+            self.pickle_tester('series',
+                               lambda:
+                               thoth_client.series(
+                                   series_id='d4b47a76-abff-4047-a3c7-'
+                                             'd44d85ccf009'))
+        return None
+
+    def test_series_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('series_bad',
+                                                            m)
+            self.pickle_tester('series',
+                               lambda: thoth_client.series(
+                                   series_id='d4b47a76-abff-4047-a3c7-'
+                                             'd44d85ccf009'),
+                               negative=True)
+        return None
+
+    def test_series_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('series', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.series(
+                                series_id='d4b47a76-abff-4047-a3c7-'
+                                          'd44d85ccf009',
+                                raw=True),
+                            lambda_mode=True)
+        return None
+
     def test_contribution(self):
         """
         Tests that good input to contribution produces saved good output

@@ -44,6 +44,7 @@ python3 -m thothlibrary.cli publication_count --publication_type="HARDBACK"
 python3 -m thothlibrary.cli publisher --publisher_id=85fd969a-a16c-480b-b641-cb9adf979c3b
 python3 -m thothlibrary.cli publishers --limit=10 --order='{field: PUBLISHER_ID, direction: ASC}' --offset=0 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli publisher_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
+python3 -m thothlibrary.cli series --series_id=d4b47a76-abff-4047-a3c7-d44d85ccf009
 python3 -m thothlibrary.cli serieses --limit=3 --filter="Classics"
 python3 -m thothlibrary.cli supported_versions
 python3 -m thothlibrary.cli work --doi="https://doi.org/10.11647/OBP.0222"

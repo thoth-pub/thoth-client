@@ -307,6 +307,23 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "series": {
+            "parameters": [
+                "seriesId"
+            ],
+            "fields": [
+                "seriesId",
+                "seriesType",
+                "seriesName",
+                "updatedAt",
+                "createdAt",
+                "imprintId",
+                "imprint { __typename publisher { publisherName publisherId __typename } }",
+                "issues { issueId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } } }",
+                "__typename"
+            ]
+        },
+
         "imprints": {
             "parameters": [
                 "limit",
@@ -422,7 +439,7 @@ class ThothClient0_4_2(ThothClient):
                           'publication_count', 'publication', 'imprints',
                           'imprint', 'imprint_count', 'contributors',
                           'contributor', 'contributor_count', 'serieses',
-                          'QUERIES']
+                          'series', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -439,6 +456,19 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("contributor", parameters, return_raw=raw)
+
+    def series(self, series_id: str, raw: bool = False):
+        """
+        Returns a series by ID
+        @param series_id: the ID to fetch
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'seriesId': '"' + series_id + '"'
+        }
+
+        return self._api_request("series", parameters, return_raw=raw)
 
     def publication(self, publication_id: str, raw: bool = False):
         """
