@@ -74,7 +74,9 @@ default_fields = {'works': lambda
                   'imprint': lambda
                       self: f'{self.imprintName} ({self.publisher.publisherName}/{self.publisherId}) [{self.imprintId}]' if '__typename' in self and self.__typename == 'Imprint' else f'{_muncher_repr(self)}',
                   'contributions': lambda
-                      self: f'{self.fullName} ({self.contributionType}) [{self.contributionId}]' if '__typename' in self and self.__typename == 'Contribution' else f'{_muncher_repr(self)}',
+                      self: f'{self.fullName} ({self.contributionType} of {self.work.fullTitle}) [{self.contributionId}]' if '__typename' in self and self.__typename == 'Contribution' else f'{_muncher_repr(self)}',
+                  'contribution': lambda
+                      self: f'{self.fullName} ({self.contributionType} of {self.work.fullTitle}) [{self.contributionId}]' if '__typename' in self and self.__typename == 'Contribution' else f'{_muncher_repr(self)}',
                   'contributors': lambda
                       self: f'{self.fullName} ({self.contributions[0].contributionType} of {self.contributions[0].work.fullTitle}) [{self.contributorId}]' if '__typename' in self and self.__typename == 'Contributor' else f'{_muncher_repr(self)}',
                   'contributor': lambda

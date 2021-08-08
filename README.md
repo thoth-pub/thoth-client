@@ -29,6 +29,7 @@ print(thoth.works())
 
 ### CLI GraphQL Usage
 ```sh
+python3 -m thothlibrary.cli contribution --contribution_id=29e4f46b-851a-4d7b-bb41-e6f305fc2b11
 python3 -m thothlibrary.cli contributions --limit=10
 python3 -m thothlibrary.cli contribution_count
 python3 -m thothlibrary.cli contributor --contributor_id=e8def8cf-0dfe-4da9-b7fa-f77e7aec7524

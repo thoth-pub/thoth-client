@@ -206,6 +206,28 @@ class ThothClient0_4_2(ThothClient):
                 "fullName",
                 "contributionOrdinal",
                 "workId",
+                "work { fullTitle }",
+                "contributor {firstName lastName fullName orcid __typename website contributorId}"
+            ]
+        },
+
+        "contribution": {
+            "parameters": [
+                "contributionId",
+            ],
+            "fields": [
+                "contributionId",
+                "contributionType",
+                "mainContribution",
+                "biography",
+                "institution",
+                "__typename",
+                "firstName",
+                "lastName",
+                "fullName",
+                "contributionOrdinal",
+                "workId",
+                "work { fullTitle }",
                 "contributor {firstName lastName fullName orcid __typename website contributorId}"
             ]
         },
@@ -373,7 +395,7 @@ class ThothClient0_4_2(ThothClient):
         # class. Note, it should always, also, contain the QUERIES list
         self.endpoints = ['works', 'work_by_doi', 'work_by_id',
                           'publishers', 'publisher', 'publications',
-                          'contributions', 'publisher_count',
+                          'contributions', 'contribution', 'publisher_count',
                           'contribution_count', 'work_count',
                           'publication_count', 'publication', 'imprints',
                           'imprint', 'imprint_count', 'contributors',
@@ -441,16 +463,14 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("publications", parameters, return_raw=raw)
 
     def contributions(self, limit: int = 100, offset: int = 0,
-                      filter: str = "", order: str = None,
-                      publishers: str = None, contribution_type: str = None,
-                      raw: bool = False):
+                      order: str = None, publishers: str = None,
+                      contribution_type: str = None, raw: bool = False):
         """
         Returns a contributions list
         @param limit: the maximum number of results to return (default: 100)
         @param order: a GraphQL order query statement
         @param offset: the offset from which to retrieve results (default: 0)
         @param publishers: a list of publishers to limit by
-        @param filter: a filter string to search
         @param contribution_type: the contribution type (e.g. AUTHOR)
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
@@ -462,10 +482,6 @@ class ThothClient0_4_2(ThothClient):
             "limit": limit,
         }
 
-        if filter and not filter.startswith('"'):
-            filter = '"{0}"'.format(filter)
-
-        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'order', order)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'contributionType',
@@ -571,6 +587,19 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("publisher", parameters, return_raw=raw)
+
+    def contribution(self, contribution_id: str, raw: bool = False):
+        """
+        Returns a contribution by ID
+        @param contribution_id: the contribution ID
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'contributionId': '"' + contribution_id + '"'
+        }
+
+        return self._api_request("contribution", parameters, return_raw=raw)
 
     def imprint(self, imprint_id: str, raw: bool = False):
         """

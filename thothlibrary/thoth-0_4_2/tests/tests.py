@@ -451,6 +451,50 @@ class Thoth042Tests(unittest.TestCase):
                             lambda_mode=True)
         return None
 
+    def test_contribution(self):
+        """
+        Tests that good input to contribution produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('contribution', m)
+            self.pickle_tester('contribution',
+                               lambda:
+                               thoth_client.contribution(
+                                   contribution_id='29e4f46b-851a-4d7b-bb41-'
+                                                   'e6f305fc2b11'))
+        return None
+
+    def test_contribution_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('contribution_bad',
+                                                            m)
+            self.pickle_tester('contribution',
+                               lambda: thoth_client.contribution(
+                                   contribution_id='29e4f46b-851a-4d7b-bb41-'
+                                                   'e6f305fc2b11'),
+                               negative=True)
+        return None
+
+    def test_contribution_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('contribution', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.contribution(
+                                contribution_id='29e4f46b-851a-4d7b-bb41-'
+                                                'e6f305fc2b11',
+                                raw=True),
+                            lambda_mode=True)
+        return None
+
     def test_contributors(self):
         """
         Tests that good input to contributors produces saved good output

@@ -23,7 +23,7 @@ bash -c "python3 -m thothlibrary.cli imprints --version=0.4.2 --raw > thothlibra
 bash -c "python3 -m thothlibrary.cli imprint --version=0.4.2 --imprint_id=78b0a283-9be3-4fed-a811-a7d4b9df7b25 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/imprint.json"
 bash -c "python3 -m thothlibrary.cli contributors --version=0.4.2 --limit=4 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/contributors.json"
 bash -c "python3 -m thothlibrary.cli contributor --version=0.4.2 --contributor_id=e8def8cf-0dfe-4da9-b7fa-f77e7aec7524 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/contributor.json"
-
+bash -c "python3 -m thothlibrary.cli contribution --version=0.4.2 --contribution_id=29e4f46b-851a-4d7b-bb41-e6f305fc2b11 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/contribution.json"
 
 bash -c "echo '{\"data\": {\"contributions\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/contributions_bad.json"
 bash -c "echo '{\"data\": {\"works\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/works_bad.json"
@@ -37,3 +37,4 @@ bash -c "echo '{\"data\": {\"imprints\": [\"1\"] } }'  > thothlibrary/thoth-0_4_
 bash -c "echo '{\"data\": {\"imprint\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/imprint_bad.json"
 bash -c "echo '{\"data\": {\"contributors\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/contributors_bad.json"
 bash -c "echo '{\"data\": {\"contributor\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/contributor_bad.json"
+bash -c "echo '{\"data\": {\"contribution\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/contribution_bad.json"

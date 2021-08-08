@@ -43,15 +43,14 @@ class ThothAPI:
 
     @fire.decorators.SetParseFn(_raw_parse)
     def contributions(self, limit=100, order=None, offset=0, publishers=None,
-                      filter=None, contribution_type=None, raw=False,
-                      version=None, endpoint=None, serialize=False):
+                      contribution_type=None, raw=False, version=None,
+                      endpoint=None, serialize=False):
         """
         Retrieves works from a Thoth instance
         :param int limit: the maximum number of results to return (default: 100)
         :param int order: a GraphQL order query statement
         :param int offset: the offset from which to retrieve results (default: 0)
         :param str publishers: a list of publishers to limit by
-        :param str filter: a filter string to search
         :param str contribution_type: the contribution type (e.g. AUTHOR)
         :param bool raw: whether to return a python object or the raw server result
         :param str version: a custom Thoth version
@@ -67,7 +66,6 @@ class ThothAPI:
         contribs = self._client().contributions(limit=limit, order=order,
                                                 offset=offset,
                                                 publishers=publishers,
-                                                filter=filter,
                                                 contribution_type=
                                                 contribution_type,
                                                 raw=raw)
@@ -267,6 +265,32 @@ class ThothAPI:
             print(contributor)
         else:
             print(json.dumps(contributor))
+
+    @fire.decorators.SetParseFn(_raw_parse)
+    def contribution(self, contribution_id, raw=False, version=None,
+                     endpoint=None, serialize=False):
+        """
+        Retrieves a contribution by ID from a Thoth instance
+        :param str contribution_id: the contributor to fetch
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        contribution = self._client().contribution(contribution_id=
+                                                   contribution_id,
+                                                   raw=raw)
+
+        if not serialize:
+            print(contribution)
+        else:
+            print(json.dumps(contribution))
 
     @fire.decorators.SetParseFn(_raw_parse)
     def imprint(self, imprint_id, raw=False, version=None, endpoint=None,
