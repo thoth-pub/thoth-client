@@ -147,6 +147,58 @@ class Thoth042Tests(unittest.TestCase):
                             lambda_mode=True)
         return None
 
+    def test_publication(self):
+        """
+        Tests that good input to publication produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('publication', m)
+            self.pickle_tester('publication',
+                               lambda:
+                               thoth_client.publication(publication_id=
+                                                        '34712b75'
+                                                        '-dcdd'
+                                                        '-408b'
+                                                        '-8d0c'
+                                                        '-cf29a35'
+                                                        'be2e5'))
+        return None
+
+    def test_publication_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('publication_bad',
+                                                            m)
+            self.pickle_tester('publication',
+                               lambda: thoth_client.publication(
+                                   publication_id='34712b75-dcdd-408b-8d0c-'
+                                                  'cf29a35be2e5'),
+                               negative=True)
+        return None
+
+    def test_publication_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('publication', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.publication(publication_id=
+                                                             '34712b75'
+                                                             '-dcdd'
+                                                             '-408b'
+                                                             '-8d0c'
+                                                             '-cf29a'
+                                                             '35be2e5',
+                                                             raw=True),
+                            lambda_mode=True)
+        return None
+
     def test_publications(self):
         """
         Tests that good input to publications produces saved good output

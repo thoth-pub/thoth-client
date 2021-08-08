@@ -83,6 +83,24 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "publication": {
+            "parameters": [
+                "publicationId",
+            ],
+            "fields": [
+                "publicationId",
+                "publicationType",
+                "workId",
+                "isbn",
+                "publicationUrl",
+                "createdAt",
+                "updatedAt",
+                "prices { currencyCode unitPrice __typename}",
+                "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+                "__typename"
+            ]
+        },
+
         "work": {
             "parameters": [
                 "workId"
@@ -273,10 +291,23 @@ class ThothClient0_4_2(ThothClient):
                           'publishers', 'publisher', 'publications',
                           'contributions', 'publisher_count',
                           'contribution_count', 'work_count',
-                          'publication_count', 'QUERIES']
+                          'publication_count', 'publication', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
+
+    def publication(self, publication_id: str, raw: bool = False):
+        """
+        Returns a publication by ID
+        @param publication_id: the ID to fetch
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'publicationId': '"' + publication_id + '"'
+        }
+
+        return self._api_request("publication", parameters, return_raw=raw)
 
     def publications(self, limit: int = 100, offset: int = 0,
                      filter_str: str = "", order: str = None,

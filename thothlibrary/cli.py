@@ -119,6 +119,31 @@ class ThothAPI:
             print(works)
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def publication(self, publication_id, raw=False,
+                    version=None, endpoint=None, serialize=False):
+        """
+        Retrieves a publication by id from a Thoth instance
+        :param bool raw: whether to return a python object or the raw result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        :param str publication_id: a publicationId to retrieve
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        publication = self._client().publication(publication_id=publication_id,
+                                                 raw=raw)
+
+        if not serialize:
+            print(publication)
+        else:
+            print(json.dumps(publication))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def work(self, doi=None, work_id=None, raw=False, version=None,
              endpoint=None, serialize=False, cover_ascii=False):
         """
