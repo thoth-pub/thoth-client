@@ -261,28 +261,22 @@ class ThothClient0_4_2(ThothClient):
         }
     }
 
-    def __init__(self, input_class, thoth_endpoint="https://api.thoth.pub",
-                 version="0.4.2"):
+    def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
         """
         Creates an instance of Thoth 0.4.2 endpoints
         @param input_class: the ThothClient instance to be versioned
         """
+
+        # this list should specify all API endpoints by method name in this
+        # class. Note, it should always, also, contain the QUERIES list
+        self.endpoints = ['works', 'work_by_doi', 'work_by_id',
+                          'publishers', 'publisher', 'publications',
+                          'contributions', 'publisher_count',
+                          'contribution_count', 'work_count',
+                          'publication_count', 'QUERIES']
+
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
-
-        # this is the magic dynamic generation part that wires up the methods
-        input_class.works = getattr(self, 'works')
-        input_class.work_by_doi = getattr(self, 'work_by_doi')
-        input_class.work_by_id = getattr(self, 'work_by_id')
-        input_class.publishers = getattr(self, 'publishers')
-        input_class.publisher = getattr(self, 'publisher')
-        input_class.publications = getattr(self, 'publications')
-        input_class.contributions = getattr(self, 'contributions')
-        input_class.publisher_count = getattr(self, 'publisher_count')
-        input_class.contribution_count = getattr(self, 'contribution_count')
-        input_class.work_count = getattr(self, 'work_count')
-        input_class.publication_count = getattr(self, 'publication_count')
-        input_class.QUERIES = getattr(self, 'QUERIES')
 
     def publications(self, limit: int = 100, offset: int = 0,
                      filter_str: str = "", order: str = None,

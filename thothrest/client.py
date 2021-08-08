@@ -6,7 +6,7 @@ it under the terms of the Apache License v2.0.
 import sys
 
 import requests
-from errors import ThothRESTError
+from .errors import ThothRESTError
 import importlib
 
 
@@ -22,15 +22,27 @@ class ThothRESTClient:
         @param version: the version of the API to use
         """
         self.endpoint = endpoint
-        self.version = version.replace('.', '')
+        self.version = version.replace('.', '_')
 
         # this is the only magic part
-        # this basically delegates to the 'endpoints' module inside the current API version
-        # the constructor function there dynamically adds the methods that are supported in any API version
-        endpoints = importlib.import_module('thoth-{0}.endpoints'.format(self.version))
-        getattr(endpoints, 'ThothRESTClient{0}'.format(self.version))(self)
+        # this basically delegates to the 'endpoints' module inside the current
+        # API version the constructor function there dynamically adds the
+        # methods that are supported in any API version
+        if issubclass(ThothRESTClient, type(self)):
+            endpoints = \
+                importlib.import_module('thothrest.thoth-{0}.'
+                                        'endpoints'.format(self.version))
+            version_endpoints = \
+                getattr(endpoints,
+                        'ThothRESTClient{0}'.format(self.version))()
 
-    def _api_request(self, endpoint_name, url_suffix, return_json=False, return_raw=False):
+            [setattr(self,
+                     x,
+                     getattr(version_endpoints,
+                             x)) for x in version_endpoints.endpoints]
+
+    def _api_request(self, endpoint_name, url_suffix, return_json=False,
+                     return_raw=False):
         """
         Makes a request to the API
         @param endpoint_name: the name of the endpoint
@@ -55,7 +67,9 @@ class ThothRESTClient:
         @param data: the data
         @return: an object form of the output
         """
-        structures = importlib.import_module('thoth-{0}.structures'.format(self.version))
+        structures = \
+            importlib.import_module('thothrest.'
+                                    'thoth-{0}.structures'.format(self.version))
         builder = structures.StructureBuilder(endpoint_name, data)
         return builder.create_structure()
 
@@ -69,8 +83,11 @@ class ThothRESTClient:
             resp = requests.get(self.endpoint + url_suffix)
 
             if resp.status_code != 200:
-                raise ThothRESTError('GET {0}{1}'.format(self.endpoint, url_suffix), resp.status_code)
+                raise ThothRESTError('GET {0}{1}'.format(self.endpoint,
+                                                         url_suffix),
+                                     resp.status_code)
 
             return resp
         except requests.exceptions.RequestException as e:
-            raise ThothRESTError('GET {0}{1}'.format(self.endpoint, url_suffix), e)
+            raise ThothRESTError('GET {0}{1}'.format(self.endpoint, url_suffix),
+                                 e)

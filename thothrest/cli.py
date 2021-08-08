@@ -6,7 +6,7 @@ it under the terms of the Apache License v2.0.
 
 
 def _client():
-    from client import ThothRESTClient
+    from .client import ThothRESTClient
     return ThothRESTClient()
 
 

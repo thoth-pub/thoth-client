@@ -51,10 +51,10 @@ print(client.formats())
 
 ### CLI REST Usage
 ```sh
-python3 ./thothrest/cli.py
-python3 ./thothrest/cli.py formats
-python3 ./thothrest/cli.py formats --return-json
-python3 ./cli.py work onix_3.0::project_muse e0f748b2-984f-45cc-8b9e-13989c31dda4
+python3 -m thothrest.cli
+python3 -m thothrest.cli formats
+python3 -m thothrest.cli formats --return-json
+python3 -m thothrest.cli work onix_3.0::project_muse e0f748b2-984f-45cc-8b9e-13989c31dda4
 ```
 
 ## Test Suite

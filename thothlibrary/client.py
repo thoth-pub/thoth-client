@@ -1,7 +1,7 @@
 """
 GraphQL client for Thoth
 
-(c) Open Book Publishers, February 2020
+(c) Open Book Publishers, February 2020 and (c) ΔQ Programming LLP, July 2021
 This programme is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
@@ -27,15 +27,24 @@ class ThothClient():
         self.client = GraphQLClient(self.graphql_endpoint)
         self.version = version.replace('.', '_')
 
-        # this is the only magic part for queries
-        # it delegates to the 'endpoints' module inside the current API version
-        # the constructor function there dynamically adds the methods that are
-        # supported in any API version
+        # this is the only 'magic' part for queries
+        # it wires up the methods named in 'endpoints' list of a versioned
+        # subclass (e.g. thoth_0_4_2) to this class, thereby providing the
+        # methods that can be called for any API version
         if issubclass(ThothClient, type(self)):
-            endpoints = importlib.import_module('thothlibrary.thoth-{0}.endpoints'.format(self.version))
-            getattr(endpoints, 'ThothClient{0}'.format(self.version))(self,
-                                                                      version=version,
-                                                                      thoth_endpoint=thoth_endpoint)
+            endpoints = \
+                importlib.import_module('thothlibrary.thoth-{0}.'
+                                        'endpoints'.format(self.version))
+            version_endpoints = \
+                getattr(endpoints,
+                        'ThothClient{0}'.format(self.version))\
+                    (version=version,
+                     thoth_endpoint=thoth_endpoint)
+
+            [setattr(self,
+                     x,
+                     getattr(version_endpoints,
+                             x)) for x in version_endpoints.endpoints]
 
     def login(self, email, password):
         """Obtain an authentication token"""
@@ -121,7 +130,8 @@ class ThothClient():
         @return: an object form of the output
         """
         structures = \
-            importlib.import_module('thothlibrary.thoth-{0}.structures'.format(self.version))
+            importlib.import_module(
+                'thothlibrary.thoth-{0}.structures'.format(self.version))
         builder = structures.StructureBuilder(endpoint_name, data)
         return builder.create_structure()
 
