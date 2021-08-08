@@ -580,6 +580,13 @@ class ThothClient0_4_2(ThothClient):
             ],
         },
 
+        "subjectCount": {
+            "parameters": [
+                "filter",
+                "subjectType"
+            ],
+        },
+
         "priceCount": {
             "parameters": [
                 "currencyCode",
@@ -613,7 +620,7 @@ class ThothClient0_4_2(ThothClient):
                           'series', 'series_count', 'issues',
                           'issue', 'issue_count', 'languages', 'language',
                           'language_count', 'prices', 'price', 'price_count',
-                          'subjects', 'subject', 'QUERIES']
+                          'subjects', 'subject', 'subject_count', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -1146,6 +1153,23 @@ class ThothClient0_4_2(ThothClient):
                                 language_relation)
 
         return self._api_request("languageCount", parameters, return_raw=raw)
+
+    def subject_count(self, subject_type: str = "", filter: str = "",
+                      raw: bool = False):
+        """Construct and trigger a query to count contribution count"""
+        parameters = {}
+
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        # there is a bug in this version of Thoth. Filter is REQUIRED.
+        if not filter:
+            filter = '""'
+
+        self._dictionary_append(parameters, 'subjectType', subject_type)
+        self._dictionary_append(parameters, 'filter', filter)
+
+        return self._api_request("subjectCount", parameters, return_raw=raw)
 
     def issue_count(self, raw: bool = False):
         """Construct and trigger a query to count contribution count"""

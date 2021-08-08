@@ -719,6 +719,27 @@ class ThothAPI:
                                             raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def subject_count(self, subject_type=None, raw=False, version=None,
+                      endpoint=None, filter=None):
+        """
+        Retrieves a count of contributors from a Thoth instance
+        :param bool raw: whether to return a python object or the raw result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param str subject_type: the type to retrieve (e.g. BIC)
+        :param str filter: a search
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(self._client().subject_count(subject_type=subject_type,
+                                           filter=filter, raw=raw))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def contributor_count(self, filter=None, raw=False, version=None,
                           endpoint=None):
         """

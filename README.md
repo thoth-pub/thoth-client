@@ -58,6 +58,7 @@ python3 -m thothlibrary.cli serieses --limit=3 --filter="Classics"
 python3 -m thothlibrary.cli series_count --series_type=BOOK_SERIES
 python3 -m thothlibrary.cli subject --subject_id=1291208f-fc43-47a4-a8e6-e132477ad57b
 python3 -m thothlibrary.cli subjects --limit=10 --subject_type=BIC
+python3 -m thothlibrary.cli subject_count --subject_type=THEMA
 python3 -m thothlibrary.cli supported_versions
 python3 -m thothlibrary.cli work --doi="https://doi.org/10.11647/OBP.0222"
 python3 -m thothlibrary.cli work --work_id="e0f748b2-984f-45cc-8b9e-13989c31dda4"
