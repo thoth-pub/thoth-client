@@ -34,6 +34,7 @@ bash -c "python3 -m thothlibrary.cli prices --version=0.4.2 --limit=10 --raw > t
 bash -c "python3 -m thothlibrary.cli price --version=0.4.2 --price_id=818567dd-7d3a-4963-8704-3381b5432877 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/price.json"
 bash -c "python3 -m thothlibrary.cli subjects --version=0.4.2 --limit=10 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/subjects.json"
 bash -c "python3 -m thothlibrary.cli subject --version=0.4.2 --subject_id=1291208f-fc43-47a4-a8e6-e132477ad57b --raw > thothlibrary/thoth-0_4_2/tests/fixtures/subject.json"
+bash -c "python3 -m thothlibrary.cli funders --version=0.4.2 --limit=10 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/funders.json"
 
 bash -c "echo '{\"data\": {\"contributions\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/contributions_bad.json"
 bash -c "echo '{\"data\": {\"works\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/works_bad.json"
@@ -58,3 +59,4 @@ bash -c "echo '{\"data\": {\"prices\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/
 bash -c "echo '{\"data\": {\"price\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/price_bad.json"
 bash -c "echo '{\"data\": {\"subjects\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/subjects_bad.json"
 bash -c "echo '{\"data\": {\"subject\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/subject_bad.json"
+bash -c "echo '{\"data\": {\"funders\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/funders_bad.json"

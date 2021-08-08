@@ -523,6 +523,36 @@ class Thoth042Tests(unittest.TestCase):
             self.raw_tester(mock_response, thoth_client.languages)
         return None
 
+    def test_funders(self):
+        """
+        Tests that good input to funders produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('funders', m)
+            self.pickle_tester('funders', thoth_client.funders)
+        return None
+
+    def test_funders_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('funders_bad', m)
+            self.pickle_tester('funders', thoth_client.funders,
+                               negative=True)
+
+    def test_funders_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('funders', m)
+            self.raw_tester(mock_response, thoth_client.funders)
+        return None
+
     def test_contributions(self):
         """
         Tests that good input to contributions produces saved good output

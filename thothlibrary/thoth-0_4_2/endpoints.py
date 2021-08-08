@@ -97,6 +97,22 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "funders": {
+            "parameters": [
+                "limit",
+                "offset",
+                "filter",
+                "order",
+            ],
+            "fields": [
+                "funderId",
+                "funderName",
+                "funderDoi",
+                "fundings { grantNumber program projectName jurisdiction work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+                "__typename"
+            ]
+        },
+
         "publications": {
             "parameters": [
                 "limit",
@@ -620,7 +636,8 @@ class ThothClient0_4_2(ThothClient):
                           'series', 'series_count', 'issues',
                           'issue', 'issue_count', 'languages', 'language',
                           'language_count', 'prices', 'price', 'price_count',
-                          'subjects', 'subject', 'subject_count', 'QUERIES']
+                          'subjects', 'subject', 'subject_count', 'funders',
+                          'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -1001,6 +1018,22 @@ class ThothClient0_4_2(ThothClient):
                                 language_relation)
 
         return self._api_request("languages", parameters, return_raw=raw)
+
+    def funders(self, limit: int = 100, offset: int = 0, order: str = None,
+                filter: str = "", raw: bool = False):
+        """Construct and trigger a query to obtain all funders"""
+        parameters = {
+            "limit": limit,
+            "offset": offset,
+        }
+
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
+        self._dictionary_append(parameters, 'order', order)
+
+        return self._api_request("funders", parameters, return_raw=raw)
 
     def subjects(self, limit: int = 100, offset: int = 0, order: str = None,
                  filter: str = "", publishers: str = None, raw: bool = False,

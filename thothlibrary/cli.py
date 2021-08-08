@@ -585,6 +585,37 @@ class ThothAPI:
             print(langs)
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def funders(self, limit=100, order=None, offset=0, filter=None, raw=False,
+                version=None, endpoint=None, serialize=False):
+        """
+        Retrieves funders from a Thoth instance
+        :param int limit: the maximum number of results to return (default: 100)
+        :param int order: a GraphQL order query statement
+        :param int offset: the offset from which to retrieve results (default: 0)
+        :param str filter: a filter string to search
+        :param bool raw: whether to return a python object or the raw result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        funders = self._client().funders(limit=limit, order=order,
+                                         offset=offset, filter=filter, raw=raw)
+
+        if not raw and not serialize:
+            print(*funders, sep='\n')
+        elif serialize:
+            print(json.dumps(funders))
+        else:
+            print(funders)
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def subjects(self, limit=100, order=None, offset=0, publishers=None,
                  filter=None, raw=False, version=None, endpoint=None,
                  serialize=False, subject_type=None):
