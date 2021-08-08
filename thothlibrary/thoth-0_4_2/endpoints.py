@@ -421,6 +421,14 @@ class ThothClient0_4_2(ThothClient):
                 "publishers",
                 "contributionType"
             ],
+        },
+
+        "seriesCount": {
+            "parameters": [
+                "filter",
+                "publishers",
+                "seriesType"
+            ],
         }
     }
 
@@ -439,7 +447,7 @@ class ThothClient0_4_2(ThothClient):
                           'publication_count', 'publication', 'imprints',
                           'imprint', 'imprint_count', 'contributors',
                           'contributor', 'contributor_count', 'serieses',
-                          'series', 'QUERIES']
+                          'series', 'series_count', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -760,6 +768,21 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'workStatus', work_status)
 
         return self._api_request("workCount", parameters, return_raw=raw)
+
+    def series_count(self, filter: str = "", publishers: str = None,
+                     series_type: str = None, raw: bool = False):
+        """Construct and trigger a query to count contribution count"""
+        parameters = {}
+
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'seriesType',
+                                series_type)
+
+        return self._api_request("seriesCount", parameters, return_raw=raw)
 
     def contribution_count(self, filter: str = "", publishers: str = None,
                            contribution_type: str = None, raw: bool = False):
