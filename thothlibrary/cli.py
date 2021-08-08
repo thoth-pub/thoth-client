@@ -950,6 +950,25 @@ class ThothAPI:
                                                raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def funder_count(self, filter=None, raw=False, version=None,
+                     endpoint=None):
+        """
+        Retrieves a count of publications from a Thoth instance
+        :param str filter: a filter string to search
+        :param bool raw: whether to return a python object or the raw result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(self._client().funder_count(filter=filter, raw=raw))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def contribution_count(self, publishers=None, filter=None, raw=False,
                            contribution_type=None, version=None, endpoint=None):
         """

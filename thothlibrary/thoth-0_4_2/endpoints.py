@@ -584,6 +584,12 @@ class ThothClient0_4_2(ThothClient):
             ],
         },
 
+        "funderCount": {
+            "parameters": [
+                "filter"
+            ],
+        },
+
         "publicationCount": {
             "parameters": [
                 "filter",
@@ -650,7 +656,7 @@ class ThothClient0_4_2(ThothClient):
                           'issue', 'issue_count', 'languages', 'language',
                           'language_count', 'prices', 'price', 'price_count',
                           'subjects', 'subject', 'subject_count', 'funders',
-                          'funder', 'QUERIES']
+                          'funder', 'funder_count', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -1189,6 +1195,17 @@ class ThothClient0_4_2(ThothClient):
 
         return self._api_request("publicationCount", parameters,
                                  return_raw=raw)
+
+    def funder_count(self, filter: str = "", raw: bool = False):
+        """Construct and trigger a query to count publications"""
+        parameters = {}
+
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
+
+        return self._api_request("funderCount", parameters, return_raw=raw)
 
     def contributor_count(self, filter: str = "", raw: bool = False):
         """Construct and trigger a query to count contribution count"""
