@@ -303,6 +303,50 @@ class Thoth042Tests(unittest.TestCase):
             self.raw_tester(mock_response, thoth_client.publishers)
         return None
 
+    def test_imprint(self):
+        """
+        Tests that good input to imprint produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('imprint', m)
+            self.pickle_tester('imprint',
+                               lambda:
+                               thoth_client.imprint(
+                                   imprint_id='78b0a283-9be3-4fed-a811-'
+                                              'a7d4b9df7b25'))
+        return None
+
+    def test_imprint_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('imprint_bad', m)
+            self.pickle_tester('imprint',
+                               lambda: thoth_client.imprint(
+                                   imprint_id='78b0a283-9be3-4fed-a811-'
+                                              'a7d4b9df7b25'),
+                               negative=True)
+        return None
+
+    def test_imprint_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('imprint', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.imprint(
+                                imprint_id='78b0a283-9be3-4fed-a811-'
+                                           'a7d4b9df7b25',
+                                raw=True),
+                            lambda_mode=True)
+        return None
+
+
     def test_imprints(self):
         """
         Tests that good input to publishers produces saved good output

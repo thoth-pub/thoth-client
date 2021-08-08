@@ -20,6 +20,7 @@ bash -c "python3 -m thothlibrary.cli work --version=0.4.2 --work_id=e0f748b2-984
 bash -c "python3 -m thothlibrary.cli work --version=0.4.2 --doi=https://doi.org/10.21983/P3.0314.1.00 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/workByDoi.json"
 bash -c "python3 -m thothlibrary.cli publication --version=0.4.2 --publication_id=34712b75-dcdd-408b-8d0c-cf29a35be2e5 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/publication.json"
 bash -c "python3 -m thothlibrary.cli imprints --version=0.4.2 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/imprints.json"
+bash -c "python3 -m thothlibrary.cli imprint --version=0.4.2 --imprint_id=78b0a283-9be3-4fed-a811-a7d4b9df7b25 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/imprint.json"
 
 
 bash -c "echo '{\"data\": {\"contributions\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/contributions_bad.json"
@@ -31,3 +32,4 @@ bash -c "echo '{\"data\": {\"work\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/te
 bash -c "echo '{\"data\": {\"workByDoi\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/workByDoi_bad.json"
 bash -c "echo '{\"data\": {\"publication\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/publication_bad.json"
 bash -c "echo '{\"data\": {\"imprints\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/imprints_bad.json"
+bash -c "echo '{\"data\": {\"imprint\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/imprint_bad.json"

@@ -213,6 +213,30 @@ class ThothAPI:
             print(json.dumps(publisher))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def imprint(self, imprint_id, raw=False, version=None, endpoint=None,
+                serialize=False):
+        """
+        Retrieves a publisher by ID from a Thoth instance
+        :param str imprint_id: the imprint to fetch
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        imprint = self._client().imprint(imprint_id=imprint_id, raw=raw)
+
+        if not serialize:
+            print(imprint)
+        else:
+            print(json.dumps(imprint))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def publishers(self, limit=100, order=None, offset=0, publishers=None,
                    filter_str=None, raw=False, version=None, endpoint=None,
                    serialize=False):

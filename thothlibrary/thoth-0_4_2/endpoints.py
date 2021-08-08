@@ -251,6 +251,23 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "imprint": {
+            "parameters": [
+                "imprintId",
+            ],
+            "fields": [
+                "imprintUrl",
+                "imprintId",
+                "imprintName",
+                "updatedAt",
+                "createdAt",
+                "publisherId",
+                "publisher { publisherName publisherId }",
+                "works { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }"
+                "__typename"
+            ]
+        },
+
         "publisher": {
             "parameters": [
                 "publisherId",
@@ -313,7 +330,7 @@ class ThothClient0_4_2(ThothClient):
                           'contributions', 'publisher_count',
                           'contribution_count', 'work_count',
                           'publication_count', 'publication', 'imprints',
-                          'QUERIES']
+                          'imprint', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -458,6 +475,19 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("publisher", parameters, return_raw=raw)
+
+    def imprint(self, imprint_id: str, raw: bool = False):
+        """
+        Returns a work by DOI
+        @param imprint_id: the imprint
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'imprintId': '"' + imprint_id + '"'
+        }
+
+        return self._api_request("imprint", parameters, return_raw=raw)
 
     def publishers(self, limit: int = 100, offset: int = 0, order: str = None,
                    filter_str: str = "", publishers: str = None,
