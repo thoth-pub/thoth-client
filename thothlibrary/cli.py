@@ -317,6 +317,30 @@ class ThothAPI:
             print(json.dumps(series))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def language(self, language_id, raw=False, version=None, endpoint=None,
+                 serialize=False):
+        """
+        Retrieves a language by ID from a Thoth instance
+        :param str language_id: the series to fetch
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        lang = self._client().language(language_id=language_id, raw=raw)
+
+        if not serialize:
+            print(lang)
+        else:
+            print(json.dumps(lang))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def imprint(self, imprint_id, raw=False, version=None, endpoint=None,
                 serialize=False):
         """

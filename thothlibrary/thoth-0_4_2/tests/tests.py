@@ -303,6 +303,49 @@ class Thoth042Tests(unittest.TestCase):
             self.raw_tester(mock_response, thoth_client.publishers)
         return None
 
+    def test_language(self):
+        """
+        Tests that good input to language produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('language', m)
+            self.pickle_tester('language',
+                               lambda:
+                               thoth_client.language(
+                                   language_id='c19e68dd-c5a3-48f1-bd56-'
+                                               '089ee732604c'))
+        return None
+
+    def test_language_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('language_bad', m)
+            self.pickle_tester('language',
+                               lambda: thoth_client.language(
+                                   language_id='c19e68dd-c5a3-48f1-bd56-'
+                                               '089ee732604c'),
+                               negative=True)
+        return None
+
+    def test_language_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('language', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.language(
+                                language_id='c19e68dd-c5a3-48f1-bd56-'
+                                            '089ee732604c',
+                                raw=True),
+                            lambda_mode=True)
+        return None
+
     def test_imprint(self):
         """
         Tests that good input to imprint produces saved good output

@@ -381,6 +381,22 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "language": {
+            "parameters": [
+                "languageId",
+            ],
+            "fields": [
+                "languageId",
+                "workId",
+                "languageCode",
+                "languageRelation",
+                "createdAt",
+                "mainLanguage",
+                "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }"
+                "__typename"
+            ]
+        },
+
         "languages": {
             "parameters": [
                 "limit",
@@ -508,7 +524,8 @@ class ThothClient0_4_2(ThothClient):
                           'imprint', 'imprint_count', 'contributors',
                           'contributor', 'contributor_count', 'serieses',
                           'series', 'series_count', 'issues',
-                          'issue', 'issue_count', 'languages', 'QUERIES']
+                          'issue', 'issue_count', 'languages', 'language',
+                          'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -525,6 +542,19 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("contributor", parameters, return_raw=raw)
+
+    def language(self, language_id: str, raw: bool = False):
+        """
+        Returns a series by ID
+        @param language_id: the ID to fetch
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'languageId': '"' + language_id + '"'
+        }
+
+        return self._api_request("language", parameters, return_raw=raw)
 
     def series(self, series_id: str, raw: bool = False):
         """
