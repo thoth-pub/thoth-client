@@ -40,6 +40,7 @@ python3 -m thothlibrary.cli imprints --limit=25 --offset=0 --publishers='["85fd9
 python3 -m thothlibrary.cli imprint_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli issue --issue_id=6bd31b4c-35a9-4177-8074-dab4896a4a3d
 python3 -m thothlibrary.cli issues --limit=10
+python3 -m thothlibrary.cli issue_count
 python3 -m thothlibrary.cli publication --publication_id=34712b75-dcdd-408b-8d0c-cf29a35be2e5
 python3 -m thothlibrary.cli publications --limit=10 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
 python3 -m thothlibrary.cli publication_count --publication_type="HARDBACK"

@@ -459,6 +459,8 @@ class ThothClient0_4_2(ThothClient):
             ],
         },
 
+        "issuesCount": None,
+
         "seriesCount": {
             "parameters": [
                 "filter",
@@ -484,7 +486,7 @@ class ThothClient0_4_2(ThothClient):
                           'imprint', 'imprint_count', 'contributors',
                           'contributor', 'contributor_count', 'serieses',
                           'series', 'series_count', 'issues',
-                          'issue', 'QUERIES']
+                          'issue', 'issue_count', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -892,4 +894,11 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'filter', filter)
 
         return self._api_request("contributorCount", parameters,
+                                 return_raw=raw)
+
+    def issue_count(self, raw: bool = False):
+        """Construct and trigger a query to count contribution count"""
+        parameters = {}
+
+        return self._api_request("issueCount", parameters,
                                  return_raw=raw)
