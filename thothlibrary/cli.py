@@ -537,6 +537,42 @@ class ThothAPI:
             print(langs)
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def prices(self, limit=100, order=None, offset=0, publishers=None,
+               currency_code=None, raw=False, version=None, endpoint=None,
+               serialize=False):
+        """
+        Retrieves serieses from a Thoth instance
+        :param int limit: the maximum number of results to return (default: 100)
+        :param int order: a GraphQL order query statement
+        :param int offset: the offset from which to retrieve results (default: 0)
+        :param str publishers: a list of publishers to limit by
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        :param str currency_code: the currency code (e.g. GBP)
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        prices = self._client().prices(limit=limit, order=order,
+                                       offset=offset,
+                                       publishers=publishers,
+                                       currency_code=currency_code,
+                                       raw=raw)
+
+        if not raw and not serialize:
+            print(*prices, sep='\n')
+        elif serialize:
+            print(json.dumps(prices))
+        else:
+            print(prices)
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def serieses(self, limit=100, order=None, offset=0, publishers=None,
                  filter=None, series_type=None, raw=False, version=None,
                  endpoint=None, serialize=False):

@@ -60,6 +60,27 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "prices": {
+            "parameters": [
+                "limit",
+                "offset",
+                "filter",
+                "order",
+                "publishers",
+                "currencyCode",
+            ],
+            "fields": [
+                "currencyCode",
+                "publicationId",
+                "priceId",
+                "unitPrice",
+                "publication { work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+                "createdAt",
+                "updatedAt",
+                "__typename"
+            ]
+        },
+
         "publications": {
             "parameters": [
                 "limit",
@@ -532,7 +553,7 @@ class ThothClient0_4_2(ThothClient):
                           'contributor', 'contributor_count', 'serieses',
                           'series', 'series_count', 'issues',
                           'issue', 'issue_count', 'languages', 'language',
-                          'language_count', 'QUERIES']
+                          'language_count', 'prices', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -588,6 +609,32 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("publication", parameters, return_raw=raw)
+
+    def prices(self, limit: int = 100, offset: int = 0, order: str = None,
+               publishers: str = None, currency_code: str = None,
+               raw: bool = False):
+        """
+        Returns a price list
+        @param limit: the maximum number of results to return (default: 100)
+        @param order: a GraphQL order query statement
+        @param offset: the offset from which to retrieve results (default: 0)
+        @param publishers: a list of publishers to limit by
+        @param currency_code: the currency code (e.g. GBP)
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        if order is None:
+            order = {}
+        parameters = {
+            "offset": offset,
+            "limit": limit,
+        }
+
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'currencyCode', currency_code)
+
+        return self._api_request("prices", parameters, return_raw=raw)
 
     def publications(self, limit: int = 100, offset: int = 0,
                      filter: str = "", order: str = None,

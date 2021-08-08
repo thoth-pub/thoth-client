@@ -48,8 +48,10 @@ def _parse_authors(obj):
 
 
 def __price_parser(prices):
-    if len(prices) > 0:
+    if len(prices) > 0 and 'currencyCode' not in prices:
         return '({0}{1})'.format(prices[0].unitPrice, prices[0].currencyCode)
+    elif 'currencyCode' in prices:
+        return '{0}{1}'.format(prices.unitPrice, prices.currencyCode)
     else:
         return ''
 
@@ -60,6 +62,9 @@ def __price_parser(prices):
 # of objects, such as books
 default_fields = {'works': lambda
     self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."}) [{self.workId}]' if '__typename' in self and self.__typename == 'Work' else f'{_muncher_repr(self)}',
+                  'prices': lambda
+                      self: f'{_parse_authors(self.publication.work)}{self.publication.work.fullTitle} ({self.publication.work.place}: {self.publication.work.imprint.publisher.publisherName}, {datetime.strptime(self.publication.work.publicationDate, "%Y-%m-%d").year if self.publication.work.publicationDate else "n.d."}) '
+                            f'costs {__price_parser(self)} [{self.priceId}]' if '__typename' in self and self.__typename == 'Price' else f'{_muncher_repr(self)}',
                   'publications': lambda
                       self: f'{_parse_authors(self.work)}{self.work.fullTitle} ({self.work.place}: {self.work.imprint.publisher.publisherName}, {datetime.strptime(self.work.publicationDate, "%Y-%m-%d").year if self.work.publicationDate else "n.d."}) '
                             f'[{self.publicationType}] {__price_parser(self.prices)} [{self.publicationId}]' if '__typename' in self and self.__typename == 'Publication' else f'{_muncher_repr(self)}',
