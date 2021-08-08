@@ -331,6 +331,12 @@ class ThothClient0_4_2(ThothClient):
             ],
         },
 
+        "contributorCount": {
+            "parameters": [
+                "filter",
+            ],
+        },
+
         "workCount": {
             "parameters": [
                 "filter",
@@ -371,7 +377,7 @@ class ThothClient0_4_2(ThothClient):
                           'contribution_count', 'work_count',
                           'publication_count', 'publication', 'imprints',
                           'imprint', 'imprint_count', 'contributors',
-                          'contributor', 'QUERIES']
+                          'contributor', 'contributor_count', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -403,7 +409,7 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("publication", parameters, return_raw=raw)
 
     def publications(self, limit: int = 100, offset: int = 0,
-                     filter_str: str = "", order: str = None,
+                     filter: str = "", order: str = None,
                      publishers: str = None, publication_type: str = None,
                      raw: bool = False):
         """
@@ -412,7 +418,7 @@ class ThothClient0_4_2(ThothClient):
         @param order: a GraphQL order query statement
         @param offset: the offset from which to retrieve results (default: 0)
         @param publishers: a list of publishers to limit by
-        @param filter_str: a filter string to search
+        @param filter: a filter string to search
         @param publication_type: the work type (e.g. PAPERBACK)
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
@@ -424,7 +430,10 @@ class ThothClient0_4_2(ThothClient):
             "limit": limit,
         }
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'order', order)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'publicationType', publication_type)
@@ -432,7 +441,7 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("publications", parameters, return_raw=raw)
 
     def contributions(self, limit: int = 100, offset: int = 0,
-                      filter_str: str = "", order: str = None,
+                      filter: str = "", order: str = None,
                       publishers: str = None, contribution_type: str = None,
                       raw: bool = False):
         """
@@ -441,7 +450,7 @@ class ThothClient0_4_2(ThothClient):
         @param order: a GraphQL order query statement
         @param offset: the offset from which to retrieve results (default: 0)
         @param publishers: a list of publishers to limit by
-        @param filter_str: a filter string to search
+        @param filter: a filter string to search
         @param contribution_type: the contribution type (e.g. AUTHOR)
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
@@ -453,7 +462,10 @@ class ThothClient0_4_2(ThothClient):
             "limit": limit,
         }
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'order', order)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'contributionType',
@@ -462,14 +474,14 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("contributions", parameters, return_raw=raw)
 
     def contributors(self, limit: int = 100, offset: int = 0,
-                     filter_str: str = "", order: str = None,
+                     filter: str = "", order: str = None,
                      raw: bool = False):
         """
         Returns a contributions list
         @param limit: the maximum number of results to return (default: 100)
         @param order: a GraphQL order query statement
         @param offset: the offset from which to retrieve results (default: 0)
-        @param filter_str: a filter string to search
+        @param filter: a filter string to search
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
         """
@@ -480,12 +492,15 @@ class ThothClient0_4_2(ThothClient):
             "limit": limit,
         }
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'order', order)
 
         return self._api_request("contributors", parameters, return_raw=raw)
 
-    def works(self, limit: int = 100, offset: int = 0, filter_str: str = "",
+    def works(self, limit: int = 100, offset: int = 0, filter: str = "",
               order: str = None, publishers: str = None, work_type: str = None,
               work_status: str = None, raw: bool = False):
         """
@@ -494,7 +509,7 @@ class ThothClient0_4_2(ThothClient):
         @param order: a GraphQL order query statement
         @param offset: the offset from which to retrieve results (default: 0)
         @param publishers: a list of publishers to limit by
-        @param filter_str: a filter string to search
+        @param filter: a filter string to search
         @param work_type: the work type (e.g. MONOGRAPH)
         @param work_status: the work status (e.g. ACTIVE)
         @param raw: whether to return a python object or the raw server result
@@ -507,7 +522,10 @@ class ThothClient0_4_2(ThothClient):
             "limit": limit,
         }
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'order', order)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'workType', work_type)
@@ -568,7 +586,7 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("imprint", parameters, return_raw=raw)
 
     def publishers(self, limit: int = 100, offset: int = 0, order: str = None,
-                   filter_str: str = "", publishers: str = None,
+                   filter: str = "", publishers: str = None,
                    raw: bool = False):
         """Construct and trigger a query to obtain all publishers"""
         parameters = {
@@ -576,14 +594,17 @@ class ThothClient0_4_2(ThothClient):
             "offset": offset,
         }
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'order', order)
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("publishers", parameters, return_raw=raw)
 
     def imprints(self, limit: int = 100, offset: int = 0, order: str = None,
-                 filter_str: str = "", publishers: str = None,
+                 filter: str = "", publishers: str = None,
                  raw: bool = False):
         """Construct and trigger a query to obtain all publishers"""
         parameters = {
@@ -591,51 +612,63 @@ class ThothClient0_4_2(ThothClient):
             "offset": offset,
         }
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'order', order)
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("imprints", parameters, return_raw=raw)
 
-    def publisher_count(self, filter_str: str = "", publishers: str = None,
+    def publisher_count(self, filter: str = "", publishers: str = None,
                         raw: bool = False):
         """Construct and trigger a query to count publishers"""
         parameters = {}
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("publisherCount", parameters, return_raw=raw)
 
-    def imprint_count(self, filter_str: str = "", publishers: str = None,
+    def imprint_count(self, filter: str = "", publishers: str = None,
                       raw: bool = False):
         """Construct and trigger a query to count publishers"""
         parameters = {}
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("imprintCount", parameters, return_raw=raw)
 
-    def work_count(self, filter_str: str = "", publishers: str = None,
+    def work_count(self, filter: str = "", publishers: str = None,
                    work_type: str = None, work_status: str = None,
                    raw: bool = False):
         """Construct and trigger a query to count works"""
         parameters = {}
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'workType', work_type)
         self._dictionary_append(parameters, 'workStatus', work_status)
 
         return self._api_request("workCount", parameters, return_raw=raw)
 
-    def contribution_count(self, filter_str: str = "", publishers: str = None,
+    def contribution_count(self, filter: str = "", publishers: str = None,
                            contribution_type: str = None, raw: bool = False):
         """Construct and trigger a query to count contribution count"""
         parameters = {}
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'contributionType',
                                 contribution_type)
@@ -643,14 +676,29 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("contributionCount", parameters,
                                  return_raw=raw)
 
-    def publication_count(self, filter_str: str = "", publishers: str = None,
+    def publication_count(self, filter: str = "", publishers: str = None,
                           publication_type: str = None, raw: bool = False):
         """Construct and trigger a query to count publications"""
         parameters = {}
 
-        self._dictionary_append(parameters, 'filter', filter_str)
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'publicationType', publication_type)
 
         return self._api_request("publicationCount", parameters,
+                                 return_raw=raw)
+
+    def contributor_count(self, filter: str = "", raw: bool = False):
+        """Construct and trigger a query to count contribution count"""
+        parameters = {}
+
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
+
+        return self._api_request("contributorCount", parameters,
                                  return_raw=raw)
