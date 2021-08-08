@@ -324,6 +324,26 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "issues": {
+            "parameters": [
+                "limit",
+                "offset",
+                "filter",
+                "order",
+                "publishers",
+            ],
+            "fields": [
+                "issueId",
+                "seriesId",
+                "issueOrdinal",
+                "updatedAt",
+                "createdAt",
+                "series { seriesId seriesType seriesName imprintId imprint { __typename publisher { publisherName publisherId __typename } }}",
+                "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }"
+                "__typename"
+            ]
+        },
+
         "imprints": {
             "parameters": [
                 "limit",
@@ -447,7 +467,7 @@ class ThothClient0_4_2(ThothClient):
                           'publication_count', 'publication', 'imprints',
                           'imprint', 'imprint_count', 'contributors',
                           'contributor', 'contributor_count', 'serieses',
-                          'series', 'series_count', 'QUERIES']
+                          'series', 'series_count', 'issues', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -729,6 +749,23 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("imprints", parameters, return_raw=raw)
+
+    def issues(self, limit: int = 100, offset: int = 0, order: str = None,
+               filter: str = "", publishers: str = None, raw: bool = False):
+        """Construct and trigger a query to obtain all publishers"""
+        parameters = {
+            "limit": limit,
+            "offset": offset,
+        }
+
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+
+        return self._api_request("issues", parameters, return_raw=raw)
 
     def publisher_count(self, filter: str = "", publishers: str = None,
                         raw: bool = False):

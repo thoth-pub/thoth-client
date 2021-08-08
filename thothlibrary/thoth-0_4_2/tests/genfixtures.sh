@@ -28,3 +28,4 @@ bash -c "python3 -m thothlibrary.cli contributor --version=0.4.2 --contributor_i
 bash -c "python3 -m thothlibrary.cli contribution --version=0.4.2 --contribution_id=29e4f46b-851a-4d7b-bb41-e6f305fc2b11 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/contribution.pickle"
 bash -c "python3 -m thothlibrary.cli serieses --version=0.4.2 --limit=3 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/serieses.pickle"
 bash -c "python3 -m thothlibrary.cli series --version=0.4.2 --series_id=d4b47a76-abff-4047-a3c7-d44d85ccf009 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/series.pickle"
+bash -c "python3 -m thothlibrary.cli issues --version=0.4.2 --limit=10 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/issues.pickle"
