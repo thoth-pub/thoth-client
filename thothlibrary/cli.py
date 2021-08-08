@@ -389,6 +389,44 @@ class ThothAPI:
             print(imprints)
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def serieses(self, limit=100, order=None, offset=0, publishers=None,
+                 filter=None, series_type=None, raw=False, version=None,
+                 endpoint=None, serialize=False):
+        """
+        Retrieves serieses from a Thoth instance
+        :param int limit: the maximum number of results to return (default: 100)
+        :param int order: a GraphQL order query statement
+        :param int offset: the offset from which to retrieve results (default: 0)
+        :param str publishers: a list of publishers to limit by
+        :param str filter: a filter string to search
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        :param series_type: the type of serieses to return (e.g. BOOK_SERIES)
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        serieses = self._client().serieses(limit=limit, order=order,
+                                           offset=offset,
+                                           publishers=publishers,
+                                           filter=filter,
+                                           series_type=series_type,
+                                           raw=raw)
+
+        if not raw and not serialize:
+            print(*serieses, sep='\n')
+        elif serialize:
+            print(json.dumps(serieses))
+        else:
+            print(serieses)
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def contributor_count(self, filter=None, raw=False, version=None,
                           endpoint=None):
         """

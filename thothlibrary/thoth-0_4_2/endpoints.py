@@ -285,6 +285,28 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "serieses": {
+            "parameters": [
+                "limit",
+                "offset",
+                "filter",
+                "order",
+                "publishers",
+                "seriesType"
+            ],
+            "fields": [
+                "seriesId",
+                "seriesType",
+                "seriesName",
+                "updatedAt",
+                "createdAt",
+                "imprintId",
+                "imprint { __typename publisher { publisherName publisherId __typename } }",
+                "issues { issueId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } } }",
+                "__typename"
+            ]
+        },
+
         "imprints": {
             "parameters": [
                 "limit",
@@ -399,7 +421,8 @@ class ThothClient0_4_2(ThothClient):
                           'contribution_count', 'work_count',
                           'publication_count', 'publication', 'imprints',
                           'imprint', 'imprint_count', 'contributors',
-                          'contributor', 'contributor_count', 'QUERIES']
+                          'contributor', 'contributor_count', 'serieses',
+                          'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -631,6 +654,25 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("publishers", parameters, return_raw=raw)
+
+    def serieses(self, limit: int = 100, offset: int = 0, order: str = None,
+                 filter: str = "", publishers: str = None,
+                 series_type: str = "", raw: bool = False):
+        """Construct and trigger a query to obtain all serieses"""
+        parameters = {
+            "limit": limit,
+            "offset": offset,
+        }
+
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'seriesType', series_type)
+
+        return self._api_request("serieses", parameters, return_raw=raw)
 
     def imprints(self, limit: int = 100, offset: int = 0, order: str = None,
                  filter: str = "", publishers: str = None,

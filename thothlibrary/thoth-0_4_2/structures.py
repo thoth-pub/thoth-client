@@ -84,6 +84,8 @@ default_fields = {'works': lambda
                   'publication': lambda
                       self: f'{_parse_authors(self.work)}{self.work.fullTitle} ({self.work.place}: {self.work.imprint.publisher.publisherName}, {datetime.strptime(self.work.publicationDate, "%Y-%m-%d").year if self.work.publicationDate else "n.d."}) '
                             f'[{self.publicationType}] {__price_parser(self.prices)} [{self.publicationId}]' if '__typename' in self and self.__typename == 'Publication' else f'{_muncher_repr(self)}',
+                  'serieses': lambda
+                      self: f'{self.seriesName} ({self.imprint.publisher.publisherName}) [{self.seriesId}]' if '__typename' in self and self.__typename == 'Series' else f'{_muncher_repr(self)}',
                   'publisher': lambda
                       self: f'{self.publisherName} ({self.publisherId})' if '__typename' in self and self.__typename == 'Publisher' else f'{_muncher_repr(self)}'}
 
