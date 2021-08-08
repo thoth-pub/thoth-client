@@ -408,6 +408,37 @@ class Thoth042Tests(unittest.TestCase):
             self.raw_tester(mock_response, thoth_client.contributions)
         return None
 
+    def test_contributors(self):
+        """
+        Tests that good input to contributors produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('contributors', m)
+            self.pickle_tester('contributors', thoth_client.contributors)
+        return None
+
+    def test_contributors_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('contributors_bad',
+                                                            m)
+            self.pickle_tester('contributors', thoth_client.contributors,
+                               negative=True)
+
+    def test_contributors_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('contributors', m)
+            self.raw_tester(mock_response, thoth_client.contributors)
+        return None
+
     def raw_tester(self, mock_response, method_to_call, lambda_mode=False):
         """
         An echo test that ensures the client returns accurate raw responses

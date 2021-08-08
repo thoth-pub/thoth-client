@@ -210,6 +210,24 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "contributors": {
+            "parameters": [
+                "limit",
+                "offset",
+                "filter",
+                "order",
+            ],
+            "fields": [
+                "contributorId",
+                "firstName",
+                "lastName",
+                "fullName",
+                "orcid",
+                "__typename",
+                "contributions { contributionId contributionType work { workId fullTitle} }"
+            ]
+        },
+
         "publishers": {
             "parameters": [
                 "limit",
@@ -337,7 +355,7 @@ class ThothClient0_4_2(ThothClient):
                           'contributions', 'publisher_count',
                           'contribution_count', 'work_count',
                           'publication_count', 'publication', 'imprints',
-                          'imprint', 'imprint_count', 'QUERIES']
+                          'imprint', 'imprint_count', 'contributors', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -413,6 +431,30 @@ class ThothClient0_4_2(ThothClient):
                                 contribution_type)
 
         return self._api_request("contributions", parameters, return_raw=raw)
+
+    def contributors(self, limit: int = 100, offset: int = 0,
+                     filter_str: str = "", order: str = None,
+                     raw: bool = False):
+        """
+        Returns a contributions list
+        @param limit: the maximum number of results to return (default: 100)
+        @param order: a GraphQL order query statement
+        @param offset: the offset from which to retrieve results (default: 0)
+        @param filter_str: a filter string to search
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        if order is None:
+            order = {}
+        parameters = {
+            "offset": offset,
+            "limit": limit,
+        }
+
+        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'order', order)
+
+        return self._api_request("contributors", parameters, return_raw=raw)
 
     def works(self, limit: int = 100, offset: int = 0, filter_str: str = "",
               order: str = None, publishers: str = None, work_type: str = None,
