@@ -499,6 +499,13 @@ class ThothClient0_4_2(ThothClient):
 
         "issuesCount": None,
 
+        "languageCount": {
+            "parameters": [
+                "languageCode",
+                "languageRelation",
+            ],
+        },
+
         "seriesCount": {
             "parameters": [
                 "filter",
@@ -525,7 +532,7 @@ class ThothClient0_4_2(ThothClient):
                           'contributor', 'contributor_count', 'serieses',
                           'series', 'series_count', 'issues',
                           'issue', 'issue_count', 'languages', 'language',
-                          'QUERIES']
+                          'language_count', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -968,6 +975,17 @@ class ThothClient0_4_2(ThothClient):
 
         return self._api_request("contributorCount", parameters,
                                  return_raw=raw)
+
+    def language_count(self, language_code: str = "",
+                       language_relation: str = "", raw: bool = False):
+        """Construct and trigger a query to count contribution count"""
+        parameters = {}
+
+        self._dictionary_append(parameters, 'languageCode', language_code)
+        self._dictionary_append(parameters, 'languageRelation',
+                                language_relation)
+
+        return self._api_request("languageCount", parameters, return_raw=raw)
 
     def issue_count(self, raw: bool = False):
         """Construct and trigger a query to count contribution count"""

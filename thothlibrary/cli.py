@@ -575,6 +575,28 @@ class ThothAPI:
             print(serieses)
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def language_count(self, language_code=None, raw=False, version=None,
+                       endpoint=None, language_relation=None):
+        """
+        Retrieves a count of contributors from a Thoth instance
+        :param bool raw: whether to return a python object or the raw result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param language_code: the code to retrieve (e.g. CHI)
+        :param language_relation: the relation (e.g. ORIGINAL)
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(self._client().language_count(language_code=language_code,
+                                            language_relation=language_relation,
+                                            raw=raw))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def contributor_count(self, filter=None, raw=False, version=None,
                           endpoint=None):
         """
