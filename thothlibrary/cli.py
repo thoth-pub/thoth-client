@@ -118,6 +118,9 @@ class ThothAPI:
         elif raw:
             print(works)
 
+    def supported_versions(self):
+        return self._client().supported_versions()
+
     @fire.decorators.SetParseFn(_raw_parse)
     def publication(self, publication_id, raw=False,
                     version=None, endpoint=None, serialize=False):

@@ -39,6 +39,7 @@ python3 -m thothlibrary.cli works --limit=10 --order='{field: PUBLICATION_DATE, 
 python3 -m thothlibrary.cli publisher_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli work_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
 python3 -m thothlibrary.cli publication_count --publication_type="HARDBACK"
+python3 -m thothlibrary.cli supported_versions
 ```
 
 

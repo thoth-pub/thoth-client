@@ -6,14 +6,17 @@ This programme is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
 import importlib
+import pkgutil
 
-from .graphql import GraphQLClientRequests as GraphQLClient
+import thothlibrary
 from .auth import ThothAuthenticator
+from .graphql import GraphQLClientRequests as GraphQLClient
 from .mutation import ThothMutation
 from .query import ThothQuery
+import re
 
 
-class ThothClient():
+class ThothClient:
     """Client to Thoth's GraphQL API"""
 
     def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
@@ -106,6 +109,19 @@ class ThothClient():
         """Construct and trigger a mutation to add a new contribution object"""
         return self.mutation("createContribution", contribution)
 
+    def supported_versions(self):
+        regex = 'thoth-(\d+_\d+_\d+)'
+
+        versions = []
+
+        for module in pkgutil.iter_modules(thothlibrary.__path__):
+            match = re.match(regex, module.name)
+
+            if match:
+                versions.append(match.group(1).replace('_', '.'))
+
+        return versions
+
     def _api_request(self, endpoint_name: str, parameters,
                      return_raw: bool = False):
         """
@@ -135,7 +151,8 @@ class ThothClient():
         builder = structures.StructureBuilder(endpoint_name, data)
         return builder.create_structure()
 
-    def _dictionary_append(self, input_dict, key, value):
+    @staticmethod
+    def _dictionary_append(input_dict, key, value):
         if value:
             input_dict[key] = value
         return input_dict
