@@ -341,6 +341,30 @@ class ThothAPI:
             print(json.dumps(lang))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def funder(self, funder_id, raw=False, version=None, endpoint=None,
+               serialize=False):
+        """
+        Retrieves a funder by ID from a Thoth instance
+        :param str funder_id: the series to fetch
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        funder = self._client().funder(funder_id=funder_id, raw=raw)
+
+        if not serialize:
+            print(funder)
+        else:
+            print(json.dumps(funder))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def subject(self, subject_id, raw=False, version=None, endpoint=None,
                 serialize=False):
         """

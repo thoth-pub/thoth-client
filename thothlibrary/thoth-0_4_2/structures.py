@@ -106,6 +106,8 @@ default_fields = {'works': lambda
                       self: f'{self.work.fullTitle} is in the {self.subjectCode} subject area ({self.subjectType}) [{self.subjectId}]' if '__typename' in self and self.__typename == 'Subject' else f'{_muncher_repr(self)}',
                   'funders': lambda
                       self: f'{self.funderName} funded {len(self.fundings)} books [{self.funderId}]' if '__typename' in self and self.__typename == 'Funder' else f'{_muncher_repr(self)}',
+                  'funder': lambda
+                      self: f'{self.funderName} funded {len(self.fundings)} books [{self.funderId}]' if '__typename' in self and self.__typename == 'Funder' else f'{_muncher_repr(self)}',
                   'languages': lambda
                       self: f'{self.work.fullTitle} is in {self.languageCode} ({self.languageRelation}) [{self.languageId}]' if '__typename' in self and self.__typename == 'Language' else f'{_muncher_repr(self)}',
                   'language': lambda

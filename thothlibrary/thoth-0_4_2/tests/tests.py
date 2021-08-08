@@ -346,6 +346,49 @@ class Thoth042Tests(unittest.TestCase):
                             lambda_mode=True)
         return None
 
+    def test_funder(self):
+        """
+        Tests that good input to funder produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('funder', m)
+            self.pickle_tester('funder',
+                               lambda:
+                               thoth_client.funder(
+                                   funder_id='194614ac-d189-4a74-8bf4-'
+                                             '74c0c9de4a81'))
+        return None
+
+    def test_funder_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('funder_bad', m)
+            self.pickle_tester('funder',
+                               lambda: thoth_client.funder(
+                                   funder_id='194614ac-d189-4a74-8bf4-'
+                                             '74c0c9de4a81'),
+                               negative=True)
+        return None
+
+    def test_funder_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('funder', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.funder(
+                                funder_id='194614ac-d189-4a74-8bf4-'
+                                          '74c0c9de4a81',
+                                raw=True),
+                            lambda_mode=True)
+        return None
+
     def test_subject(self):
         """
         Tests that good input to subject produces saved good output
