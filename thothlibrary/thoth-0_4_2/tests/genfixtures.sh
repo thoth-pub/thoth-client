@@ -24,3 +24,4 @@ bash -c "python3 -m thothlibrary.cli publication --version=0.4.2 --publication_i
 bash -c "python3 -m thothlibrary.cli imprints --version=0.4.2 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/imprints.pickle"
 bash -c "python3 -m thothlibrary.cli imprint --version=0.4.2 --imprint_id=78b0a283-9be3-4fed-a811-a7d4b9df7b25 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/imprint.pickle"
 bash -c "python3 -m thothlibrary.cli contributors --version=0.4.2 --limit=4 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/contributors.pickle"
+bash -c "python3 -m thothlibrary.cli contributor --version=0.4.2 --contributor_id=e8def8cf-0dfe-4da9-b7fa-f77e7aec7524 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/contributor.pickle"

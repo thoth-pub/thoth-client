@@ -346,7 +346,6 @@ class Thoth042Tests(unittest.TestCase):
                             lambda_mode=True)
         return None
 
-
     def test_imprints(self):
         """
         Tests that good input to publishers produces saved good output
@@ -406,6 +405,50 @@ class Thoth042Tests(unittest.TestCase):
         with requests_mock.Mocker() as m:
             mock_response, thoth_client = self.setup_mocker('contributions', m)
             self.raw_tester(mock_response, thoth_client.contributions)
+        return None
+
+    def test_contributor(self):
+        """
+        Tests that good input to contributor produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('contributor', m)
+            self.pickle_tester('contributor',
+                               lambda:
+                               thoth_client.contributor(
+                                   contributor_id='e8def8cf-0dfe-4da9-b7fa-'
+                                                  'f77e7aec7524'))
+        return None
+
+    def test_contributor_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('contributor_bad',
+                                                            m)
+            self.pickle_tester('contributor',
+                               lambda: thoth_client.contributor(
+                                   contributor_id='e8def8cf-0dfe-4da9-b7fa-'
+                                                  'f77e7aec7524'),
+                               negative=True)
+        return None
+
+    def test_contributor_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('contributor', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.contributor(
+                                contributor_id='e8def8cf-0dfe-4da9-b7fa-'
+                                               'f77e7aec7524',
+                                raw=True),
+                            lambda_mode=True)
         return None
 
     def test_contributors(self):

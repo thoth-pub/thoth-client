@@ -77,6 +77,8 @@ default_fields = {'works': lambda
                       self: f'{self.fullName} ({self.contributionType}) [{self.contributionId}]' if '__typename' in self and self.__typename == 'Contribution' else f'{_muncher_repr(self)}',
                   'contributors': lambda
                       self: f'{self.fullName} ({self.contributions[0].contributionType} of {self.contributions[0].work.fullTitle}) [{self.contributorId}]' if '__typename' in self and self.__typename == 'Contributor' else f'{_muncher_repr(self)}',
+                  'contributor': lambda
+                      self: f'{self.fullName} ({self.contributions[0].contributionType} of {self.contributions[0].work.fullTitle}) [{self.contributorId}]' if '__typename' in self and self.__typename == 'Contributor' else f'{_muncher_repr(self)}',
                   'publication': lambda
                       self: f'{_parse_authors(self.work)}{self.work.fullTitle} ({self.work.place}: {self.work.imprint.publisher.publisherName}, {datetime.strptime(self.work.publicationDate, "%Y-%m-%d").year if self.work.publicationDate else "n.d."}) '
                             f'[{self.publicationType}] {__price_parser(self.prices)} [{self.publicationId}]' if '__typename' in self and self.__typename == 'Publication' else f'{_muncher_repr(self)}',

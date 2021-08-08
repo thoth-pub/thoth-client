@@ -228,6 +228,21 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "contributor": {
+            "parameters": [
+                "contributorId"
+            ],
+            "fields": [
+                "contributorId",
+                "firstName",
+                "lastName",
+                "fullName",
+                "orcid",
+                "__typename",
+                "contributions { contributionId contributionType work { workId fullTitle} }"
+            ]
+        },
+
         "publishers": {
             "parameters": [
                 "limit",
@@ -355,10 +370,24 @@ class ThothClient0_4_2(ThothClient):
                           'contributions', 'publisher_count',
                           'contribution_count', 'work_count',
                           'publication_count', 'publication', 'imprints',
-                          'imprint', 'imprint_count', 'contributors', 'QUERIES']
+                          'imprint', 'imprint_count', 'contributors',
+                          'contributor', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
+
+    def contributor(self, contributor_id: str, raw: bool = False):
+        """
+        Returns a contributor by ID
+        @param contributor_id: the ID to fetch
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'contributorId': '"' + contributor_id + '"'
+        }
+
+        return self._api_request("contributor", parameters, return_raw=raw)
 
     def publication(self, publication_id: str, raw: bool = False):
         """

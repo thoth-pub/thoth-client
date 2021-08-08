@@ -245,6 +245,31 @@ class ThothAPI:
             print(json.dumps(publisher))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def contributor(self, contributor_id, raw=False, version=None,
+                    endpoint=None, serialize=False):
+        """
+        Retrieves a contriibutor by ID from a Thoth instance
+        :param str contributor_id: the contributor to fetch
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        contributor = self._client().contributor(contributor_id=contributor_id,
+                                                 raw=raw)
+
+        if not serialize:
+            print(contributor)
+        else:
+            print(json.dumps(contributor))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def imprint(self, imprint_id, raw=False, version=None, endpoint=None,
                 serialize=False):
         """
