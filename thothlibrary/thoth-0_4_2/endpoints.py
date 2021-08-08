@@ -291,6 +291,13 @@ class ThothClient0_4_2(ThothClient):
             ],
         },
 
+        "imprintCount": {
+            "parameters": [
+                "filter",
+                "publishers",
+            ],
+        },
+
         "workCount": {
             "parameters": [
                 "filter",
@@ -330,7 +337,7 @@ class ThothClient0_4_2(ThothClient):
                           'contributions', 'publisher_count',
                           'contribution_count', 'work_count',
                           'publication_count', 'publication', 'imprints',
-                          'imprint', 'QUERIES']
+                          'imprint', 'imprint_count', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -528,6 +535,16 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("publisherCount", parameters, return_raw=raw)
+
+    def imprint_count(self, filter_str: str = "", publishers: str = None,
+                      raw: bool = False):
+        """Construct and trigger a query to count publishers"""
+        parameters = {}
+
+        self._dictionary_append(parameters, 'filter', filter_str)
+        self._dictionary_append(parameters, 'publishers', publishers)
+
+        return self._api_request("imprintCount", parameters, return_raw=raw)
 
     def work_count(self, filter_str: str = "", publishers: str = None,
                    work_type: str = None, work_status: str = None,

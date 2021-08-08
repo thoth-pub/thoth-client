@@ -331,6 +331,28 @@ class ThothAPI:
                                              raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def imprint_count(self, publishers=None, filter_str=None, raw=False,
+                      version=None, endpoint=None):
+        """
+        Retrieves a count of imprints from a Thoth instance
+        :param str publishers: a list of publishers to limit by
+        :param str filter_str: a filter string to search
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(self._client().imprint_count(publishers=publishers,
+                                           filter_str=filter_str,
+                                           raw=raw))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def work_count(self, publishers=None, filter_str=None, raw=False,
                    work_type=None, work_status=None, version=None,
                    endpoint=None):
