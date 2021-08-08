@@ -56,7 +56,8 @@ python3 -m thothlibrary.cli publisher_count --publishers='["85fd969a-a16c-480b-b
 python3 -m thothlibrary.cli series --series_id=d4b47a76-abff-4047-a3c7-d44d85ccf009
 python3 -m thothlibrary.cli serieses --limit=3 --filter="Classics"
 python3 -m thothlibrary.cli series_count --series_type=BOOK_SERIES
-python3 -m thothlibrary.cli subjects --limit=10
+python3 -m thothlibrary.cli subject --subject_id=1291208f-fc43-47a4-a8e6-e132477ad57b
+python3 -m thothlibrary.cli subjects --limit=10 --subject_type=BIC
 python3 -m thothlibrary.cli supported_versions
 python3 -m thothlibrary.cli work --doi="https://doi.org/10.11647/OBP.0222"
 python3 -m thothlibrary.cli work --work_id="e0f748b2-984f-45cc-8b9e-13989c31dda4"

@@ -455,6 +455,22 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "subject": {
+            "parameters": [
+                "subjectId",
+            ],
+            "fields": [
+                "subjectId",
+                "workId",
+                "subjectCode",
+                "subjectType",
+                "subjectOrdinal",
+                "createdAt",
+                "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }"
+                "__typename"
+            ]
+        },
+
         "languages": {
             "parameters": [
                 "limit",
@@ -597,7 +613,7 @@ class ThothClient0_4_2(ThothClient):
                           'series', 'series_count', 'issues',
                           'issue', 'issue_count', 'languages', 'language',
                           'language_count', 'prices', 'price', 'price_count',
-                          'subjects', 'QUERIES']
+                          'subjects', 'subject', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -627,6 +643,19 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("language", parameters, return_raw=raw)
+
+    def subject(self, subject_id: str, raw: bool = False):
+        """
+        Returns a subject by ID
+        @param subject_id: the ID to fetch
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'subjectId': '"' + subject_id + '"'
+        }
+
+        return self._api_request("subject", parameters, return_raw=raw)
 
     def series(self, series_id: str, raw: bool = False):
         """

@@ -346,6 +346,49 @@ class Thoth042Tests(unittest.TestCase):
                             lambda_mode=True)
         return None
 
+    def test_subject(self):
+        """
+        Tests that good input to subject produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('subject', m)
+            self.pickle_tester('subject',
+                               lambda:
+                               thoth_client.subject(
+                                   subject_id='1291208f-fc43-47a4-a8e6-'
+                                              'e132477ad57b'))
+        return None
+
+    def test_subject_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('subject_bad', m)
+            self.pickle_tester('subject',
+                               lambda: thoth_client.subject(
+                                   subject_id='1291208f-fc43-47a4-a8e6-'
+                                              'e132477ad57b'),
+                               negative=True)
+        return None
+
+    def test_subject_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('subject', m)
+            self.raw_tester(mock_response,
+                            lambda: thoth_client.subject(
+                                subject_id='1291208f-fc43-47a4-a8e6-'
+                                           'e132477ad57b',
+                                raw=True),
+                            lambda_mode=True)
+        return None
+
     def test_imprint(self):
         """
         Tests that good input to imprint produces saved good output

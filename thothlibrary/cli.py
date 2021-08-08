@@ -341,6 +341,30 @@ class ThothAPI:
             print(json.dumps(lang))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def subject(self, subject_id, raw=False, version=None, endpoint=None,
+                serialize=False):
+        """
+        Retrieves a subject by ID from a Thoth instance
+        :param str subject_id: the series to fetch
+        :param bool raw: whether to return a python object or the raw server result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        subj = self._client().subject(subject_id=subject_id, raw=raw)
+
+        if not serialize:
+            print(subj)
+        else:
+            print(json.dumps(subj))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def imprint(self, imprint_id, raw=False, version=None, endpoint=None,
                 serialize=False):
         """
