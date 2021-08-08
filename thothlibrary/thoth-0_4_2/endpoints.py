@@ -434,6 +434,27 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "subjects": {
+            "parameters": [
+                "limit",
+                "offset",
+                "filter",
+                "order",
+                "publishers",
+                "subjectType",
+            ],
+            "fields": [
+                "subjectId",
+                "workId",
+                "subjectCode",
+                "subjectType",
+                "subjectOrdinal",
+                "createdAt",
+                "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }"
+                "__typename"
+            ]
+        },
+
         "languages": {
             "parameters": [
                 "limit",
@@ -576,7 +597,7 @@ class ThothClient0_4_2(ThothClient):
                           'series', 'series_count', 'issues',
                           'issue', 'issue_count', 'languages', 'language',
                           'language_count', 'prices', 'price', 'price_count',
-                          'QUERIES']
+                          'subjects', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -944,6 +965,25 @@ class ThothClient0_4_2(ThothClient):
                                 language_relation)
 
         return self._api_request("languages", parameters, return_raw=raw)
+
+    def subjects(self, limit: int = 100, offset: int = 0, order: str = None,
+                 filter: str = "", publishers: str = None, raw: bool = False,
+                 subject_type: str = ""):
+        """Construct and trigger a query to obtain all publishers"""
+        parameters = {
+            "limit": limit,
+            "offset": offset,
+        }
+
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'subjectType', subject_type)
+
+        return self._api_request("subjects", parameters, return_raw=raw)
 
     def issues(self, limit: int = 100, offset: int = 0, order: str = None,
                filter: str = "", publishers: str = None, raw: bool = False):

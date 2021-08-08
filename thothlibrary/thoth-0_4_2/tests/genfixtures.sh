@@ -34,3 +34,4 @@ bash -c "python3 -m thothlibrary.cli languages --version=0.4.2 --limit=10 --seri
 bash -c "python3 -m thothlibrary.cli language --version=0.4.2 --language_id=c19e68dd-c5a3-48f1-bd56-089ee732604c --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/language.pickle"
 bash -c "python3 -m thothlibrary.cli prices --version=0.4.2 --limit=10 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/prices.pickle"
 bash -c "python3 -m thothlibrary.cli price --version=0.4.2 --price_id=818567dd-7d3a-4963-8704-3381b5432877 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/price.pickle"
+bash -c "python3 -m thothlibrary.cli subjects --version=0.4.2 --limit=10 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/subjects.pickle"

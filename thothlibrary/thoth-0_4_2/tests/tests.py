@@ -779,7 +779,7 @@ class Thoth042Tests(unittest.TestCase):
             self.pickle_tester('serieses', thoth_client.serieses,
                                negative=True)
 
-    def test_serieses_raw(self):
+    def test_subjects_raw(self):
         """
         A test to ensure valid passthrough of raw json
         @return: None if successful
@@ -787,6 +787,36 @@ class Thoth042Tests(unittest.TestCase):
         with requests_mock.Mocker() as m:
             mock_response, thoth_client = self.setup_mocker('serieses', m)
             self.raw_tester(mock_response, thoth_client.serieses)
+        return None
+
+    def test_subjects(self):
+        """
+        Tests that good input to serieses produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('subjects', m)
+            self.pickle_tester('subjects', thoth_client.subjects)
+        return None
+
+    def test_subjects_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('subjects_bad', m)
+            self.pickle_tester('subjects', thoth_client.subjects,
+                               negative=True)
+
+    def test_subjects_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('subjects', m)
+            self.raw_tester(mock_response, thoth_client.subjects)
         return None
 
     def test_issues(self):

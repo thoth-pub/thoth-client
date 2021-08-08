@@ -561,6 +561,44 @@ class ThothAPI:
             print(langs)
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def subjects(self, limit=100, order=None, offset=0, publishers=None,
+                 filter=None, raw=False, version=None, endpoint=None,
+                 serialize=False, subject_type=None):
+        """
+        Retrieves languages from a Thoth instance
+        :param int limit: the maximum number of results to return (default: 100)
+        :param int order: a GraphQL order query statement
+        :param int offset: the offset from which to retrieve results (default: 0)
+        :param str publishers: a list of publishers to limit by
+        :param str filter: a filter string to search
+        :param bool raw: whether to return a python object or the raw result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        :param subject_type: select by subject code (e.g. BIC)
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        subj = self._client().subjects(limit=limit, order=order,
+                                       offset=offset,
+                                       publishers=publishers,
+                                       filter=filter,
+                                       subject_type=subject_type,
+                                       raw=raw)
+
+        if not raw and not serialize:
+            print(*subj, sep='\n')
+        elif serialize:
+            print(json.dumps(subj))
+        else:
+            print(subj)
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def prices(self, limit=100, order=None, offset=0, publishers=None,
                currency_code=None, raw=False, version=None, endpoint=None,
                serialize=False):

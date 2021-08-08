@@ -100,6 +100,8 @@ default_fields = {'works': lambda
                       self: f'{self.work.fullTitle} in {self.series.seriesName} ({self.series.imprint.publisher.publisherName}) [{self.issueId}]' if '__typename' in self and self.__typename == 'Issue' else f'{_muncher_repr(self)}',
                   'issue': lambda
                       self: f'{self.work.fullTitle} in {self.series.seriesName} ({self.series.imprint.publisher.publisherName}) [{self.issueId}]' if '__typename' in self and self.__typename == 'Issue' else f'{_muncher_repr(self)}',
+                  'subjects': lambda
+                      self: f'{self.work.fullTitle} is in the {self.subjectCode} subject area ({self.subjectType}) [{self.subjectId}]' if '__typename' in self and self.__typename == 'Subject' else f'{_muncher_repr(self)}',
                   'languages': lambda
                       self: f'{self.work.fullTitle} is in {self.languageCode} ({self.languageRelation}) [{self.languageId}]' if '__typename' in self and self.__typename == 'Language' else f'{_muncher_repr(self)}',
                   'language': lambda
