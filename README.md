@@ -41,6 +41,7 @@ python3 -m thothlibrary.cli imprint_count --publishers='["85fd969a-a16c-480b-b64
 python3 -m thothlibrary.cli issue --issue_id=6bd31b4c-35a9-4177-8074-dab4896a4a3d
 python3 -m thothlibrary.cli issues --limit=10
 python3 -m thothlibrary.cli issue_count
+python3 -m thothlibrary.cli languages --limit=10 --language_code=CHI
 python3 -m thothlibrary.cli publication --publication_id=34712b75-dcdd-408b-8d0c-cf29a35be2e5
 python3 -m thothlibrary.cli publications --limit=10 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
 python3 -m thothlibrary.cli publication_count --publication_type="HARDBACK"

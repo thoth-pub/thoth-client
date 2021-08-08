@@ -473,6 +473,46 @@ class ThothAPI:
             print(imprints)
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def languages(self, limit=100, order=None, offset=0, publishers=None,
+                  filter=None, raw=False, version=None, endpoint=None,
+                  serialize=False, language_code=None, language_relation=None):
+        """
+        Retrieves languages from a Thoth instance
+        :param int limit: the maximum number of results to return (default: 100)
+        :param int order: a GraphQL order query statement
+        :param int offset: the offset from which to retrieve results (default: 0)
+        :param str publishers: a list of publishers to limit by
+        :param str filter: a filter string to search
+        :param bool raw: whether to return a python object or the raw result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        :param language_relation: select by language relation (e.g. ORIGINAL)
+        :param language_code: select by lanmguage code (e.g. ADA)
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        langs = self._client().languages(limit=limit, order=order,
+                                         offset=offset,
+                                         publishers=publishers,
+                                         filter=filter,
+                                         language_code=language_code,
+                                         language_relation=language_relation,
+                                         raw=raw)
+
+        if not raw and not serialize:
+            print(*langs, sep='\n')
+        elif serialize:
+            print(json.dumps(langs))
+        else:
+            print(langs)
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def serieses(self, limit=100, order=None, offset=0, publishers=None,
                  filter=None, series_type=None, raw=False, version=None,
                  endpoint=None, serialize=False):

@@ -376,6 +376,37 @@ class Thoth042Tests(unittest.TestCase):
             self.raw_tester(mock_response, thoth_client.imprints)
         return None
 
+    def test_languages(self):
+        """
+        Tests that good input to languages produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('languages', m)
+            self.pickle_tester('languages', thoth_client.languages)
+        return None
+
+    def test_languages_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('languages_bad',
+                                                            m)
+            self.pickle_tester('languages', thoth_client.languages,
+                               negative=True)
+
+    def test_languages_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self.setup_mocker('languages', m)
+            self.raw_tester(mock_response, thoth_client.languages)
+        return None
+
     def test_contributions(self):
         """
         Tests that good input to contributions produces saved good output

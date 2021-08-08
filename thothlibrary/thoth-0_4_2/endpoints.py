@@ -381,6 +381,28 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "languages": {
+            "parameters": [
+                "limit",
+                "offset",
+                "filter",
+                "order",
+                "publishers",
+                "languageCode",
+                "languageRelation"
+            ],
+            "fields": [
+                "languageId",
+                "workId",
+                "languageCode",
+                "languageRelation",
+                "createdAt",
+                "mainLanguage",
+                "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }"
+                "__typename"
+            ]
+        },
+
         "imprint": {
             "parameters": [
                 "imprintId",
@@ -486,7 +508,7 @@ class ThothClient0_4_2(ThothClient):
                           'imprint', 'imprint_count', 'contributors',
                           'contributor', 'contributor_count', 'serieses',
                           'series', 'series_count', 'issues',
-                          'issue', 'issue_count', 'QUERIES']
+                          'issue', 'issue_count', 'languages', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -781,6 +803,27 @@ class ThothClient0_4_2(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("imprints", parameters, return_raw=raw)
+
+    def languages(self, limit: int = 100, offset: int = 0, order: str = None,
+                  filter: str = "", publishers: str = None, raw: bool = False,
+                  language_code: str = "", language_relation: str = ""):
+        """Construct and trigger a query to obtain all publishers"""
+        parameters = {
+            "limit": limit,
+            "offset": offset,
+        }
+
+        if filter and not filter.startswith('"'):
+            filter = '"{0}"'.format(filter)
+
+        self._dictionary_append(parameters, 'filter', filter)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'languageCode', language_code)
+        self._dictionary_append(parameters, 'languageRelation',
+                                language_relation)
+
+        return self._api_request("languages", parameters, return_raw=raw)
 
     def issues(self, limit: int = 100, offset: int = 0, order: str = None,
                filter: str = "", publishers: str = None, raw: bool = False):

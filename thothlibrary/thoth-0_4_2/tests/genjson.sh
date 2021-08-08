@@ -28,6 +28,7 @@ bash -c "python3 -m thothlibrary.cli serieses --version=0.4.2 --limit=3 --raw > 
 bash -c "python3 -m thothlibrary.cli series --version=0.4.2 --series_id=d4b47a76-abff-4047-a3c7-d44d85ccf009 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/series.json"
 bash -c "python3 -m thothlibrary.cli issues --version=0.4.2 --limit=10 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/issues.json"
 bash -c "python3 -m thothlibrary.cli issue --version=0.4.2 --issue_id=6bd31b4c-35a9-4177-8074-dab4896a4a3d --raw > thothlibrary/thoth-0_4_2/tests/fixtures/issue.json"
+bash -c "python3 -m thothlibrary.cli languages --version=0.4.2 --limit=10 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/languages.json"
 
 bash -c "echo '{\"data\": {\"contributions\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/contributions_bad.json"
 bash -c "echo '{\"data\": {\"works\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/works_bad.json"
@@ -46,3 +47,4 @@ bash -c "echo '{\"data\": {\"serieses\": [\"1\"] } }'  > thothlibrary/thoth-0_4_
 bash -c "echo '{\"data\": {\"series\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/series_bad.json"
 bash -c "echo '{\"data\": {\"issues\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/issues_bad.json"
 bash -c "echo '{\"data\": {\"issue\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/issue_bad.json"
+bash -c "echo '{\"data\": {\"languages\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/languages_bad.json"
