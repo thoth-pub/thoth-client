@@ -18,7 +18,8 @@ class ThothClient0_4_2(ThothClient):
     def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
         """
         Creates an instance of Thoth 0.4.2 endpoints
-        @param input_class: the ThothClient instance to be versioned
+        @param thoth_endpoint: the Thoth API instance endpoint
+        @param version: the version of the Thoth API to use
         """
 
         # the QUERIES field defines the fields that GraphQL will return
@@ -52,6 +53,15 @@ class ThothClient0_4_2(ThothClient):
 
     @staticmethod
     def _order_limit_filter_offset_setup(order, limit, search, offset):
+        """
+        The default setup for this version. Many methods use order, limit,
+        filter, and offset as parameters, so this de-duplicates that code.
+        @param order: the order
+        @param limit: the limit
+        @param search: the search
+        @param offset: the offset
+        @return: a parameters dictionary
+        """
         if not order:
             order = {}
         parameters = {
@@ -71,7 +81,7 @@ class ThothClient0_4_2(ThothClient):
         """
         Returns a contribution by ID
         @param contribution_id: the contribution ID
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -85,9 +95,9 @@ class ThothClient0_4_2(ThothClient):
                       contribution_type: str = None, raw: bool = False):
         """
         Returns a contributions list
-        @param limit: the maximum number of results to return (default: 100)
+        @param limit: the maximum number of results to return
         @param order: a GraphQL order query statement
-        @param offset: the offset from which to retrieve results (default: 0)
+        @param offset: the offset from which to retrieve results
         @param publishers: a list of publishers to limit by
         @param contribution_type: the contribution type (e.g. AUTHOR)
         @param raw: whether to return a python object or the raw server result
@@ -109,7 +119,14 @@ class ThothClient0_4_2(ThothClient):
 
     def contribution_count(self, search: str = "", publishers: str = None,
                            contribution_type: str = None, raw: bool = False):
-        """Construct and trigger a query to count contribution count"""
+        """
+        Returns a count of contributions
+        @param search: a search string
+        @param publishers: a list of publishers
+        @param contribution_type: a contribution type (e.g. AUTHOR)
+        @param raw: whether to return a raw result
+        @return: a count of contributions
+        """
         parameters = {}
 
         if search and not search.startswith('"'):
@@ -127,7 +144,7 @@ class ThothClient0_4_2(ThothClient):
         """
         Returns a contributor by ID
         @param contributor_id: the ID to fetch
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -140,12 +157,12 @@ class ThothClient0_4_2(ThothClient):
                      search: str = "", order: str = None,
                      raw: bool = False):
         """
-        Returns a contributions list
-        @param limit: the maximum number of results to return (default: 100)
+        Returns contributors
+        @param limit: the maximum number of results to return
         @param order: a GraphQL order query statement
-        @param offset: the offset from which to retrieve results (default: 0)
+        @param offset: the offset from which to retrieve results
         @param search: a filter string to search
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = self._order_limit_filter_offset_setup(order=order,
@@ -156,7 +173,12 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("contributors", parameters, return_raw=raw)
 
     def contributor_count(self, search: str = "", raw: bool = False):
-        """Construct and trigger a query to count contribution count"""
+        """
+        Return a count of contributors
+        @param search: a search string
+        @param raw: whether to return the raw result
+        @return: a count of contributors
+        """
         parameters = {}
 
         if search and not search.startswith('"'):
@@ -171,7 +193,7 @@ class ThothClient0_4_2(ThothClient):
         """
         Returns a funder by ID
         @param funder_id: the ID to fetch
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -182,7 +204,16 @@ class ThothClient0_4_2(ThothClient):
 
     def funders(self, limit: int = 100, offset: int = 0, order: str = None,
                 search: str = "", raw: bool = False):
-        """Construct and trigger a query to obtain all funders"""
+        """
+        Return funders
+        @param limit: the limit on the number of results
+        @param offset: the offset from which to start
+        @param order: the order of results
+        @param search: a search string
+        @param raw: whether to return raw result
+        @return: an object or raw result
+        """
+
         parameters = {
             "limit": limit,
             "offset": offset,
@@ -197,7 +228,12 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("funders", parameters, return_raw=raw)
 
     def funder_count(self, search: str = "", raw: bool = False):
-        """Construct and trigger a query to count publications"""
+        """
+        A count of funders
+        @param search: a search string
+        @param raw: whether to return raw result
+        @return: a count of funders
+        """
         parameters = {}
 
         if search and not search.startswith('"'):
@@ -211,7 +247,7 @@ class ThothClient0_4_2(ThothClient):
         """
         Returns a funding by ID
         @param funding_id: the ID to fetch
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -224,9 +260,9 @@ class ThothClient0_4_2(ThothClient):
                  publishers: str = None, raw: bool = False):
         """
         Returns a fundings list
-        @param limit: the maximum number of results to return (default: 100)
+        @param limit: the maximum number of results to return
         @param order: a GraphQL order query statement
-        @param offset: the offset from which to retrieve results (default: 0)
+        @param offset: the offset from which to retrieve results
         @param publishers: a list of publishers to limit by
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
@@ -244,16 +280,20 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("fundings", parameters, return_raw=raw)
 
     def funding_count(self, raw: bool = False):
-        """Construct and trigger a query to count contribution count"""
+        """
+        A count of fundings
+        @param raw: whether to return a raw result
+        @return: a count of fundings
+        """
         parameters = {}
 
         return self._api_request("fundingCount", parameters, return_raw=raw)
 
     def imprint(self, imprint_id: str, raw: bool = False):
         """
-        Returns a work by DOI
+        Return an imprint
         @param imprint_id: the imprint
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -265,7 +305,16 @@ class ThothClient0_4_2(ThothClient):
     def imprints(self, limit: int = 100, offset: int = 0, order: str = None,
                  search: str = "", publishers: str = None,
                  raw: bool = False):
-        """Construct and trigger a query to obtain all publishers"""
+        """
+        Return imprints
+        @param limit: the limit on the number of results returned
+        @param offset: the offset from which to begin
+        @param order: the order in which to present results
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit the query
+        @param raw: whether to return a raw result
+        @return: an object or raw result
+        """
         parameters = self._order_limit_filter_offset_setup(order=order,
                                                            search=search,
                                                            limit=limit,
@@ -276,7 +325,13 @@ class ThothClient0_4_2(ThothClient):
 
     def imprint_count(self, search: str = "", publishers: str = None,
                       raw: bool = False):
-        """Construct and trigger a query to count publishers"""
+        """
+        A count of imprints
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit the result
+        @param raw: whether to return a raw result
+        @return: a count of imprints
+        """
         parameters = {}
 
         self._dictionary_append(parameters, 'filter', search)
@@ -287,8 +342,8 @@ class ThothClient0_4_2(ThothClient):
     def issue(self, issue_id: str, raw: bool = False):
         """
         Returns an issue by ID
-        @param issue_id: the imprint
-        @param raw: whether to return a python object or the raw server result
+        @param issue_id: the issue
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -299,7 +354,16 @@ class ThothClient0_4_2(ThothClient):
 
     def issues(self, limit: int = 100, offset: int = 0, order: str = None,
                search: str = "", publishers: str = None, raw: bool = False):
-        """Construct and trigger a query to obtain all publishers"""
+        """
+        Return issues
+        @param limit: the limit on the number of results to return
+        @param offset: the offset from which to begin
+        @param order: the order in which to return results
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit results
+        @param raw: whether to return a raw response
+        @return: an object or raw response
+        """
         parameters = self._order_limit_filter_offset_setup(order=order,
                                                            search=search,
                                                            limit=limit,
@@ -309,7 +373,11 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("issues", parameters, return_raw=raw)
 
     def issue_count(self, raw: bool = False):
-        """Construct and trigger a query to count contribution count"""
+        """
+        A count of issues
+        @param raw: whether to return a raw result
+        @return: a count of issues
+        """
         parameters = {}
 
         return self._api_request("issueCount", parameters,
@@ -317,9 +385,9 @@ class ThothClient0_4_2(ThothClient):
 
     def language(self, language_id: str, raw: bool = False):
         """
-        Returns a series by ID
+        Returns a language by ID
         @param language_id: the ID to fetch
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -331,7 +399,18 @@ class ThothClient0_4_2(ThothClient):
     def languages(self, limit: int = 100, offset: int = 0, order: str = None,
                   search: str = "", publishers: str = None, raw: bool = False,
                   language_code: str = "", language_relation: str = ""):
-        """Construct and trigger a query to obtain all publishers"""
+        """
+        Return languages
+        @param limit: the limit on the number of results to return
+        @param offset: the offset from which to begin
+        @param order: the order in which to return results
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit the result
+        @param raw: whether to return a raw result
+        @param language_code: the language code to query
+        @param language_relation: the language relation to query (e.g. ORIGINAL)
+        @return: an object or raw result
+        """
         parameters = self._order_limit_filter_offset_setup(order=order,
                                                            search=search,
                                                            limit=limit,
@@ -345,7 +424,13 @@ class ThothClient0_4_2(ThothClient):
 
     def language_count(self, language_code: str = "",
                        language_relation: str = "", raw: bool = False):
-        """Construct and trigger a query to count contribution count"""
+        """
+        A count of languages
+        @param language_code: a language code (e.g. CHI)
+        @param language_relation: a language relation (e.g. ORIGINAL)
+        @param raw: whether to return a raw result
+        @return: a count of languages
+        """
         parameters = {}
 
         self._dictionary_append(parameters, 'languageCode', language_code)
@@ -358,7 +443,7 @@ class ThothClient0_4_2(ThothClient):
         """
         Returns a price by ID
         @param price_id: the ID to fetch
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -371,10 +456,10 @@ class ThothClient0_4_2(ThothClient):
                publishers: str = None, currency_code: str = None,
                raw: bool = False):
         """
-        Returns a price list
-        @param limit: the maximum number of results to return (default: 100)
+        Returns prices
+        @param limit: the maximum number of results to return
         @param order: a GraphQL order query statement
-        @param offset: the offset from which to retrieve results (default: 0)
+        @param offset: the offset from which to retrieve results
         @param publishers: a list of publishers to limit by
         @param currency_code: the currency code (e.g. GBP)
         @param raw: whether to return a python object or the raw server result
@@ -394,7 +479,12 @@ class ThothClient0_4_2(ThothClient):
         return self._api_request("prices", parameters, return_raw=raw)
 
     def price_count(self, currency_code: str = None, raw: bool = False):
-        """Construct and trigger a query to count publishers"""
+        """
+        A count of prices
+        @param currency_code: a currency code (e.g. GBP)
+        @param raw: whether to return a raw result
+        @return: a count of prices
+        """
         parameters = {}
 
         self._dictionary_append(parameters, 'currencyCode', currency_code)
@@ -405,7 +495,7 @@ class ThothClient0_4_2(ThothClient):
         """
         Returns a publication by ID
         @param publication_id: the ID to fetch
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -419,10 +509,10 @@ class ThothClient0_4_2(ThothClient):
                      publishers: str = None, publication_type: str = None,
                      raw: bool = False):
         """
-        Returns a publications list
-        @param limit: the maximum number of results to return (default: 100)
+        Returns publications
+        @param limit: the maximum number of results to return
         @param order: a GraphQL order query statement
-        @param offset: the offset from which to retrieve results (default: 0)
+        @param offset: the offset from which to retrieve results
         @param publishers: a list of publishers to limit by
         @param search: a filter string to search
         @param publication_type: the work type (e.g. PAPERBACK)
@@ -440,7 +530,14 @@ class ThothClient0_4_2(ThothClient):
 
     def publication_count(self, search: str = "", publishers: str = None,
                           publication_type: str = None, raw: bool = False):
-        """Construct and trigger a query to count publications"""
+        """
+        A count of publications
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit the result
+        @param publication_type: the publication type (e.g. PAPERBACK)
+        @param raw: whether to return a raw result
+        @return: a count of publications
+        """
         parameters = {}
 
         if search and not search.startswith('"'):
@@ -455,9 +552,9 @@ class ThothClient0_4_2(ThothClient):
 
     def publisher(self, publisher_id: str, raw: bool = False):
         """
-        Returns a work by DOI
+        Returns a publisher by ID
         @param publisher_id: the publisher
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -469,7 +566,16 @@ class ThothClient0_4_2(ThothClient):
     def publishers(self, limit: int = 100, offset: int = 0, order: str = None,
                    search: str = "", publishers: str = None,
                    raw: bool = False):
-        """Construct and trigger a query to obtain all publishers"""
+        """
+        Return publishers
+        @param limit: the limit on the number of results
+        @param offset: the offset from which to begin
+        @param order: the order for the returned results
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit the results
+        @param raw: whether to return a raw result
+        @return: an object or raw result
+        """
         parameters = self._order_limit_filter_offset_setup(order=order,
                                                            search=search,
                                                            limit=limit,
@@ -480,7 +586,13 @@ class ThothClient0_4_2(ThothClient):
 
     def publisher_count(self, search: str = "", publishers: str = None,
                         raw: bool = False):
-        """Construct and trigger a query to count publishers"""
+        """
+        Return a count of publishers
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit the result
+        @param raw: whether to return a raw result
+        @return: a count of publishers
+        """
         parameters = {}
 
         if search and not search.startswith('"'):
@@ -495,7 +607,7 @@ class ThothClient0_4_2(ThothClient):
         """
         Returns a series by ID
         @param series_id: the ID to fetch
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -507,7 +619,17 @@ class ThothClient0_4_2(ThothClient):
     def serieses(self, limit: int = 100, offset: int = 0, order: str = None,
                  search: str = "", publishers: str = None,
                  series_type: str = "", raw: bool = False):
-        """Construct and trigger a query to obtain all serieses"""
+        """
+        Return serieses
+        @param limit: the limit on the number of results to retrieve
+        @param offset: the offset from which to start
+        @param order: the order in which to present the results
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit results
+        @param series_type: the series type (e.g. BOOK_SERIES)
+        @param raw: whether to return a raw result
+        @return: an object or raw result
+        """
         parameters = self._order_limit_filter_offset_setup(order=order,
                                                            search=search,
                                                            limit=limit,
@@ -519,7 +641,14 @@ class ThothClient0_4_2(ThothClient):
 
     def series_count(self, search: str = "", publishers: str = None,
                      series_type: str = None, raw: bool = False):
-        """Construct and trigger a query to count contribution count"""
+        """
+        Return a count of serieses
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit the results
+        @param series_type: the type of series (e.g. BOOK_SERIES)
+        @param raw: whether to return a raw result
+        @return: a count of serieses
+        """
         parameters = {}
 
         if search and not search.startswith('"'):
@@ -536,7 +665,7 @@ class ThothClient0_4_2(ThothClient):
         """
         Returns a subject by ID
         @param subject_id: the ID to fetch
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -548,7 +677,17 @@ class ThothClient0_4_2(ThothClient):
     def subjects(self, limit: int = 100, offset: int = 0, order: str = None,
                  search: str = "", publishers: str = None, raw: bool = False,
                  subject_type: str = ""):
-        """Construct and trigger a query to obtain all publishers"""
+        """
+        Return subjects
+        @param limit: a limit on the number of results
+        @param offset: the offset from which to retrieve results
+        @param order: the order in which to present results
+        @param search: a search string
+        @param publishers: a list of publishers
+        @param raw: whether to return a raw result
+        @param subject_type: the subject type (e.g. BIC)
+        @return: subjects
+        """
         parameters = self._order_limit_filter_offset_setup(order=order,
                                                            search=search,
                                                            limit=limit,
@@ -560,7 +699,13 @@ class ThothClient0_4_2(ThothClient):
 
     def subject_count(self, subject_type: str = "", search: str = "",
                       raw: bool = False):
-        """Construct and trigger a query to count contribution count"""
+        """
+        A count of subjects
+        @param subject_type: the type of subject
+        @param search: a search string
+        @param raw: whether to return a raw result
+        @return: a count of subjects
+        """
         parameters = {}
 
         if search and not search.startswith('"'):
@@ -579,10 +724,10 @@ class ThothClient0_4_2(ThothClient):
               order: str = None, publishers: str = None, work_type: str = None,
               work_status: str = None, raw: bool = False):
         """
-        Returns a works list
-        @param limit: the maximum number of results to return (default: 100)
+        Returns works
+        @param limit: the maximum number of results to return
         @param order: a GraphQL order query statement
-        @param offset: the offset from which to retrieve results (default: 0)
+        @param offset: the offset from which to retrieve results
         @param publishers: a list of publishers to limit by
         @param search: a filter string to search
         @param work_type: the work type (e.g. MONOGRAPH)
@@ -612,7 +757,7 @@ class ThothClient0_4_2(ThothClient):
         """
         Returns a work by DOI
         @param doi: the DOI to fetch
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -625,7 +770,7 @@ class ThothClient0_4_2(ThothClient):
         """
         Returns a work by ID
         @param work_id: the ID to fetch
-        @param raw: whether to return a python object or the raw server result
+        @param raw: whether to return a python object or the raw result
         @return: either an object (default) or raw server response
         """
         parameters = {
@@ -637,7 +782,15 @@ class ThothClient0_4_2(ThothClient):
     def work_count(self, search: str = "", publishers: str = None,
                    work_type: str = None, work_status: str = None,
                    raw: bool = False):
-        """Construct and trigger a query to count works"""
+        """
+        A count of works
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit results
+        @param work_type: the work type (e.g. MONOGRAPH)
+        @param work_status: the work status (e.g. ACTIVE)
+        @param raw: whether to return a raw result
+        @return: a count of works
+        """
         parameters = {}
 
         if search and not search.startswith('"'):
