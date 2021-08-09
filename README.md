@@ -34,7 +34,7 @@ python3 -m thothlibrary.cli contributions --limit=10
 python3 -m thothlibrary.cli contribution_count
 python3 -m thothlibrary.cli contributor --contributor_id=e8def8cf-0dfe-4da9-b7fa-f77e7aec7524
 python3 -m thothlibrary.cli contributors --limit=10
-python3 -m thothlibrary.cli contributor_count --filter="Vincent"
+python3 -m thothlibrary.cli contributor_count --search="Vincent"
 python3 -m thothlibrary.cli funder --funder_id=194614ac-d189-4a74-8bf4-74c0c9de4a81
 python3 -m thothlibrary.cli funders --limit=10
 python3 -m thothlibrary.cli funder_count
@@ -59,7 +59,7 @@ python3 -m thothlibrary.cli publisher --publisher_id=85fd969a-a16c-480b-b641-cb9
 python3 -m thothlibrary.cli publishers --limit=10 --order='{field: PUBLISHER_ID, direction: ASC}' --offset=0 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli publisher_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli series --series_id=d4b47a76-abff-4047-a3c7-d44d85ccf009
-python3 -m thothlibrary.cli serieses --limit=3 --filter="Classics"
+python3 -m thothlibrary.cli serieses --limit=3 --search="Classics"
 python3 -m thothlibrary.cli series_count --series_type=BOOK_SERIES
 python3 -m thothlibrary.cli subject --subject_id=1291208f-fc43-47a4-a8e6-e132477ad57b
 python3 -m thothlibrary.cli subjects --limit=10 --subject_type=BIC
