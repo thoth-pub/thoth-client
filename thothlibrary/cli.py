@@ -6,6 +6,9 @@ it under the terms of the Apache License v2.0.
 import json
 
 import fire
+from graphqlclient import GraphQLClient
+
+import thothlibrary
 
 
 def _raw_parse(value):
@@ -41,6 +44,25 @@ class ThothAPI:
         from .client import ThothClient
         return ThothClient(version=self.version, thoth_endpoint=self.endpoint)
 
+    def _override_version(self, endpoint, version):
+        """
+        Allow an override of the version and endpoint on any request method
+        @param endpoint: the Thoth endpoint
+        @param version: the API version
+        @return: None
+        """
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        self.thoth_endpoint = self.endpoint
+        self.auth_endpoint = "{}/account/login".format(self.endpoint)
+        self.graphql_endpoint = "{}/graphql".format(self.endpoint)
+        self.client = GraphQLClient(self.graphql_endpoint)
+        self.version = self.version.replace('.', '_')
+
     @fire.decorators.SetParseFn(_raw_parse)
     def contribution(self, contribution_id, raw=False, version=None,
                      endpoint=None, serialize=False):
@@ -52,11 +74,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         contribution = self._client().contribution(
             contribution_id=contribution_id, raw=raw)
@@ -82,11 +100,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         contribs = self._client().contributions(
             limit=limit, order=order, offset=offset, publishers=publishers,
@@ -112,11 +126,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         """
 
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().contribution_count(
             publishers=publishers, search=search,
@@ -133,11 +143,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         contributor = self._client().contributor(contributor_id=contributor_id,
                                                  raw=raw)
@@ -161,11 +167,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         contribs = self._client().contributors(limit=limit, order=order,
                                                offset=offset,
@@ -190,11 +192,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         """
 
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().contributor_count(search=search, raw=raw))
 
@@ -209,11 +207,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         funder = self._client().funder(funder_id=funder_id, raw=raw)
 
@@ -236,12 +230,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         funders = self._client().funders(limit=limit, order=order,
                                          offset=offset, search=search, raw=raw)
@@ -262,12 +251,7 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().funder_count(search=search, raw=raw))
 
@@ -282,11 +266,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         funding = self._client().funding(funding_id=funding_id, raw=raw)
 
@@ -309,12 +289,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         fundings = self._client().fundings(limit=limit, order=order,
                                            offset=offset, publishers=publishers,
@@ -335,12 +310,7 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().funding_count(raw=raw))
 
@@ -355,11 +325,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         imprint = self._client().imprint(imprint_id=imprint_id, raw=raw)
 
@@ -384,12 +350,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         imprints = self._client().imprints(limit=limit, order=order,
                                            offset=offset,
@@ -415,12 +376,7 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().imprint_count(publishers=publishers,
                                            search=search,
@@ -437,11 +393,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         issue = self._client().issue(issue_id=issue_id, raw=raw)
 
@@ -466,12 +418,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         issues = self._client().issues(limit=limit, order=order,
                                        offset=offset,
@@ -494,12 +441,7 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().issue_count(raw=raw))
 
@@ -514,11 +456,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         lang = self._client().language(language_id=language_id, raw=raw)
 
@@ -545,12 +483,7 @@ class ThothAPI:
         :param language_relation: select by language relation (e.g. ORIGINAL)
         :param language_code: select by language code (e.g. ADA)
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         langs = self._client().languages(limit=limit, order=order,
                                          offset=offset,
@@ -578,12 +511,7 @@ class ThothAPI:
         :param language_code: the code to retrieve (e.g. CHI)
         :param language_relation: the relation (e.g. ORIGINAL)
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().language_count(language_code=language_code,
                                             language_relation=language_relation,
@@ -600,11 +528,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         price = self._client().price(price_id=price_id, raw=raw)
 
@@ -629,12 +553,7 @@ class ThothAPI:
         :param bool serialize: return a pickled python object
         :param str currency_code: the currency code (e.g. GBP)
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         prices = self._client().prices(limit=limit, order=order,
                                        offset=offset,
@@ -659,12 +578,7 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().price_count(currency_code=currency_code, raw=raw))
 
@@ -679,11 +593,7 @@ class ThothAPI:
         :param bool serialize: return a pickled python object
         :param str publication_id: a publicationId to retrieve
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         publication = self._client().publication(publication_id=publication_id,
                                                  raw=raw)
@@ -710,11 +620,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         pubs = self._client().publications(limit=limit, order=order,
                                            offset=offset, publishers=publishers,
@@ -740,12 +646,7 @@ class ThothAPI:
         :param str publication_type: the work type (e.g. MONOGRAPH)
         :param str endpoint: a custom Thoth endpoint
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().publication_count(
             publishers=publishers, search=search,
@@ -762,11 +663,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         publisher = self._client().publisher(publisher_id=publisher_id, raw=raw)
 
@@ -791,12 +688,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         found_publishers = self._client().publishers(limit=limit, order=order,
                                                      offset=offset,
@@ -822,12 +714,7 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().publisher_count(publishers=publishers,
                                              search=search,
@@ -844,11 +731,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         series = self._client().series(series_id=series_id, raw=raw)
 
@@ -874,12 +757,7 @@ class ThothAPI:
         :param bool serialize: return a pickled python object
         :param series_type: the type of serieses to return (e.g. BOOK_SERIES)
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         serieses = self._client().serieses(limit=limit, order=order,
                                            offset=offset,
@@ -907,12 +785,7 @@ class ThothAPI:
         :param str series_type: the work type (e.g. BOOK_SERIES)
         :param str endpoint: a custom Thoth endpoint
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().series_count(publishers=publishers, search=search,
                                           series_type=series_type, raw=raw))
@@ -928,11 +801,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         subj = self._client().subject(subject_id=subject_id, raw=raw)
 
@@ -958,12 +827,7 @@ class ThothAPI:
         :param bool serialize: return a pickled python object
         :param subject_type: select by subject code (e.g. BIC)
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         subj = self._client().subjects(limit=limit, order=order,
                                        offset=offset,
@@ -990,12 +854,7 @@ class ThothAPI:
         :param str subject_type: the type to retrieve (e.g. BIC)
         :param str search: a search
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().subject_count(subject_type=subject_type,
                                            search=search, raw=raw))
@@ -1020,11 +879,7 @@ class ThothAPI:
         :param str work_id: a workId to retrieve
         :param bool cover_ascii: whether to render an ASCII art cover
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         if not doi and not work_id:
             print("You must specify either workId or doi.")
@@ -1063,11 +918,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         """
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         works = self._client().works(limit=limit, order=order, offset=offset,
                                      publishers=publishers,
@@ -1097,12 +948,7 @@ class ThothAPI:
         :param str work_status: the work status (e.g. ACTIVE)
         :param str endpoint: a custom Thoth endpoint
         """
-
-        if endpoint:
-            self.endpoint = endpoint
-
-        if version:
-            self.version = version
+        self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().work_count(publishers=publishers,
                                         search=search,

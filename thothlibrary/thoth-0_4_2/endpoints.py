@@ -7,6 +7,7 @@ import json
 import os
 import pathlib
 
+import thothlibrary
 from thothlibrary.client import ThothClient
 
 
@@ -15,12 +16,17 @@ class ThothClient0_4_2(ThothClient):
     The client for Thoth 0.4.2
     """
 
+    def __new__(cls, *args, **kwargs):
+        return super(thothlibrary.ThothClient, ThothClient0_4_2).__new__(cls)
+
     def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
         """
         Creates an instance of Thoth 0.4.2 endpoints
         @param thoth_endpoint: the Thoth API instance endpoint
         @param version: the version of the Thoth API to use
         """
+        if hasattr(self, 'client'):
+            return
 
         # the QUERIES field defines the fields that GraphQL will return
         # note: every query should contain the field "__typename" if auto-object
@@ -32,24 +38,7 @@ class ThothClient0_4_2(ThothClient):
         with open(path, 'r') as query_file:
             self.QUERIES = json.loads(query_file.read())
 
-        # this list should specify all API endpoints by method name in this
-        # class. Note, it should always, also, contain the QUERIES list
-        self.endpoints = ['works', 'work_by_doi', 'work_by_id',
-                          'publishers', 'publisher', 'publications',
-                          'contributions', 'contribution', 'publisher_count',
-                          'contribution_count', 'work_count',
-                          'publication_count', 'publication', 'imprints',
-                          'imprint', 'imprint_count', 'contributors',
-                          'contributor', 'contributor_count', 'serieses',
-                          'series', 'series_count', 'issues',
-                          'issue', 'issue_count', 'languages', 'language',
-                          'language_count', 'prices', 'price', 'price_count',
-                          'subjects', 'subject', 'subject_count', 'funders',
-                          'funder', 'funder_count', 'fundings', 'funding',
-                          'funding_count', 'QUERIES']
-
-        super().__init__(thoth_endpoint=thoth_endpoint,
-                         version=version)
+        super().__init__(thoth_endpoint=thoth_endpoint, version=version)
 
     @staticmethod
     def _order_limit_filter_offset_setup(order, limit, search, offset):

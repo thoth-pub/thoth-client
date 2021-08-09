@@ -19,6 +19,19 @@ import re
 class ThothClient:
     """Client to Thoth's GraphQL API"""
 
+    def __new__(cls, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
+        # this new call is the only bit of "magic"
+        # it basically subs in the sub-class of the correct version and returns
+        # an instance of that, instead of the generic class
+        version_replaced = version.replace('.', '_')
+        module = 'thothlibrary.thoth-{0}.endpoints'.format(version_replaced)
+        endpoints = importlib.import_module(module)
+
+        version_endpoints = getattr(
+            endpoints, 'ThothClient{0}'.format(version_replaced))
+
+        return version_endpoints(thoth_endpoint=thoth_endpoint, version=version)
+
     def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
         """Returns new ThothClient object at the specified GraphQL endpoint
 
@@ -29,23 +42,6 @@ class ThothClient:
         self.graphql_endpoint = "{}/graphql".format(thoth_endpoint)
         self.client = GraphQLClient(self.graphql_endpoint)
         self.version = version.replace('.', '_')
-
-        # this is the only 'magic' part for queries
-        # it wires up the methods named in 'endpoints' list of a versioned
-        # subclass (e.g. thoth_0_4_2) to this class, thereby providing the
-        # methods that can be called for any API version
-        if issubclass(ThothClient, type(self)):
-            module = 'thothlibrary.thoth-{0}.endpoints'.format(self.version)
-            endpoints = importlib.import_module(module)
-
-            version_endpoints = getattr(
-                endpoints, 'ThothClient{0}'.format(self.version))(
-                version=version, thoth_endpoint=thoth_endpoint)
-
-            [setattr(self,
-                     x,
-                     getattr(version_endpoints,
-                             x)) for x in version_endpoints.endpoints]
 
     def login(self, email, password):
         """Obtain an authentication token"""
