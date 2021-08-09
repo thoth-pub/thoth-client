@@ -256,6 +256,7 @@ class ThothClient0_4_2(ThothClient):
                 "doi"
             ],
             "fields": [
+                "workId",
                 "workType",
                 "workStatus",
                 "fullTitle",
