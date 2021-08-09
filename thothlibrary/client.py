@@ -155,6 +155,23 @@ class ThothClient:
         return builder.create_structure()
 
     @staticmethod
+    def _order_limit_filter_offset_setup(order, limit, search, offset):
+        if not order:
+            order = {}
+        parameters = {
+            "offset": offset,
+            "limit": limit,
+        }
+
+        if search and not search.startswith('"'):
+            search = '"{0}"'.format(search)
+
+        ThothClient._dictionary_append(parameters, 'filter', search)
+        ThothClient._dictionary_append(parameters, 'order', order)
+
+        return parameters
+
+    @staticmethod
     def _dictionary_append(input_dict, key, value):
         """
         Either adds a value to a dictionary or doesn't if it's null

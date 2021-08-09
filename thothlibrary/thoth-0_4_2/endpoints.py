@@ -131,18 +131,10 @@ class ThothClient0_4_2(ThothClient):
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
         """
-        if order is None:
-            order = {}
-        parameters = {
-            "offset": offset,
-            "limit": limit,
-        }
-
-        if search and not search.startswith('"'):
-            search = '"{0}"'.format(search)
-
-        self._dictionary_append(parameters, 'filter', search)
-        self._dictionary_append(parameters, 'order', order)
+        parameters = self._order_limit_filter_offset_setup(order=order,
+                                                           search=search,
+                                                           limit=limit,
+                                                           offset=offset)
 
         return self._api_request("contributors", parameters, return_raw=raw)
 
@@ -257,16 +249,10 @@ class ThothClient0_4_2(ThothClient):
                  search: str = "", publishers: str = None,
                  raw: bool = False):
         """Construct and trigger a query to obtain all publishers"""
-        parameters = {
-            "limit": limit,
-            "offset": offset,
-        }
-
-        if search and not search.startswith('"'):
-            search = '"{0}"'.format(search)
-
-        self._dictionary_append(parameters, 'filter', search)
-        self._dictionary_append(parameters, 'order', order)
+        parameters = self._order_limit_filter_offset_setup(order=order,
+                                                           search=search,
+                                                           limit=limit,
+                                                           offset=offset)
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("imprints", parameters, return_raw=raw)
@@ -297,16 +283,10 @@ class ThothClient0_4_2(ThothClient):
     def issues(self, limit: int = 100, offset: int = 0, order: str = None,
                search: str = "", publishers: str = None, raw: bool = False):
         """Construct and trigger a query to obtain all publishers"""
-        parameters = {
-            "limit": limit,
-            "offset": offset,
-        }
-
-        if search and not search.startswith('"'):
-            search = '"{0}"'.format(search)
-
-        self._dictionary_append(parameters, 'filter', search)
-        self._dictionary_append(parameters, 'order', order)
+        parameters = self._order_limit_filter_offset_setup(order=order,
+                                                           search=search,
+                                                           limit=limit,
+                                                           offset=offset)
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("issues", parameters, return_raw=raw)
@@ -335,16 +315,10 @@ class ThothClient0_4_2(ThothClient):
                   search: str = "", publishers: str = None, raw: bool = False,
                   language_code: str = "", language_relation: str = ""):
         """Construct and trigger a query to obtain all publishers"""
-        parameters = {
-            "limit": limit,
-            "offset": offset,
-        }
-
-        if search and not search.startswith('"'):
-            search = '"{0}"'.format(search)
-
-        self._dictionary_append(parameters, 'filter', search)
-        self._dictionary_append(parameters, 'order', order)
+        parameters = self._order_limit_filter_offset_setup(order=order,
+                                                           search=search,
+                                                           limit=limit,
+                                                           offset=offset)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'languageCode', language_code)
         self._dictionary_append(parameters, 'languageRelation',
@@ -438,18 +412,10 @@ class ThothClient0_4_2(ThothClient):
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
         """
-        if order is None:
-            order = {}
-        parameters = {
-            "offset": offset,
-            "limit": limit,
-        }
-
-        if search and not search.startswith('"'):
-            search = '"{0}"'.format(search)
-
-        self._dictionary_append(parameters, 'filter', search)
-        self._dictionary_append(parameters, 'order', order)
+        parameters = self._order_limit_filter_offset_setup(order=order,
+                                                           search=search,
+                                                           limit=limit,
+                                                           offset=offset)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'publicationType', publication_type)
 
@@ -487,16 +453,10 @@ class ThothClient0_4_2(ThothClient):
                    search: str = "", publishers: str = None,
                    raw: bool = False):
         """Construct and trigger a query to obtain all publishers"""
-        parameters = {
-            "limit": limit,
-            "offset": offset,
-        }
-
-        if search and not search.startswith('"'):
-            search = '"{0}"'.format(search)
-
-        self._dictionary_append(parameters, 'filter', search)
-        self._dictionary_append(parameters, 'order', order)
+        parameters = self._order_limit_filter_offset_setup(order=order,
+                                                           search=search,
+                                                           limit=limit,
+                                                           offset=offset)
         self._dictionary_append(parameters, 'publishers', publishers)
 
         return self._api_request("publishers", parameters, return_raw=raw)
@@ -531,16 +491,10 @@ class ThothClient0_4_2(ThothClient):
                  search: str = "", publishers: str = None,
                  series_type: str = "", raw: bool = False):
         """Construct and trigger a query to obtain all serieses"""
-        parameters = {
-            "limit": limit,
-            "offset": offset,
-        }
-
-        if search and not search.startswith('"'):
-            search = '"{0}"'.format(search)
-
-        self._dictionary_append(parameters, 'filter', search)
-        self._dictionary_append(parameters, 'order', order)
+        parameters = self._order_limit_filter_offset_setup(order=order,
+                                                           search=search,
+                                                           limit=limit,
+                                                           offset=offset)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'seriesType', series_type)
 
@@ -578,16 +532,10 @@ class ThothClient0_4_2(ThothClient):
                  search: str = "", publishers: str = None, raw: bool = False,
                  subject_type: str = ""):
         """Construct and trigger a query to obtain all publishers"""
-        parameters = {
-            "limit": limit,
-            "offset": offset,
-        }
-
-        if search and not search.startswith('"'):
-            search = '"{0}"'.format(search)
-
-        self._dictionary_append(parameters, 'filter', search)
-        self._dictionary_append(parameters, 'order', order)
+        parameters = self._order_limit_filter_offset_setup(order=order,
+                                                           search=search,
+                                                           limit=limit,
+                                                           offset=offset)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'subjectType', subject_type)
 
