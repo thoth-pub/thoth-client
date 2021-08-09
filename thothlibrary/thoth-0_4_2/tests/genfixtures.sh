@@ -39,3 +39,4 @@ bash -c "python3 -m thothlibrary.cli subject --version=0.4.2 --subject_id=129120
 bash -c "python3 -m thothlibrary.cli funders --version=0.4.2 --limit=10 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/funders.pickle"
 bash -c "python3 -m thothlibrary.cli funder --version=0.4.2 --funder_id=194614ac-d189-4a74-8bf4-74c0c9de4a81 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/funder.pickle"
 bash -c "python3 -m thothlibrary.cli fundings --version=0.4.2 --limit=10 --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/fundings.pickle"
+bash -c "python3 -m thothlibrary.cli funding --version=0.4.2 --funding_id=5323d3e7-3ae9-4778-8464-9400fbbb959e --serialize > thothlibrary/thoth-0_4_2/tests/fixtures/funding.pickle"

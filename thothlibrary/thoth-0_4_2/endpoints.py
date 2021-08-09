@@ -97,6 +97,25 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "funding": {
+            "parameters": [
+                "fundingId",
+            ],
+            "fields": [
+                "fundingId",
+                "workId",
+                "funderId",
+                "program",
+                "grantNumber",
+                "projectName",
+                "projectShortname",
+                "jurisdiction",
+                "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+                "funder { funderId funderName funderDoi }",
+                "__typename"
+            ]
+        },
+
         "fundings": {
             "parameters": [
                 "limit",
@@ -678,10 +697,24 @@ class ThothClient0_4_2(ThothClient):
                           'issue', 'issue_count', 'languages', 'language',
                           'language_count', 'prices', 'price', 'price_count',
                           'subjects', 'subject', 'subject_count', 'funders',
-                          'funder', 'funder_count', 'fundings', 'QUERIES']
+                          'funder', 'funder_count', 'fundings', 'funding',
+                          'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
+
+    def funding(self, funding_id: str, raw: bool = False):
+        """
+        Returns a funding by ID
+        @param funding_id: the ID to fetch
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'fundingId': '"' + funding_id + '"'
+        }
+
+        return self._api_request("funding", parameters, return_raw=raw)
 
     def contributor(self, contributor_id: str, raw: bool = False):
         """
