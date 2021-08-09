@@ -9,7 +9,8 @@ it under the terms of the Apache License v2.0.
 
 
 import json
-import urllib
+
+import requests
 
 from .errors import ThothError
 
@@ -66,7 +67,8 @@ class ThothQuery:
                 return result
             return json.loads(result)["data"][self.query_name]
         except (KeyError, TypeError, ValueError, AssertionError,
-                json.decoder.JSONDecodeError, urllib.error.HTTPError):
+                json.decoder.JSONDecodeError,
+                requests.exceptions.RequestException):
             raise ThothError(self.request, result)
 
     def prepare_parameters(self):
