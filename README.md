@@ -38,6 +38,7 @@ python3 -m thothlibrary.cli contributor_count --filter="Vincent"
 python3 -m thothlibrary.cli funder --funder_id=194614ac-d189-4a74-8bf4-74c0c9de4a81
 python3 -m thothlibrary.cli funders --limit=10
 python3 -m thothlibrary.cli funder_count
+python3 -m thothlibrary.cli fundings --limit=10
 python3 -m thothlibrary.cli imprint --imprint_id=78b0a283-9be3-4fed-a811-a7d4b9df7b25
 python3 -m thothlibrary.cli imprints --limit=25 --offset=0 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli imprint_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'

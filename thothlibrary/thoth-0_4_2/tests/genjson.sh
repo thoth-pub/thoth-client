@@ -36,6 +36,7 @@ bash -c "python3 -m thothlibrary.cli subjects --version=0.4.2 --limit=10 --raw >
 bash -c "python3 -m thothlibrary.cli subject --version=0.4.2 --subject_id=1291208f-fc43-47a4-a8e6-e132477ad57b --raw > thothlibrary/thoth-0_4_2/tests/fixtures/subject.json"
 bash -c "python3 -m thothlibrary.cli funders --version=0.4.2 --limit=10 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/funders.json"
 bash -c "python3 -m thothlibrary.cli funder --version=0.4.2 --funder_id=194614ac-d189-4a74-8bf4-74c0c9de4a81 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/funder.json"
+bash -c "python3 -m thothlibrary.cli fundings --version=0.4.2 --limit=10 --raw > thothlibrary/thoth-0_4_2/tests/fixtures/fundings.json"
 
 bash -c "echo '{\"data\": {\"contributions\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/contributions_bad.json"
 bash -c "echo '{\"data\": {\"works\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/works_bad.json"
@@ -62,3 +63,4 @@ bash -c "echo '{\"data\": {\"subjects\": [\"1\"] } }'  > thothlibrary/thoth-0_4_
 bash -c "echo '{\"data\": {\"subject\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/subject_bad.json"
 bash -c "echo '{\"data\": {\"funders\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/funders_bad.json"
 bash -c "echo '{\"data\": {\"funder\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/funder_bad.json"
+bash -c "echo '{\"data\": {\"fundings\": [\"1\"] } }'  > thothlibrary/thoth-0_4_2/tests/fixtures/fundings_bad.json"

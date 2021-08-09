@@ -97,6 +97,28 @@ class ThothClient0_4_2(ThothClient):
             ]
         },
 
+        "fundings": {
+            "parameters": [
+                "limit",
+                "offset",
+                "publishers",
+                "order",
+            ],
+            "fields": [
+                "fundingId",
+                "workId",
+                "funderId",
+                "program",
+                "grantNumber",
+                "projectName",
+                "projectShortname",
+                "jurisdiction",
+                "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+                "funder { funderId funderName funderDoi }",
+                "__typename"
+            ]
+        },
+
         "funders": {
             "parameters": [
                 "limit",
@@ -656,7 +678,7 @@ class ThothClient0_4_2(ThothClient):
                           'issue', 'issue_count', 'languages', 'language',
                           'language_count', 'prices', 'price', 'price_count',
                           'subjects', 'subject', 'subject_count', 'funders',
-                          'funder', 'funder_count', 'QUERIES']
+                          'funder', 'funder_count', 'fundings', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -751,6 +773,29 @@ class ThothClient0_4_2(ThothClient):
         }
 
         return self._api_request("publication", parameters, return_raw=raw)
+
+    def fundings(self, limit: int = 100, offset: int = 0, order: str = None,
+                 publishers: str = None, raw: bool = False):
+        """
+        Returns a fundings list
+        @param limit: the maximum number of results to return (default: 100)
+        @param order: a GraphQL order query statement
+        @param offset: the offset from which to retrieve results (default: 0)
+        @param publishers: a list of publishers to limit by
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        if order is None:
+            order = {}
+        parameters = {
+            "offset": offset,
+            "limit": limit,
+        }
+
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+
+        return self._api_request("fundings", parameters, return_raw=raw)
 
     def prices(self, limit: int = 100, offset: int = 0, order: str = None,
                publishers: str = None, currency_code: str = None,
