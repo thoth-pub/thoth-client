@@ -4,6 +4,7 @@ This program is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
 import json
+import pathlib
 
 from thothlibrary.client import ThothClient
 
@@ -13,7 +14,8 @@ class ThothClient0_4_2(ThothClient):
     The client for Thoth 0.4.2
     """
 
-    def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
+    def __init__(self, thoth_endpoint="https://api.thoth.pub",
+                 version="0.4.2b"):
         """
         Creates an instance of Thoth 0.4.2 endpoints
         @param input_class: the ThothClient instance to be versioned
@@ -23,8 +25,9 @@ class ThothClient0_4_2(ThothClient):
         # note: every query should contain the field "__typename" if auto-object
         # __str__ representation is to work. These are stored in the
         # fixtures/QUERIES file
-        path = 'thothlibrary/thoth-{0}/fixtures/QUERIES'
-        with open(path.format(version.replace('.', '_')), 'r') as query_file:
+        path = '{0}/fixtures/QUERIES'
+        script_dir = pathlib.Path(__file__).parent.resolve()
+        with open(path.format(script_dir), 'r') as query_file:
             self.QUERIES = json.loads(query_file.read())
 
         # this list should specify all API endpoints by method name in this
