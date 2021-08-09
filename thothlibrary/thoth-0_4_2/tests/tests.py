@@ -4,6 +4,7 @@ This program is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
 import json
+import os
 import unittest
 
 import requests_mock
@@ -1065,8 +1066,8 @@ class Thoth042Tests(unittest.TestCase):
         @param negative: whether to assert equal (True) or unequal (False)
         @return: None or an assertion
         """
-        with open("fixtures/{0}.pickle".format(pickle_name),
-                  "rb") as pickle_file:
+        path = os.path.join("fixtures", "{0}.pickle".format(pickle_name))
+        with open(path, "rb") as pickle_file:
             loaded_response = json.load(pickle_file)
             response = json.loads(json.dumps(endpoint()))
 
@@ -1082,7 +1083,8 @@ class Thoth042Tests(unittest.TestCase):
         @param m: the requests Mocker object
         @return: the mock string, a Thoth client for this version
         """
-        with open("fixtures/{0}.json".format(endpoint), "r") as input_file:
+        path = os.path.join("fixtures", "{0}.json".format(endpoint))
+        with open(path, "r") as input_file:
             mock_response = input_file.read()
 
         m.register_uri('POST', '{}/graphql'.format(self.endpoint),

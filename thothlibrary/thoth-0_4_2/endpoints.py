@@ -28,7 +28,7 @@ class ThothClient0_4_2(ThothClient):
         script_dir = pathlib.Path(__file__).parent.resolve()
         path = os.path.join(script_dir, 'fixtures', 'QUERIES')
 
-        with open(path.format(script_dir), 'r') as query_file:
+        with open(path, 'r') as query_file:
             self.QUERIES = json.loads(query_file.read())
 
         # this list should specify all API endpoints by method name in this
