@@ -35,14 +35,12 @@ class ThothClient:
         # subclass (e.g. thoth_0_4_2) to this class, thereby providing the
         # methods that can be called for any API version
         if issubclass(ThothClient, type(self)):
-            endpoints = \
-                importlib.import_module('thothlibrary.thoth-{0}.'
-                                        'endpoints'.format(self.version))
-            version_endpoints = \
-                getattr(endpoints,
-                        'ThothClient{0}'.format(self.version))\
-                    (version=version,
-                     thoth_endpoint=thoth_endpoint)
+            module = 'thothlibrary.thoth-{0}.endpoints'.format(self.version)
+            endpoints = importlib.import_module(module)
+
+            version_endpoints = getattr(
+                endpoints, 'ThothClient{0}'.format(self.version))(
+                version=version, thoth_endpoint=thoth_endpoint)
 
             [setattr(self,
                      x,
@@ -109,8 +107,13 @@ class ThothClient:
         """Construct and trigger a mutation to add a new contribution object"""
         return self.mutation("createContribution", contribution)
 
-    def supported_versions(self):
-        regex = 'thoth-(\d+_\d+_\d+)'
+    @staticmethod
+    def supported_versions():
+        """
+        Shows the versions of Thoth that this API supports
+        @return: a list of version strings
+        """
+        regex = r'thoth-(\d+_\d+_\d+)'
 
         versions = []
 
@@ -145,14 +148,21 @@ class ThothClient:
         @param data: the data
         @return: an object form of the output
         """
-        structures = \
-            importlib.import_module(
-                'thothlibrary.thoth-{0}.structures'.format(self.version))
-        builder = structures.StructureBuilder(endpoint_name, data)
+        module = 'thothlibrary.thoth-{0}.structures'.format(self.version)
+        structures = importlib.import_module(module)
+        builder = getattr(structures, 'StructureBuilder')(endpoint_name, data)
+
         return builder.create_structure()
 
     @staticmethod
     def _dictionary_append(input_dict, key, value):
+        """
+        Either adds a value to a dictionary or doesn't if it's null
+        @param input_dict: the dictionary to modify
+        @param key: the key to add
+        @param value: the value to add
+        @return: the dictionary
+        """
         if value:
             input_dict[key] = value
         return input_dict
