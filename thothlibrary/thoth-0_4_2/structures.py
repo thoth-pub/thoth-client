@@ -9,7 +9,7 @@ from munch import Munch
 from datetime import datetime
 
 
-def _muncher_repr(obj):
+def _munch_repr(obj):
     """
     This is a hacky munch context switcher. It passes the original __repr__
     pointer back
@@ -20,13 +20,13 @@ def _muncher_repr(obj):
     return obj.__repr__()
 
 
-def _parse_authors(obj):
+def _author_parser(obj):
     """
     This parses a list of contributors into authors and editors
     @param obj: the Work to parse
     @return: a string representation of authors
     """
-    if not 'contributions' in obj:
+    if 'contributions' not in obj:
         return None
 
     author_dict = {}
@@ -42,12 +42,24 @@ def _parse_authors(obj):
     od_authors = collections.OrderedDict(sorted(author_dict.items()))
 
     for k, v in od_authors.items():
-        authors += contributor.fullName + ', '
+        authors += v + ', '
 
     return authors
 
 
-def __price_parser(prices):
+def _date_parser(date):
+    """
+    Formats a date nicely
+    @param date: the date string or None
+    @return: a formatted date string
+    """
+    if date:
+        return datetime.strptime(date, "%Y-%m-%d").year
+    else:
+        return "n.d."
+
+
+def _price_parser(prices):
     if len(prices) > 0 and 'currencyCode' not in prices:
         return '({0}{1})'.format(prices[0].unitPrice, prices[0].currencyCode)
     elif 'currencyCode' in prices:
@@ -56,71 +68,227 @@ def __price_parser(prices):
         return ''
 
 
-# these are lambda function formatting statements for the endpoints
+# these are formatting statements for the endpoints
 # they are injected to replace the default dictionary (Munch) __repr__ and
 # __str__ methods. They let us create nice-looking string representations
 # of objects, such as books
-default_fields = {'works': lambda
-    self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."}) [{self.workId}]' if '__typename' in self and self.__typename == 'Work' else f'{_muncher_repr(self)}',
-                  'prices': lambda
-                      self: f'{self.publication.work.fullTitle} ({self.publication.work.place}: {self.publication.work.imprint.publisher.publisherName}, {datetime.strptime(self.publication.work.publicationDate, "%Y-%m-%d").year if self.publication.work.publicationDate else "n.d."}) '
-                            f'costs {__price_parser(self)} [{self.priceId}]' if '__typename' in self and self.__typename == 'Price' else f'{_muncher_repr(self)}',
-                  'price': lambda
-                      self: f'{self.publication.work.fullTitle} ({self.publication.work.place}: {self.publication.work.imprint.publisher.publisherName}, {datetime.strptime(self.publication.work.publicationDate, "%Y-%m-%d").year if self.publication.work.publicationDate else "n.d."}) '
-                            f'costs {__price_parser(self)} [{self.priceId}]' if '__typename' in self and self.__typename == 'Price' else f'{_muncher_repr(self)}',
-                  'publications': lambda
-                      self: f'{_parse_authors(self.work)}{self.work.fullTitle} ({self.work.place}: {self.work.imprint.publisher.publisherName}, {datetime.strptime(self.work.publicationDate, "%Y-%m-%d").year if self.work.publicationDate else "n.d."}) '
-                            f'[{self.publicationType}] {__price_parser(self.prices)} [{self.publicationId}]' if '__typename' in self and self.__typename == 'Publication' else f'{_muncher_repr(self)}',
-                  'workByDoi': lambda
-                      self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if '__typename' in self and self.__typename == 'Work' else f'{_muncher_repr(self)}',
-                  'work': lambda
-                      self: f'{_parse_authors(self)}{self.fullTitle} ({self.place}: {self.imprint.publisher.publisherName}, {datetime.strptime(self.publicationDate, "%Y-%m-%d").year if self.publicationDate else "n.d."})' if '__typename' in self and self.__typename == 'Work' else f'{_muncher_repr(self)}',
-                  'publishers': lambda
-                      self: f'{self.publisherName} ({self.publisherId})' if '__typename' in self and self.__typename == 'Publisher' else f'{_muncher_repr(self)}',
-                  'imprints': lambda
-                      self: f'{self.imprintName} ({self.publisher.publisherName}/{self.publisherId}) [{self.imprintId}]' if '__typename' in self and self.__typename == 'Imprint' else f'{_muncher_repr(self)}',
-                  'imprint': lambda
-                      self: f'{self.imprintName} ({self.publisher.publisherName}/{self.publisherId}) [{self.imprintId}]' if '__typename' in self and self.__typename == 'Imprint' else f'{_muncher_repr(self)}',
-                  'contributions': lambda
-                      self: f'{self.fullName} ({self.contributionType} of {self.work.fullTitle}) [{self.contributionId}]' if '__typename' in self and self.__typename == 'Contribution' else f'{_muncher_repr(self)}',
-                  'contribution': lambda
-                      self: f'{self.fullName} ({self.contributionType} of {self.work.fullTitle}) [{self.contributionId}]' if '__typename' in self and self.__typename == 'Contribution' else f'{_muncher_repr(self)}',
-                  'contributors': lambda
-                      self: f'{self.fullName} ({self.contributions[0].contributionType} of {self.contributions[0].work.fullTitle}) [{self.contributorId}]' if '__typename' in self and self.__typename == 'Contributor' else f'{_muncher_repr(self)}',
-                  'contributor': lambda
-                      self: f'{self.fullName} ({self.contributions[0].contributionType} of {self.contributions[0].work.fullTitle}) [{self.contributorId}]' if '__typename' in self and self.__typename == 'Contributor' else f'{_muncher_repr(self)}',
-                  'publication': lambda
-                      self: f'{_parse_authors(self.work)}{self.work.fullTitle} ({self.work.place}: {self.work.imprint.publisher.publisherName}, {datetime.strptime(self.work.publicationDate, "%Y-%m-%d").year if self.work.publicationDate else "n.d."}) '
-                            f'[{self.publicationType}] {__price_parser(self.prices)} [{self.publicationId}]' if '__typename' in self and self.__typename == 'Publication' else f'{_muncher_repr(self)}',
-                  'serieses': lambda
-                      self: f'{self.seriesName} ({self.imprint.publisher.publisherName}) [{self.seriesId}]' if '__typename' in self and self.__typename == 'Series' else f'{_muncher_repr(self)}',
-                  'series': lambda
-                      self: f'{self.seriesName} ({self.imprint.publisher.publisherName}) [{self.seriesId}]' if '__typename' in self and self.__typename == 'Series' else f'{_muncher_repr(self)}',
-                  'issues': lambda
-                      self: f'{self.work.fullTitle} in {self.series.seriesName} ({self.series.imprint.publisher.publisherName}) [{self.issueId}]' if '__typename' in self and self.__typename == 'Issue' else f'{_muncher_repr(self)}',
-                  'issue': lambda
-                      self: f'{self.work.fullTitle} in {self.series.seriesName} ({self.series.imprint.publisher.publisherName}) [{self.issueId}]' if '__typename' in self and self.__typename == 'Issue' else f'{_muncher_repr(self)}',
-                  'subjects': lambda
-                      self: f'{self.work.fullTitle} is in the {self.subjectCode} subject area ({self.subjectType}) [{self.subjectId}]' if '__typename' in self and self.__typename == 'Subject' else f'{_muncher_repr(self)}',
-                  'subject': lambda
-                      self: f'{self.work.fullTitle} is in the {self.subjectCode} subject area ({self.subjectType}) [{self.subjectId}]' if '__typename' in self and self.__typename == 'Subject' else f'{_muncher_repr(self)}',
-                  'fundings': lambda
-                      self: f'{self.funder.funderName} funded {self.work.fullTitle} [{self.fundingId}]' if '__typename' in self and self.__typename == 'Funding' else f'{_muncher_repr(self)}',
-                  'funding': lambda
-                      self: f'{self.funder.funderName} funded {self.work.fullTitle} [{self.fundingId}]' if '__typename' in self and self.__typename == 'Funding' else f'{_muncher_repr(self)}',
-                  'funders': lambda
-                      self: f'{self.funderName} funded {len(self.fundings)} books [{self.funderId}]' if '__typename' in self and self.__typename == 'Funder' else f'{_muncher_repr(self)}',
-                  'funder': lambda
-                      self: f'{self.funderName} funded {len(self.fundings)} books [{self.funderId}]' if '__typename' in self and self.__typename == 'Funder' else f'{_muncher_repr(self)}',
-                  'languages': lambda
-                      self: f'{self.work.fullTitle} is in {self.languageCode} ({self.languageRelation}) [{self.languageId}]' if '__typename' in self and self.__typename == 'Language' else f'{_muncher_repr(self)}',
-                  'language': lambda
-                      self: f'{self.work.fullTitle} is in {self.languageCode} ({self.languageRelation}) [{self.languageId}]' if '__typename' in self and self.__typename == 'Language' else f'{_muncher_repr(self)}',
-                  'publisher': lambda
-                      self: f'{self.publisherName} ({self.publisherId})' if '__typename' in self and self.__typename == 'Publisher' else f'{_muncher_repr(self)}'}
+
+def _generic_formatter(format_object, type_name, output):
+    """
+    A generic formatter that returns either the input or the stored munch repr
+    @param format_object: the object on which to operate
+    @param type_name: the expected type name
+    @param output: the f-string to substitute
+    @return: a formatted string
+    """
+    if "__typename" in format_object and format_object.__typename == type_name:
+        return output
+    else:
+        return f"{_munch_repr(format_object)}"
+
+
+def _contribution_formatter(contribution):
+    """
+    A formatting string for contributions
+    @param contribution: The contribution object
+    @return: A formatted contribution object
+    """
+    format_str = f"{contribution.fullName} " \
+                 f"({contribution.contributionType} of " \
+                 f"{contribution.work.fullTitle}) " \
+                 f"[{contribution.contributionId}]"
+    return _generic_formatter(contribution, 'Contribution', format_str)
+
+
+def _contributor_formatter(contributor):
+    """
+    A formatting string for contributors
+    @param contributor: The contributor object
+    @return: A formatted contributor object
+    """
+    format_str = f"{contributor.fullName} " \
+                 f"({contributor.contributions[0].contributionType} of " \
+                 f"{contributor.contributions[0].work.fullTitle}) " \
+                 f"[{contributor.contributorId}]"
+    return _generic_formatter(contributor, 'Contributor', format_str)
+
+
+def _funder_formatter(funder):
+    """
+    A formatting string for funders
+    @param funder: The funder object
+    @return: A formatted funder object
+    """
+    format_str = f"{funder.funderName} " \
+                 f"funded {len(funder.fundings)} books " \
+                 f"[{funder.funderId}]"
+    return _generic_formatter(funder, 'Funder', format_str)
+
+
+def _funding_formatter(funding):
+    """
+    A formatting string for fundings
+    @param funding: The funding object
+    @return: A formatted funding object
+    """
+    format_str = f"{funding.funder.funderName} " \
+                 f"funded {funding.work.fullTitle} " \
+                 f"[{funding.fundingId}]"
+    return _generic_formatter(funding, 'Funding', format_str)
+
+
+def _imprint_formatter(imprint):
+    """
+    A formatting string for imprints
+    @param imprint: The imprint object
+    @return: A formatted imprint object
+    """
+    format_str = f"{imprint.imprintName} " \
+                 f"({imprint.publisher.publisherName}/{imprint.publisherId}) " \
+                 f"[{imprint.imprintId}]"
+    return _generic_formatter(imprint, 'Imprint', format_str)
+
+
+def _issue_formatter(issues):
+    """
+    A formatting string for issues
+    @param issues: The issues object
+    @return: A formatted issue object
+    """
+    format_str = f"{issues.work.fullTitle} " \
+                 f"in {issues.series.seriesName} " \
+                 f"({issues.series.imprint.publisher.publisherName}) " \
+                 f"[{issues.issueId}]"
+    return _generic_formatter(issues, 'Issue', format_str)
+
+
+def _language_formatter(language):
+    """
+    A formatting string for languages
+    @param language: The language object
+    @return: A formatted language object
+    """
+    format_str = f"{language.work.fullTitle} " \
+                 f"is in {language.languageCode} " \
+                 f"({language.languageRelation}) " \
+                 f"[{language.languageId}]"
+    return _generic_formatter(language, 'Language', format_str)
+
+
+def _price_formatter(price):
+    """
+    A formatting string for prices
+    @param price: The price object
+    @return: A formatted price object
+    """
+    format_str = f'{price.publication.work.fullTitle} ' \
+                 f'({price.publication.work.place}: ' \
+                 f'{price.publication.work.imprint.publisher.publisherName}, ' \
+                 f'{_date_parser(price.publication.work.publicationDate)}) ' \
+                 f"costs {_price_parser(price)} [{price.priceId}]"
+    return _generic_formatter(price, 'Price', format_str)
+
+
+def _publication_formatter(publication):
+    """
+    A formatting string for publications
+    @param publication: the publication on which to operate
+    @return: a formatted publication string
+    """
+    format_str = f'{_author_parser(publication.work)}' \
+                 f'{publication.work.fullTitle} ' \
+                 f'({publication.work.place}: ' \
+                 f'{publication.work.imprint.publisher.publisherName}, ' \
+                 f'{_date_parser(publication.work.publicationDate)}) ' \
+                 f"[{publication.publicationType}] " \
+                 f"{_price_parser(publication.prices)} " \
+                 f"[{publication.publicationId}]"
+    return _generic_formatter(publication, 'Publication', format_str)
+
+
+def _publisher_formatter(publisher):
+    """
+    A formatting string for publishers
+    @param publisher: the publisher on which to operate
+    @return: a formatted publisher string
+    """
+    format_str = f"{publisher.publisherName} ({publisher.publisherId})"
+    return _generic_formatter(publisher, 'Publisher', format_str)
+
+
+def _series_formatter(series):
+    """
+    A formatting string for series
+    @param series: the series on which to operate
+    @return: a formatted series string
+    """
+    format_str = f"{series.seriesName} " \
+                 f"({series.imprint.publisher.publisherName}) " \
+                 f"[{series.seriesId}]"
+    return _generic_formatter(series, 'Series', format_str)
+
+
+def _subject_formatter(subject):
+    """
+    A formatting string for subjects
+    @param subject: the subject on which to operate
+    @return: a formatted subject string
+    """
+    format_str = f"{subject.work.fullTitle} " \
+                 f"is in the {subject.subjectCode} " \
+                 f"subject area " \
+                 f"({subject.subjectType}) " \
+                 f"[{subject.subjectId}]"
+    return _generic_formatter(subject, 'Subject', format_str)
+
+
+def _work_formatter(work):
+    """
+    A formatting string for works
+    @param work: the work on which to operate
+    @return: a formatted work string
+    """
+    format_str = f'{_author_parser(work)}' \
+                 f'{work.fullTitle} ' \
+                 f'({work.place}: ' \
+                 f'{work.imprint.publisher.publisherName}, ' \
+                 f'{_date_parser(work.publicationDate)}) ' \
+                 f'[{work.workId}]'
+    return _generic_formatter(work, 'Work', format_str)
+
+
+default_fields = {
+    "contribution": _contribution_formatter,
+    "contributions": _contribution_formatter,
+    "contributor": _contributor_formatter,
+    "contributors": _contributor_formatter,
+    "funder": _funder_formatter,
+    "funders": _funder_formatter,
+    "funding": _funding_formatter,
+    "fundings": _funding_formatter,
+    "imprint": _imprint_formatter,
+    "imprints": _imprint_formatter,
+    "issue": _issue_formatter,
+    "issues": _issue_formatter,
+    "language": _language_formatter,
+    "languages": _language_formatter,
+    "price": _price_formatter,
+    "prices": _price_formatter,
+    "publication": _publication_formatter,
+    "publications": _publication_formatter,
+    "publisher": _publisher_formatter,
+    "publishers": _publisher_formatter,
+    "series": _series_formatter,
+    "serieses": _series_formatter,
+    "subject": _subject_formatter,
+    "subjects": _subject_formatter,
+    "work": _work_formatter,
+    "workByDoi": _work_formatter,
+    "works": _work_formatter,
+}
 
 # this stores the original function pointer of Munch.__repr__ so that we can
-# re-inject it above in "_muncher_repr"
+# re-inject it above in "_munch_repr"
 munch_local = Munch.__repr__
 
 
