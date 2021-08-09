@@ -50,6 +50,23 @@ class ThothClient0_4_2(ThothClient):
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
 
+    @staticmethod
+    def _order_limit_filter_offset_setup(order, limit, search, offset):
+        if not order:
+            order = {}
+        parameters = {
+            "offset": offset,
+            "limit": limit,
+        }
+
+        if search and not search.startswith('"'):
+            search = '"{0}"'.format(search)
+
+        ThothClient._dictionary_append(parameters, 'filter', search)
+        ThothClient._dictionary_append(parameters, 'order', order)
+
+        return parameters
+
     def contribution(self, contribution_id: str, raw: bool = False):
         """
         Returns a contribution by ID
