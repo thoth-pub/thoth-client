@@ -1066,6 +1066,23 @@ class ThothAPI:
         print(self._client().issue_count(raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def funding_count(self, raw=False, version=None, endpoint=None):
+        """
+        Retrieves a count of fundings from a Thoth instance
+        :param bool raw: whether to return a python object or the raw result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        """
+
+        if endpoint:
+            self.endpoint = endpoint
+
+        if version:
+            self.version = version
+
+        print(self._client().funding_count(raw=raw))
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def publications(self, limit=100, order=None, offset=0, publishers=None,
                      filter=None, publication_type=None, raw=False,
                      version=None, endpoint=None, serialize=False):

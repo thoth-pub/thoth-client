@@ -647,7 +647,9 @@ class ThothClient0_4_2(ThothClient):
             ],
         },
 
-        "issuesCount": None,
+        "issuesCount": {},
+
+        "fundingCount": {},
 
         "languageCount": {
             "parameters": [
@@ -698,7 +700,7 @@ class ThothClient0_4_2(ThothClient):
                           'language_count', 'prices', 'price', 'price_count',
                           'subjects', 'subject', 'subject_count', 'funders',
                           'funder', 'funder_count', 'fundings', 'funding',
-                          'QUERIES']
+                          'funding_count', 'QUERIES']
 
         super().__init__(thoth_endpoint=thoth_endpoint,
                          version=version)
@@ -1331,3 +1333,9 @@ class ThothClient0_4_2(ThothClient):
 
         return self._api_request("issueCount", parameters,
                                  return_raw=raw)
+
+    def funding_count(self, raw: bool = False):
+        """Construct and trigger a query to count contribution count"""
+        parameters = {}
+
+        return self._api_request("fundingCount", parameters, return_raw=raw)
