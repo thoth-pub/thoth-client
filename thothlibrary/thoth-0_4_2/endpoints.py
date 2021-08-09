@@ -602,8 +602,8 @@ class ThothClient0_4_2(ThothClient):
             search = '"{0}"'.format(search)
 
         # there is a bug in this version of Thoth. Filter is REQUIRED.
-        if not filter:
-            filter = '""'
+        if not search:
+            search = '""'
 
         self._dictionary_append(parameters, 'subjectType', subject_type)
         self._dictionary_append(parameters, 'filter', search)
