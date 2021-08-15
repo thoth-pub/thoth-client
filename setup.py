@@ -18,7 +18,7 @@ setup(
     author="Javier Arias, Martin Paul Eve",
     author_email="javier@arias.re",
     packages=["thothlibrary"],
-    install_requires=["graphqlclient", "requests"],
+    install_requires=["graphqlclient", "requests", "munch"],
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     license="Apache",
