@@ -555,7 +555,7 @@
             "coverUrl",
             "coverCaption",
             "publications { isbn publicationType __typename }",
-            "contributions { fullName contributionType mainContribution institution contributor { contributorId orcid firstName lastName } contributionId contributionOrdinal __typename }",
+            "contributions { fullName contributionType mainContribution institution contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "__typename"
         ],
@@ -605,7 +605,7 @@
             "coverUrl",
             "coverCaption",
             "publications { isbn publicationType __typename }",
-            "contributions { fullName contributionType mainContribution institution contributor { contributorId orcid firstName lastName } contributionId contributionOrdinal __typename }",
+            "contributions { fullName contributionType mainContribution institution contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "__typename"
         ],
