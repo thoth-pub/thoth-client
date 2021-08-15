@@ -515,6 +515,7 @@
             "publications { isbn publicationType __typename }",
             "contributions { fullName contributionType mainContribution institution contributor { contributorId orcid firstName lastName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
+            "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
             "__typename"
         ],
         "parameters": [
@@ -555,6 +556,7 @@
             "coverUrl",
             "coverCaption",
             "publications { isbn publicationType __typename }",
+            "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
             "contributions { fullName contributionType mainContribution institution contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "__typename"
@@ -604,6 +606,7 @@
             "workId",
             "coverUrl",
             "coverCaption",
+            "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
             "publications { isbn publicationType __typename }",
             "contributions { fullName contributionType mainContribution institution contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
