@@ -88,6 +88,9 @@ python3 -m thothrest.cli formats --return-json
 python3 -m thothrest.cli work onix_3.0::project_muse e0f748b2-984f-45cc-8b9e-13989c31dda4
 ```
 
+## Thoth Django
+The thothdjango folder includes models, an import routine, subject-code support, and admin procedures to use Thoth in a django app. The import provides unidirectional synchronization from remote Thoth imports to a local database for use in a Django app.  
+
 ## Test Suite
 Tests for GraphQL queries are versioned in the thoth-[ver] folder of thothlibrary.
 
