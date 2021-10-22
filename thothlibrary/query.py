@@ -64,7 +64,7 @@ class ThothQuery:
             serialised = json.loads(result)
             if "errors" in serialised:
                 raise AssertionError
-            elif self.raw:
+            if self.raw:
                 return result
             return serialised["data"][self.query_name]
         except (KeyError, TypeError, ValueError, AssertionError,
