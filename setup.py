@@ -24,6 +24,7 @@ setup(
         "thothlibrary.thoth-0_4_2",
         "thothrest.thoth-0_4_2"
     ],
+    include_package_data=True,
     install_requires=["graphqlclient", "requests", "munch"],
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
