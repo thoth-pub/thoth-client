@@ -14,7 +14,7 @@ with open(os.path.join(ROOTDIR, "README.md")) as in_file:
 setup(
     name="thothlibrary",
     version=__version__,
-    description="Python client for Thoth's GraphQL API",
+    description="Python client for Thoth's APIs",
     author="Javier Arias, Martin Paul Eve",
     author_email="javier@arias.re",
     packages=["thothlibrary", "thothrest", "thothdjango"],
