@@ -88,5 +88,4 @@ class ThothQuery:
         if self.query_name in self.QUERIES and \
                 'fields' in self.QUERIES[self.query_name]:
             return "\n".join(self.QUERIES[self.query_name]["fields"])
-        else:
-            return ''
+        return ''
