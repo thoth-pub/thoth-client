@@ -21,7 +21,7 @@ setup(
     install_requires=["graphqlclient", "requests", "munch"],
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
-    license="Apache",
+    license="Apache 2.0",
     platforms=["any"],
     classifiers=[
         "Programming Language :: Python :: 3",
