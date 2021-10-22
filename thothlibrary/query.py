@@ -61,11 +61,12 @@ class ThothQuery:
         result = ""
         try:
             result = client.execute(self.request)
-            if "errors" in result:
+            serialised = json.loads(result)
+            if "errors" in serialised:
                 raise AssertionError
             elif self.raw:
                 return result
-            return json.loads(result)["data"][self.query_name]
+            return serialised["data"][self.query_name]
         except (KeyError, TypeError, ValueError, AssertionError,
                 json.decoder.JSONDecodeError,
                 requests.exceptions.RequestException):
