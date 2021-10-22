@@ -3,7 +3,7 @@
 
 import os
 from setuptools import setup
-from thothlibrary import __version__, __license__
+from thothlibrary import __version__
 
 ROOTDIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -14,14 +14,14 @@ with open(os.path.join(ROOTDIR, "README.md")) as in_file:
 setup(
     name="thothlibrary",
     version=__version__,
-    description="Python client for Thoth's GraphQL API",
-    author="Javier Arias",
+    description="Python client for Thoth's APIs",
+    author="Javier Arias, Martin Paul Eve",
     author_email="javier@arias.re",
-    packages=["thothlibrary"],
-    install_requires=["graphqlclient", "requests"],
+    packages=["thothlibrary", "thothrest", "thothdjango"],
+    install_requires=["graphqlclient", "requests", "munch"],
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
-    license=__license__,
+    license="Apache 2.0",
     platforms=["any"],
     classifiers=[
         "Programming Language :: Python :: 3",

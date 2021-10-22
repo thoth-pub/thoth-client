@@ -1,2 +1,5 @@
-graphqlclient==0.2.4
 requests==2.24.0
+fire==0.4.0
+munch==2.5.0
+requests_mock==1.9.3
+ascii_magic==1.6

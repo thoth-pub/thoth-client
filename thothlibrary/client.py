@@ -1,29 +1,47 @@
 """
 GraphQL client for Thoth
 
-(c) Open Book Publishers, February 2020
+(c) Open Book Publishers, February 2020 and (c) ΔQ Programming LLP, July 2021
 This programme is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
+import importlib
+import pkgutil
 
-
-from graphqlclient import GraphQLClient
+import thothlibrary
 from .auth import ThothAuthenticator
+from .graphql import GraphQLClientRequests as GraphQLClient
 from .mutation import ThothMutation
 from .query import ThothQuery
+import re
 
 
-class ThothClient():
+class ThothClient:
     """Client to Thoth's GraphQL API"""
 
-    def __init__(self, thoth_endpoint="https://api.thoth.pub"):
+    def __new__(cls, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
+        # this new call is the only bit of "magic"
+        # it basically subs in the sub-class of the correct version and returns
+        # an instance of that, instead of the generic class
+        version_replaced = version.replace('.', '_')
+        module = 'thothlibrary.thoth-{0}.endpoints'.format(version_replaced)
+        endpoints = importlib.import_module(module)
+
+        version_endpoints = getattr(
+            endpoints, 'ThothClient{0}'.format(version_replaced))
+
+        return version_endpoints(thoth_endpoint=thoth_endpoint, version=version)
+
+    def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
         """Returns new ThothClient object at the specified GraphQL endpoint
 
         thoth_endpoint: Must be the full URL (eg. 'http://localhost').
         """
+        self.thoth_endpoint = thoth_endpoint
         self.auth_endpoint = "{}/account/login".format(thoth_endpoint)
         self.graphql_endpoint = "{}/graphql".format(thoth_endpoint)
         self.client = GraphQLClient(self.graphql_endpoint)
+        self.version = version.replace('.', '_')
 
     def login(self, email, password):
         """Obtain an authentication token"""
@@ -36,19 +54,10 @@ class ThothClient():
         mutation = ThothMutation(mutation_name, data)
         return mutation.run(self.client)
 
-    def query(self, query_name, parameters):
+    def query(self, query_name, parameters, raw=False):
         """Instantiate a thoth query and execute"""
-        query = ThothQuery(query_name, parameters)
+        query = ThothQuery(query_name, parameters, self.QUERIES, raw=raw)
         return query.run(self.client)
-
-    def works(self, limit: int = 100, offset: int = 0, filter_str: str = ""):
-        """Construct and trigger a query to obtain all works"""
-        parameters = {
-            "limit": limit,
-            "offset": offset,
-            "filter": filter_str,
-        }
-        return self.query("works", parameters)
 
     def create_publisher(self, publisher):
         """Construct and trigger a mutation to add a new publisher object"""
@@ -93,3 +102,63 @@ class ThothClient():
     def create_contribution(self, contribution):
         """Construct and trigger a mutation to add a new contribution object"""
         return self.mutation("createContribution", contribution)
+
+    @staticmethod
+    def supported_versions():
+        """
+        Shows the versions of Thoth that this API supports
+        @return: a list of version strings
+        """
+        regex = r'thoth-(\d+_\d+_\d+)'
+
+        versions = []
+
+        for module in pkgutil.iter_modules(thothlibrary.__path__):
+            match = re.match(regex, module.name)
+
+            if match:
+                versions.append(match.group(1).replace('_', '.'))
+
+        return versions
+
+    def _api_request(self, endpoint_name: str, parameters,
+                     return_raw: bool = False):
+        """
+        Makes a request to the API
+        @param endpoint_name: the name of the endpoint
+        @param return_raw: whether to return the raw data or an object (default)
+        @param parameters: the parameters to pass to GraphQL
+        @return: an object or JSON of the request
+        """
+        response = self.query(endpoint_name, parameters, raw=return_raw)
+
+        if return_raw:
+            return response
+        else:
+            return self._build_structure(endpoint_name, response)
+
+    def _build_structure(self, endpoint_name, data):
+        """
+        Builds an object structure for an endpoint
+        @param endpoint_name: the name of the endpoint
+        @param data: the data
+        @return: an object form of the output
+        """
+        module = 'thothlibrary.thoth-{0}.structures'.format(self.version)
+        structures = importlib.import_module(module)
+        builder = getattr(structures, 'StructureBuilder')(endpoint_name, data)
+
+        return builder.create_structure()
+
+    @staticmethod
+    def _dictionary_append(input_dict, key, value):
+        """
+        Either adds a value to a dictionary or doesn't if it's null
+        @param input_dict: the dictionary to modify
+        @param key: the key to add
+        @param value: the value to add
+        @return: the dictionary
+        """
+        if value:
+            input_dict[key] = value
+        return input_dict
