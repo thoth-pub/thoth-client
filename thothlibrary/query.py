@@ -9,95 +9,49 @@ it under the terms of the Apache License v2.0.
 
 
 import json
-import urllib
+
+import requests
+
 from .errors import ThothError
 
 
-class ThothQuery():
+class ThothQuery:
     """GraphQL query in Thoth
 
-       Queries are specified in the QUERIES list, which specifies
-       their fields and desired return value 'fields' must be a list of
-       tuples (str, bool) where the string represents the attribute and the
+       Queries are specified in the QUERIES list of the API version, which
+       specifies their fields and desired return value 'fields' must be a list
+       of tuples (str, bool) where the string represents the attribute and the
        boolean represents whether the values should be enclosed with quotes
        and sanitised.
     """
 
-    QUERIES = {
-        "works": {
-            "parameters": [
-                "limit",
-                "offset",
-                "filter",
-                "order",
-                "publishers",
-                "workType",
-                "workStatus"
-            ],
-            "fields": [
-                "workType",
-                "workStatus",
-                "fullTitle",
-                "title",
-                "subtitle",
-                "reference",
-                "edition",
-                "imprintId",
-                "doi",
-                "publicationDate",
-                "place",
-                "width",
-                "height",
-                "pageCount",
-                "pageBreakdown",
-                "imageCount",
-                "tableCount",
-                "audioCount",
-                "videoCount",
-                "license",
-                "copyrightHolder",
-                "landingPage",
-                "lccn",
-                "oclc",
-                "shortAbstract",
-                "longAbstract",
-                "generalNote",
-                "toc",
-                "coverUrl",
-                "coverCaption",
-                "publications { isbn publicationType }",
-                "contributions { fullName contributionType mainContribution }"
-            ]
-        }
-    }
-
-    def __init__(self, query_name, parameters):
-        """Returns new ThothMutation object with specified mutation data
+    def __init__(self, query_name, parameters, queries, raw=False):
+        """Returns new ThothQuery object
 
         mutation_name: Must match one of the keys found in MUTATIONS.
 
         mutation_data: Dictionary of mutation fields and their values.
         """
+        self.QUERIES = queries
         self.query_name = query_name
         self.parameters = parameters
         self.param_str = self.prepare_parameters()
         self.fields_str = self.prepare_fields()
         self.request = self.prepare_request()
+        self.raw = raw
 
     def prepare_request(self):
         """Format the query request string"""
         values = {
             "query_name": self.query_name,
-            "parameters": self.param_str,
-            "fields": self.fields_str
+            "parameters": "(" + self.param_str + ")" if self.param_str else '',
+            "fields": "{" + self.fields_str + "}" if self.fields_str else ''
         }
+
         payload = """
             query {
-                %(query_name)s(
-                    %(parameters)s
-                ) {
-                    %(fields)s
-                }
+                %(query_name)s%(parameters)s
+                %(fields)s
             }
         """
         return payload % values
@@ -109,18 +63,29 @@ class ThothQuery():
             result = client.execute(self.request)
             if "errors" in result:
                 raise AssertionError
+            elif self.raw:
+                return result
             return json.loads(result)["data"][self.query_name]
         except (KeyError, TypeError, ValueError, AssertionError,
-                json.decoder.JSONDecodeError, urllib.error.HTTPError):
+                json.decoder.JSONDecodeError,
+                requests.exceptions.RequestException):
             raise ThothError(self.request, result)
 
     def prepare_parameters(self):
         """Returns a string with all query parameters."""
         parameters = []
         for key, value in self.parameters.items():
-            parameters.append("{}: {}, ".format(key, json.dumps(value)))
+            # note that we strip out extraneous quotation marks from parameters
+            # because ORDER clauses, for instance, do not allow them
+
+            parameters.append("{}: "
+                              "{}, ".format(key, value))
         return ", ".join(parameters)
 
     def prepare_fields(self):
         """Returns a string with all query fields."""
-        return "\n".join(self.QUERIES[self.query_name]["fields"])
+        if self.query_name in self.QUERIES and \
+                'fields' in self.QUERIES[self.query_name]:
+            return "\n".join(self.QUERIES[self.query_name]["fields"])
+        else:
+            return ''
