@@ -17,7 +17,7 @@ setup(
     description="Python client for Thoth's GraphQL API",
     author="Javier Arias, Martin Paul Eve",
     author_email="javier@arias.re",
-    packages=["thothlibrary"],
+    packages=["thothlibrary", "thothrest", "thothdjango"],
     install_requires=["graphqlclient", "requests", "munch"],
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
