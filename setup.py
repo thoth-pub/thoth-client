@@ -17,7 +17,13 @@ setup(
     description="Python client for Thoth's APIs",
     author="Javier Arias, Martin Paul Eve",
     author_email="javier@arias.re",
-    packages=["thothlibrary", "thothrest", "thothdjango"],
+    packages=[
+        "thothlibrary",
+        "thothrest",
+        "thothdjango",
+        "thothlibrary.thoth-0_4_2",
+        "thothrest.thoth-0_4_2"
+    ],
     install_requires=["graphqlclient", "requests", "munch"],
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
