@@ -1,4 +1,4 @@
-Python client for Thoth's GraphQL and REST APIs
+Python client for Thoth's GraphQL and REST APIs. Currently supports Thoth version 0.6.0.
 
 [![Build Status](https://travis-ci.org/openbookpublishers/thoth-client.svg?branch=master)](https://travis-ci.org/openbookpublishers/thoth-client) [![Release](https://img.shields.io/github/release/openbookpublishers/thoth-client.svg?colorB=58839b)](https://github.com/openbookpublishers/thoth-client/releases) [![License](https://img.shields.io/github/license/openbookpublishers/thoth-client.svg?colorB=ff0000)](https://github.com/openbookpublishers/thoth-client/blob/master/LICENSE)
 
@@ -23,7 +23,7 @@ pip3 install -r ./requirements.txt
 ```python
 from thothlibrary import ThothClient
 
-thoth = ThothClient(version="0.5.0")
+thoth = ThothClient(version="0.6.0")
 print(thoth.works())
 ```
 
@@ -35,8 +35,8 @@ python3 -m thothlibrary.cli contribution_count
 python3 -m thothlibrary.cli contributor --contributor_id=e8def8cf-0dfe-4da9-b7fa-f77e7aec7524
 python3 -m thothlibrary.cli contributors --limit=10
 python3 -m thothlibrary.cli contributor_count --search="Vincent"
-python3 -m thothlibrary.cli funder --funder_id=194614ac-d189-4a74-8bf4-74c0c9de4a81
-python3 -m thothlibrary.cli funders --limit=10
+python3 -m thothlibrary.cli institution --institution_id=194614ac-d189-4a74-8bf4-74c0c9de4a81
+python3 -m thothlibrary.cli institutions --limit=10
 python3 -m thothlibrary.cli funder_count
 python3 -m thothlibrary.cli funding --funding_id=5323d3e7-3ae9-4778-8464-9400fbbb959e
 python3 -m thothlibrary.cli fundings --limit=10
