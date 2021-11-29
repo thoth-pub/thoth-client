@@ -23,7 +23,7 @@ pip3 install -r ./requirements.txt
 ```python
 from thothlibrary import ThothClient
 
-thoth = ThothClient(version="0.4.2")
+thoth = ThothClient(version="0.5.0")
 print(thoth.works())
 ```
 
