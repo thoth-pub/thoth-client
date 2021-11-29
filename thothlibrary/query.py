@@ -61,11 +61,12 @@ class ThothQuery:
         result = ""
         try:
             result = client.execute(self.request)
-            if "errors" in result:
+            serialised = json.loads(result)
+            if "errors" in serialised:
                 raise AssertionError
-            elif self.raw:
+            if self.raw:
                 return result
-            return json.loads(result)["data"][self.query_name]
+            return serialised["data"][self.query_name]
         except (KeyError, TypeError, ValueError, AssertionError,
                 json.decoder.JSONDecodeError,
                 requests.exceptions.RequestException):
@@ -87,5 +88,4 @@ class ThothQuery:
         if self.query_name in self.QUERIES and \
                 'fields' in self.QUERIES[self.query_name]:
             return "\n".join(self.QUERIES[self.query_name]["fields"])
-        else:
-            return ''
+        return ''
