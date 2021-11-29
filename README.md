@@ -52,7 +52,7 @@ python3 -m thothlibrary.cli language_count --language_code=CHI
 python3 -m thothlibrary.cli price --price_id=818567dd-7d3a-4963-8704-3381b5432877
 python3 -m thothlibrary.cli prices --limit=10 --currency_code=GBP
 python3 -m thothlibrary.cli price_count --currency_code=GBP
-python3 -m thothlibrary.cli publication --publication_id=34712b75-dcdd-408b-8d0c-cf29a35be2e5
+python3 -m thothlibrary.cli publication --publication_id=27b7bdab-e9e5-4220-811e-1f370861f5e1
 python3 -m thothlibrary.cli publications --limit=10 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
 python3 -m thothlibrary.cli publication_count --publication_type="HARDBACK"
 python3 -m thothlibrary.cli publisher --publisher_id=85fd969a-a16c-480b-b641-cb9adf979c3b

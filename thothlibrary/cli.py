@@ -34,7 +34,7 @@ class ThothAPI:
         A Thoth CLI client
         """
         self.endpoint = "https://api.thoth.pub"
-        self.version = "0.4.2"
+        self.version = "0.5.0"
 
     def _client(self):
         """
