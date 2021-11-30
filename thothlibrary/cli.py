@@ -971,6 +971,10 @@ class ThothAPI:
         """
         self._override_version(version=version, endpoint=endpoint)
 
+        if not url:
+            print("You must specify a cover URL.")
+            return
+
         if not doi and not work_id:
             print("You must specify either workId or doi.")
             return
@@ -979,7 +983,10 @@ class ThothAPI:
         else:
             work = self._client().work_by_id(work_id=work_id, raw=True)
 
-        print(work)
+        work_obj = json.loads(work)
+        work_obj['data']['workByDoi']['coverUrl'] = url
+
+        print(work_obj['data']['workByDoi']['coverUrl'])
 
 
 if __name__ == '__main__':
