@@ -959,14 +959,27 @@ class ThothAPI:
                                         raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
-    def update_cover(self, doi=None, work_id=None, url=None):
+    def update_cover(self, doi=None, work_id=None, url=None, version=None,
+                     endpoint=None):
         """
         Update the work cover by DOI or ID
         :param str doi: the doi of the work
         :param str work_id: the workId of the work
         :param str url: the cover URL of the work
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
         """
-        print('OK')
+        self._override_version(version=version, endpoint=endpoint)
+
+        if not doi and not work_id:
+            print("You must specify either workId or doi.")
+            return
+        elif doi:
+            work = self._client().work_by_doi(doi=doi, raw=True)
+        else:
+            work = self._client().work_by_id(work_id=work_id, raw=True)
+
+        print(work)
 
 
 if __name__ == '__main__':
