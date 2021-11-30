@@ -958,6 +958,16 @@ class ThothAPI:
                                         work_status=work_status,
                                         raw=raw))
 
+    @fire.decorators.SetParseFn(_raw_parse)
+    def update_cover(self, doi=None, work_id=None, url=None):
+        """
+        Update the work cover by DOI or ID
+        :param str doi: the doi of the work
+        :param str work_id: the workId of the work
+        :param str url: the cover URL of the work
+        """
+        print('OK')
+
 
 if __name__ == '__main__':
     fire.Fire(ThothAPI)
