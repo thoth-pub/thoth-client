@@ -157,6 +157,42 @@ class ThothMutation():
                 ("fullName", True)
             ],
             "return_value": "workId"
+        },
+        "updateWork": {
+            "fields": [
+                ("workId", True),
+                ("workType", False),
+                ("workStatus", False),
+                ("fullTitle", True),
+                ("title", True),
+                ("subtitle", True),
+                ("reference", True),
+                ("edition", False),
+                ("imprintId", True),
+                ("doi", True),
+                ("publicationDate", True),
+                ("place", True),
+                ("width", False),
+                ("height", False),
+                ("pageCount", False),
+                ("pageBreakdown", True),
+                ("imageCount", False),
+                ("tableCount", False),
+                ("audioCount", False),
+                ("videoCount", False),
+                ("license", True),
+                ("copyrightHolder", True),
+                ("landingPage", True),
+                ("lccn", True),
+                ("oclc", True),
+                ("shortAbstract", True),
+                ("longAbstract", True),
+                ("generalNote", True),
+                ("toc", True),
+                ("coverUrl", True),
+                ("coverCaption", True)
+            ],
+            "return_value": "workId"
         }
     }
 
