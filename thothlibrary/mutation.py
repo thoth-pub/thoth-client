@@ -196,7 +196,7 @@ class ThothMutation():
         }
     }
 
-    def __init__(self, mutation_name, mutation_data):
+    def __init__(self, mutation_name, mutation_data, units=False):
         """Returns new ThothMutation object with specified mutation data
 
         mutation_name: Must match one of the keys found in MUTATIONS.
@@ -204,6 +204,7 @@ class ThothMutation():
         mutation_data: Dictionary of mutation fields and their values.
         """
         self.mutation_name = mutation_name
+        self.units = units
         self.return_value = self.MUTATIONS[mutation_name]["return_value"]
         self.mutation_data = mutation_data
         self.data_str = self.generate_values()
@@ -214,11 +215,17 @@ class ThothMutation():
         values = {
             "mutation_name": self.mutation_name,
             "data": self.data_str,
-            "return_value": self.return_value
+            "return_value": self.return_value,
+            "units": ""
         }
+
+        if self.units:
+            values.update({"units": "units: {},".format(self.units)})
+
         payload = """
             mutation {
                 %(mutation_name)s(
+                    %(units)s
                     data: {
                         %(data)s
                     }
