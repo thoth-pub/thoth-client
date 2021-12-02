@@ -1013,7 +1013,6 @@ class ThothAPI:
         client.login(self.thoth_email, self.thoth_pwd)
 
         mutation = client.mutation('updateWork', data, units='MM')
-        print(mutation)
 
 
 if __name__ == '__main__':
