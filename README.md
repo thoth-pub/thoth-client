@@ -69,6 +69,7 @@ python3 -m thothlibrary.cli work --doi="https://doi.org/10.11647/OBP.0222"
 python3 -m thothlibrary.cli work --work_id="e0f748b2-984f-45cc-8b9e-13989c31dda4"
 python3 -m thothlibrary.cli works --limit=10 --order='{field: PUBLICATION_DATE, direction: DESC}' --work_status=ACTIVE --work_type=MONOGRAPH --offset=1 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
 python3 -m thothlibrary.cli work_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
+python3 -m thothlibrary.cli update_cover --doi="https://doi.org/10.11647/OBP.0278" --url="https://cdn.openbookpublishers.com/covers/10.11647/obp.0278.jpg"
 ```
 
 
