@@ -7,6 +7,7 @@ import json
 
 import fire
 from graphqlclient import GraphQLClient
+from os import getenv
 
 import thothlibrary
 
@@ -36,6 +37,9 @@ class ThothAPI:
         self.endpoint = "https://api.thoth.pub"
         self.version = "0.6.0"
 
+        self.thoth_email = getenv('THOTH_EMAIL')
+        self.thoth_pwd = getenv('THOTH_PWD')
+
     def _client(self):
         """
         Returns a ThothClient object
@@ -62,6 +66,17 @@ class ThothAPI:
         self.graphql_endpoint = "{}/graphql".format(self.endpoint)
         self.client = GraphQLClient(self.graphql_endpoint)
         self.version = self.version.replace('.', '_')
+
+    def _set_credentials(self):
+        """
+        Get user Thoth credentials
+        """
+        print('Please, Thoth credential not set.')
+        print('For persistence, please set them as env variables '
+              '$THOTH_EMAIL and $THOTH_PWD')
+
+        self.thoth_email = input('Thoth email: ')
+        self.thoth_pwd = input('Thoth password: ')
 
     @fire.decorators.SetParseFn(_raw_parse)
     def contribution(self, contribution_id, raw=False, version=None,
@@ -990,7 +1005,11 @@ class ThothAPI:
         data['coverUrl'] = url
 
         client = self._client()
-        client.login('luca@openbookpublishers.com', 'XXX')
+
+        if not self.thoth_email or not self.thoth_pwd:
+            self._set_credentials()
+
+        client.login(self.thoth_email, self.thoth_pwd)
 
         mutation = client.mutation('updateWork', work_obj['data']['workByDoi'],
                                    units='MM')
