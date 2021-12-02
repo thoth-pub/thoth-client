@@ -980,13 +980,20 @@ class ThothAPI:
             return
         elif doi:
             work = self._client().work_by_doi(doi=doi, raw=True)
+            work_obj = json.loads(work)
+            data = work_obj['data']['workByDoi']
         else:
             work = self._client().work_by_id(work_id=work_id, raw=True)
+            work_obj = json.loads(work)
+            data = work_obj['data']['workById']
 
-        work_obj = json.loads(work)
-        work_obj['data']['workByDoi']['coverUrl'] = url
+        data['coverUrl'] = url
+        print(data['coverUrl'])
 
-        print(work_obj['data']['workByDoi']['coverUrl'])
+        #client = self._client()
+        #mutation = client.mutation('updateWork', work_obj['data']['workByDoi'],
+        #                           units='MM')
+        #print(mutation)
 
 
 if __name__ == '__main__':
