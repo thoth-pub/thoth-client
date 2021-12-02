@@ -988,12 +988,13 @@ class ThothAPI:
             data = work_obj['data']['workById']
 
         data['coverUrl'] = url
-        print(data['coverUrl'])
 
-        #client = self._client()
-        #mutation = client.mutation('updateWork', work_obj['data']['workByDoi'],
-        #                           units='MM')
-        #print(mutation)
+        client = self._client()
+        client.login('luca@openbookpublishers.com', 'XXX')
+
+        mutation = client.mutation('updateWork', work_obj['data']['workByDoi'],
+                                   units='MM')
+        print(mutation)
 
 
 if __name__ == '__main__':
