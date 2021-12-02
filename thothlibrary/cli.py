@@ -986,6 +986,8 @@ class ThothAPI:
         """
         self._override_version(version=version, endpoint=endpoint)
 
+        client = self._client()
+
         if not url:
             print("You must specify a cover URL.")
             return
@@ -994,17 +996,16 @@ class ThothAPI:
             print("You must specify either workId or doi.")
             return
         elif doi:
-            work = self._client().work_by_doi(doi=doi, raw=True)
+            work = client.work_by_doi(doi=doi, raw=True)
             work_obj = json.loads(work)
             data = work_obj['data']['workByDoi']
         else:
-            work = self._client().work_by_id(work_id=work_id, raw=True)
+            work = client.work_by_id(work_id=work_id, raw=True)
             work_obj = json.loads(work)
             data = work_obj['data']['work']
 
+        # Update cover URL
         data['coverUrl'] = url
-
-        client = self._client()
 
         if not self.thoth_email or not self.thoth_pwd:
             self._set_credentials()
