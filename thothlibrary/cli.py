@@ -72,7 +72,7 @@ class ThothAPI:
         Get user Thoth credentials
         """
         print('Please, Thoth credential not set.')
-        print('For persistence, please set them as env variables '
+        print('For persistence, please set them as env variables: '
               '$THOTH_EMAIL and $THOTH_PWD')
 
         self.thoth_email = input('Thoth email: ')
@@ -1000,7 +1000,7 @@ class ThothAPI:
         else:
             work = self._client().work_by_id(work_id=work_id, raw=True)
             work_obj = json.loads(work)
-            data = work_obj['data']['workById']
+            data = work_obj['data']['work']
 
         data['coverUrl'] = url
 
@@ -1011,8 +1011,7 @@ class ThothAPI:
 
         client.login(self.thoth_email, self.thoth_pwd)
 
-        mutation = client.mutation('updateWork', work_obj['data']['workByDoi'],
-                                   units='MM')
+        mutation = client.mutation('updateWork', data, units='MM')
         print(mutation)
 
 
