@@ -69,9 +69,9 @@ class ThothAPI:
 
     def _set_credentials(self):
         """
-        Get user Thoth credentials
+        Get user's Thoth credentials
         """
-        print('Please, Thoth credential not set.')
+        print('Thoth credentials are not set.')
         print('For persistence, please set them as env variables: '
               '$THOTH_EMAIL and $THOTH_PWD')
 
