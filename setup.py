@@ -22,7 +22,9 @@ setup(
         "thothrest",
         "thothdjango",
         "thothlibrary.thoth-0_4_2",
-        "thothrest.thoth-0_4_2"
+        "thothrest.thoth-0_4_2",
+        "thothlibrary.thoth-0_5_0",
+        "thothlibrary.thoth-0_6_0",
     ],
     include_package_data=True,
     install_requires=["graphqlclient", "requests", "munch"],
