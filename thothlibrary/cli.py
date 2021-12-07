@@ -34,7 +34,7 @@ class ThothAPI:
         A Thoth CLI client
         """
         self.endpoint = "https://api.thoth.pub"
-        self.version = "0.4.2"
+        self.version = "0.6.0"
 
     def _client(self):
         """
@@ -197,11 +197,11 @@ class ThothAPI:
         print(self._client().contributor_count(search=search, raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
-    def funder(self, funder_id, raw=False, version=None, endpoint=None,
-               serialize=False):
+    def institution(self, institution_id, raw=False, version=None,
+                    endpoint=None, serialize=False):
         """
-        Retrieves a funder by ID from a Thoth instance
-        :param str funder_id: the funder to fetch
+        Retrieves an institution by ID from a Thoth instance
+        :param str institution_id: the institution to fetch
         :param bool raw: whether to return a python object or the raw result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
@@ -209,7 +209,8 @@ class ThothAPI:
         """
         self._override_version(version=version, endpoint=endpoint)
 
-        funder = self._client().funder(funder_id=funder_id, raw=raw)
+        funder = self._client().institution(institution_id=institution_id,
+                                            raw=raw)
 
         if not serialize:
             print(funder)
@@ -217,10 +218,10 @@ class ThothAPI:
             print(json.dumps(funder))
 
     @fire.decorators.SetParseFn(_raw_parse)
-    def funders(self, limit=100, order=None, offset=0, search=None, raw=False,
-                version=None, endpoint=None, serialize=False):
+    def institutions(self, limit=100, order=None, offset=0, search=None,
+                     raw=False, version=None, endpoint=None, serialize=False):
         """
-        Retrieves funders from a Thoth instance
+        Retrieves institutions from a Thoth instance
         :param int limit: the maximum number of results to return
         :param int order: a GraphQL order query statement
         :param int offset: the offset from which to retrieve results
@@ -232,8 +233,9 @@ class ThothAPI:
         """
         self._override_version(version=version, endpoint=endpoint)
 
-        funders = self._client().funders(limit=limit, order=order,
-                                         offset=offset, search=search, raw=raw)
+        funders = self._client().institutions(limit=limit, order=order,
+                                              offset=offset, search=search,
+                                              raw=raw)
 
         if not raw and not serialize:
             print(*funders, sep='\n')
