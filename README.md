@@ -1,4 +1,4 @@
-Python client for Thoth's GraphQL and REST APIs
+Python client for Thoth's GraphQL and REST APIs. Currently supports Thoth version 0.6.0.
 
 [![Build Status](https://travis-ci.org/openbookpublishers/thoth-client.svg?branch=master)](https://travis-ci.org/openbookpublishers/thoth-client) [![Release](https://img.shields.io/github/release/openbookpublishers/thoth-client.svg?colorB=58839b)](https://github.com/openbookpublishers/thoth-client/releases) [![License](https://img.shields.io/github/license/openbookpublishers/thoth-client.svg?colorB=ff0000)](https://github.com/openbookpublishers/thoth-client/blob/master/LICENSE)
 
@@ -23,7 +23,7 @@ pip3 install -r ./requirements.txt
 ```python
 from thothlibrary import ThothClient
 
-thoth = ThothClient(version="0.4.2")
+thoth = ThothClient(version="0.6.0")
 print(thoth.works())
 ```
 
@@ -35,8 +35,8 @@ python3 -m thothlibrary.cli contribution_count
 python3 -m thothlibrary.cli contributor --contributor_id=e8def8cf-0dfe-4da9-b7fa-f77e7aec7524
 python3 -m thothlibrary.cli contributors --limit=10
 python3 -m thothlibrary.cli contributor_count --search="Vincent"
-python3 -m thothlibrary.cli funder --funder_id=194614ac-d189-4a74-8bf4-74c0c9de4a81
-python3 -m thothlibrary.cli funders --limit=10
+python3 -m thothlibrary.cli institution --institution_id=194614ac-d189-4a74-8bf4-74c0c9de4a81
+python3 -m thothlibrary.cli institutions --limit=10
 python3 -m thothlibrary.cli funder_count
 python3 -m thothlibrary.cli funding --funding_id=5323d3e7-3ae9-4778-8464-9400fbbb959e
 python3 -m thothlibrary.cli fundings --limit=10
@@ -52,7 +52,7 @@ python3 -m thothlibrary.cli language_count --language_code=CHI
 python3 -m thothlibrary.cli price --price_id=818567dd-7d3a-4963-8704-3381b5432877
 python3 -m thothlibrary.cli prices --limit=10 --currency_code=GBP
 python3 -m thothlibrary.cli price_count --currency_code=GBP
-python3 -m thothlibrary.cli publication --publication_id=34712b75-dcdd-408b-8d0c-cf29a35be2e5
+python3 -m thothlibrary.cli publication --publication_id=27b7bdab-e9e5-4220-811e-1f370861f5e1
 python3 -m thothlibrary.cli publications --limit=10 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
 python3 -m thothlibrary.cli publication_count --publication_type="HARDBACK"
 python3 -m thothlibrary.cli publisher --publisher_id=85fd969a-a16c-480b-b641-cb9adf979c3b
