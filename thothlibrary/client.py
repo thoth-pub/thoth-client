@@ -49,9 +49,9 @@ class ThothClient:
         bearer = "Bearer {}".format(auth.get_token())
         self.client.inject_token(bearer)
 
-    def mutation(self, mutation_name, data):
+    def mutation(self, mutation_name, data, units=False):
         """Instantiate a thoth mutation and execute"""
-        mutation = ThothMutation(mutation_name, data)
+        mutation = ThothMutation(mutation_name, data, units)
         return mutation.run(self.client)
 
     def query(self, query_name, parameters, raw=False):

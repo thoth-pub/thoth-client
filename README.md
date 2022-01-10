@@ -1,6 +1,6 @@
 Python client for Thoth's GraphQL and REST APIs. Currently supports Thoth version 0.6.0.
 
-[![Build Status](https://travis-ci.org/openbookpublishers/thoth-client.svg?branch=master)](https://travis-ci.org/openbookpublishers/thoth-client) [![Release](https://img.shields.io/github/release/openbookpublishers/thoth-client.svg?colorB=58839b)](https://github.com/openbookpublishers/thoth-client/releases) [![License](https://img.shields.io/github/license/openbookpublishers/thoth-client.svg?colorB=ff0000)](https://github.com/openbookpublishers/thoth-client/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/release/openbookpublishers/thoth-client.svg?colorB=58839b)](https://github.com/openbookpublishers/thoth-client/releases) [![PyPi version](https://badgen.net/pypi/v/thothlibrary/)](https://pypi.org/project/thothlibrary)
 
 ## Usage
 
@@ -65,6 +65,7 @@ python3 -m thothlibrary.cli subject --subject_id=1291208f-fc43-47a4-a8e6-e132477
 python3 -m thothlibrary.cli subjects --limit=10 --subject_type=BIC
 python3 -m thothlibrary.cli subject_count --subject_type=THEMA
 python3 -m thothlibrary.cli supported_versions
+python3 -m thothlibrary.cli update_cover --doi="https://doi.org/10.11647/OBP.0278" --url="https://cdn.openbookpublishers.com/covers/10.11647/obp.0278.jpg"
 python3 -m thothlibrary.cli work --doi="https://doi.org/10.11647/OBP.0222"
 python3 -m thothlibrary.cli work --work_id="e0f748b2-984f-45cc-8b9e-13989c31dda4"
 python3 -m thothlibrary.cli works --limit=10 --order='{field: PUBLICATION_DATE, direction: DESC}' --work_status=ACTIVE --work_type=MONOGRAPH --offset=1 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
