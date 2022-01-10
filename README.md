@@ -1,6 +1,6 @@
 Python client for Thoth's GraphQL and REST APIs. Currently supports Thoth version 0.6.0.
 
-[![Build Status](https://travis-ci.org/openbookpublishers/thoth-client.svg?branch=master)](https://travis-ci.org/openbookpublishers/thoth-client) [![Release](https://img.shields.io/github/release/openbookpublishers/thoth-client.svg?colorB=58839b)](https://github.com/openbookpublishers/thoth-client/releases) [![License](https://img.shields.io/github/license/openbookpublishers/thoth-client.svg?colorB=ff0000)](https://github.com/openbookpublishers/thoth-client/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/release/openbookpublishers/thoth-client.svg?colorB=58839b)](https://github.com/openbookpublishers/thoth-client/releases) [![PyPi version](https://badgen.net/pypi/v/thothlibrary/)](https://pypi.org/project/thothlibrary)
 
 ## Usage
 
