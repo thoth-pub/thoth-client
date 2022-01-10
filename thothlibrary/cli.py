@@ -7,6 +7,7 @@ import json
 
 import fire
 from graphqlclient import GraphQLClient
+from os import getenv
 
 import thothlibrary
 
@@ -36,6 +37,9 @@ class ThothAPI:
         self.endpoint = "https://api.thoth.pub"
         self.version = "0.6.0"
 
+        self.thoth_email = getenv('THOTH_EMAIL')
+        self.thoth_pwd = getenv('THOTH_PWD')
+
     def _client(self):
         """
         Returns a ThothClient object
@@ -62,6 +66,17 @@ class ThothAPI:
         self.graphql_endpoint = "{}/graphql".format(self.endpoint)
         self.client = GraphQLClient(self.graphql_endpoint)
         self.version = self.version.replace('.', '_')
+
+    def _set_credentials(self):
+        """
+        Get user's Thoth credentials
+        """
+        print('Thoth credentials are not set.')
+        print('For persistence, please set them as env variables: '
+              '$THOTH_EMAIL and $THOTH_PWD')
+
+        self.thoth_email = input('Thoth email: ')
+        self.thoth_pwd = input('Thoth password: ')
 
     @fire.decorators.SetParseFn(_raw_parse)
     def contribution(self, contribution_id, raw=False, version=None,
@@ -957,6 +972,47 @@ class ThothAPI:
                                         work_type=work_type,
                                         work_status=work_status,
                                         raw=raw))
+
+    @fire.decorators.SetParseFn(_raw_parse)
+    def update_cover(self, doi=None, work_id=None, url=None, version=None,
+                     endpoint=None):
+        """
+        Update the work cover by DOI or ID
+        :param str doi: the doi of the work
+        :param str work_id: the workId of the work
+        :param str url: the cover URL of the work
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        """
+        self._override_version(version=version, endpoint=endpoint)
+
+        client = self._client()
+
+        if not url:
+            print("You must specify a cover URL.")
+            return
+
+        if not doi and not work_id:
+            print("You must specify either workId or doi.")
+            return
+        elif doi:
+            work = client.work_by_doi(doi=doi, raw=True)
+            work_obj = json.loads(work)
+            data = work_obj['data']['workByDoi']
+        else:
+            work = client.work_by_id(work_id=work_id, raw=True)
+            work_obj = json.loads(work)
+            data = work_obj['data']['work']
+
+        # Update cover URL
+        data['coverUrl'] = url
+
+        if not self.thoth_email or not self.thoth_pwd:
+            self._set_credentials()
+
+        client.login(self.thoth_email, self.thoth_pwd)
+
+        mutation = client.mutation('updateWork', data, units='MM')
 
 
 if __name__ == '__main__':
