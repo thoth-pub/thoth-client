@@ -107,8 +107,7 @@ def _contributor_formatter(contributor):
     @return: A formatted contributor object
     """
     format_str = f"{contributor.fullName} " \
-                 f"({contributor.contributions[0].contributionType} of " \
-                 f"{contributor.contributions[0].work.fullTitle}) " \
+                 f"contributed to {len(contributor.contributions)} works " \
                  f"[{contributor.contributorId}]"
     return _generic_formatter(contributor, 'Contributor', format_str)
 
