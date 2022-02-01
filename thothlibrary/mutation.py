@@ -151,12 +151,21 @@ class ThothMutation():
                 ("contributionType", False),
                 ("mainContribution", False),
                 ("biography", True),
-                ("institution", True),
+                ("contributionOrdinal", False),
                 ("firstName", True),
                 ("lastName", True),
                 ("fullName", True)
             ],
             "return_value": "workId"
+        },
+        "createAffiliation": {
+            "fields": [
+                ("contributionId", True),
+                ("institutionId", True),
+                ("affiliationOrdinal", False),
+                ("position", True)
+            ],
+            "return_value": "affiliationId"
         },
         "updateWork": {
             "fields": [
