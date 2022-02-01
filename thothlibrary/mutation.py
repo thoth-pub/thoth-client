@@ -167,6 +167,15 @@ class ThothMutation():
             ],
             "return_value": "affiliationId"
         },
+        "createInstitution": {
+            "fields": [
+                ("institutionName", True),
+                ("institutionDoi", True),
+                ("ror", True),
+                ("countryCode", False)
+            ],
+            "return_value": "institutionId"
+        },
         "updateWork": {
             "fields": [
                 ("workId", True),
