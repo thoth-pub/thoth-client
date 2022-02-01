@@ -7,9 +7,9 @@ Python client for Thoth's GraphQL and REST APIs. Currently supports Thoth versio
 ### Install
 Install is either via pip or cloning the repository.
 
-From pip: 
+From pip:
 ```sh
-python3 -m pip install thothlibrary==0.8.2
+python3 -m pip install thothlibrary==0.8.3
 ```
 
 Or from the repo:
