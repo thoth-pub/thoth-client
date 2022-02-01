@@ -84,8 +84,7 @@ class ThothMutation():
             "fields": [
                 ("publicationType", False),
                 ("workId", True),
-                ("isbn", True),
-                ("publicationUrl", True)
+                ("isbn", True)
             ],
             "return_value": "publicationId"
         },
@@ -151,12 +150,52 @@ class ThothMutation():
                 ("contributionType", False),
                 ("mainContribution", False),
                 ("biography", True),
-                ("institution", True),
+                ("contributionOrdinal", False),
                 ("firstName", True),
                 ("lastName", True),
                 ("fullName", True)
             ],
             "return_value": "workId"
+        },
+        "createAffiliation": {
+            "fields": [
+                ("contributionId", True),
+                ("institutionId", True),
+                ("affiliationOrdinal", False),
+                ("position", True)
+            ],
+            "return_value": "affiliationId"
+        },
+        "createInstitution": {
+            "fields": [
+                ("institutionName", True),
+                ("institutionDoi", True),
+                ("ror", True),
+                ("countryCode", False)
+            ],
+            "return_value": "institutionId"
+        },
+        "createLocation": {
+            "fields": [
+                ("publicationId", True),
+                ("landingPage", True),
+                ("fullTextUrl", True),
+                ("locationPlatform", False),
+                ("canonical", False)
+            ],
+            "return_value": "locationId"
+        },
+        "createFunding": {
+            "fields": [
+                ("workId", True),
+                ("institutionId", True),
+                ("program", True),
+                ("projectName", False),
+                ("projectShortname", False),
+                ("grantNumber", False),
+                ("jurisdiction", False)
+            ],
+            "return_value": "fundingId"
         },
         "updateWork": {
             "fields": [
