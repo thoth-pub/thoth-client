@@ -84,8 +84,7 @@ class ThothMutation():
             "fields": [
                 ("publicationType", False),
                 ("workId", True),
-                ("isbn", True),
-                ("publicationUrl", True)
+                ("isbn", True)
             ],
             "return_value": "publicationId"
         },
@@ -175,6 +174,16 @@ class ThothMutation():
                 ("countryCode", False)
             ],
             "return_value": "institutionId"
+        },
+        "createLocation": {
+            "fields": [
+                ("publicationId", True),
+                ("landingPage", True),
+                ("fullTextUrl", True),
+                ("locationPlatform", False),
+                ("canonical", False)
+            ],
+            "return_value": "locationId"
         },
         "updateWork": {
             "fields": [

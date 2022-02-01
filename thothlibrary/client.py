@@ -111,6 +111,9 @@ class ThothClient:
         """Construct and trigger a mutation to add a new institution object"""
         return self.mutation("createInstitution", institution)
 
+    def create_location(self, location):
+        """Construct and trigger a mutation to add a new location object"""
+        return self.mutation("createLocation", location)
 
     @staticmethod
     def supported_versions():
