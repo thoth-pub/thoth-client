@@ -185,6 +185,18 @@ class ThothMutation():
             ],
             "return_value": "locationId"
         },
+        "createFunding": {
+            "fields": [
+                ("workId", True),
+                ("institutionId", True),
+                ("program", True),
+                ("projectName", False),
+                ("projectShortname", False),
+                ("grantNumber", False),
+                ("jurisdiction", False)
+            ],
+            "return_value": "fundingId"
+        },
         "updateWork": {
             "fields": [
                 ("workId", True),
