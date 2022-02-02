@@ -9,7 +9,7 @@ Install is either via pip or cloning the repository.
 
 From pip:
 ```sh
-python3 -m pip install thothlibrary==0.9.1
+python3 -m pip install thothlibrary==0.10.0
 ```
 
 Or from the repo:
@@ -23,7 +23,7 @@ pip3 install -r ./requirements.txt
 ```python
 from thothlibrary import ThothClient
 
-thoth = ThothClient(version="0.6.0")
+thoth = ThothClient()
 print(thoth.works())
 ```
 
@@ -90,7 +90,7 @@ python3 -m thothrest.cli work onix_3.0::project_muse e0f748b2-984f-45cc-8b9e-139
 ```
 
 ## Thoth Django
-The thothdjango folder includes models, an import routine, subject-code support, and admin procedures to use Thoth in a django app. The import provides unidirectional synchronization from remote Thoth imports to a local database for use in a Django app.  
+The thothdjango folder includes models, an import routine, subject-code support, and admin procedures to use Thoth in a django app. The import provides unidirectional synchronization from remote Thoth imports to a local database for use in a Django app.
 
 ## Test Suite
 Tests for GraphQL queries are versioned in the thoth-[ver] folder of thothlibrary.
@@ -106,4 +106,6 @@ The Thoth API is not yet considered stable and functionality changes between ver
 4. Run genjson.sh _only_ from inside the tests directory of the new version. This will fetch the latest server JSON responses and store it inside the fixtures directory for these tests. If there are any errors, then the command line CLI has encountered a breaking change that must first be fixed.
 5. Run the test suite for the latest version and examine breakages. It is possible that breakages are not actually full breakdown, but merely a change in the serialized object. Nonetheless, fix these by subclassing the previous versions of the API and overriding broken methods. In the cases of total breakage, a non-subclassed rewrite may be more appropriate. (May also apply at major version breaks.)
 6. When the test suite passes, or a new object format has been decided and tests rewritten, run genfixtures.sh to freeze the current test suite.
+7. Include the new version directory in the list of packages in `setup.py`
+8. Update `THOTH_VERSION` in `thothlibrary/client.py`
 
