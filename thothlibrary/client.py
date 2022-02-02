@@ -8,18 +8,22 @@ it under the terms of the Apache License v2.0.
 import importlib
 import pkgutil
 
+import re
 import thothlibrary
 from .auth import ThothAuthenticator
 from .graphql import GraphQLClientRequests as GraphQLClient
 from .mutation import ThothMutation
 from .query import ThothQuery
-import re
+
+THOTH_ENDPOINT = "https://api.thoth.pub"
+THOTH_VERSION = "0.6.0"
 
 
 class ThothClient:
     """Client to Thoth's GraphQL API"""
+    QUERIES = {}  # populated according to each version's requirements
 
-    def __new__(cls, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
+    def __new__(cls, thoth_endpoint=THOTH_ENDPOINT, version=THOTH_VERSION):
         # this new call is the only bit of "magic"
         # it basically subs in the sub-class of the correct version and returns
         # an instance of that, instead of the generic class
@@ -30,9 +34,10 @@ class ThothClient:
         version_endpoints = getattr(
             endpoints, 'ThothClient{0}'.format(version_replaced))
 
-        return version_endpoints(thoth_endpoint=thoth_endpoint, version=version)
+        return version_endpoints(thoth_endpoint=thoth_endpoint,
+                                 version=version)
 
-    def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.4.2"):
+    def __init__(self, thoth_endpoint=THOTH_ENDPOINT, version=THOTH_VERSION):
         """Returns new ThothClient object at the specified GraphQL endpoint
 
         thoth_endpoint: Must be the full URL (eg. 'http://localhost').
@@ -142,7 +147,7 @@ class ThothClient:
         """
         Makes a request to the API
         @param endpoint_name: the name of the endpoint
-        @param return_raw: whether to return the raw data or an object (default)
+        @param return_raw: whether to return raw data or an object (default)
         @param parameters: the parameters to pass to GraphQL
         @return: an object or JSON of the request
         """
@@ -150,8 +155,7 @@ class ThothClient:
 
         if return_raw:
             return response
-        else:
-            return self._build_structure(endpoint_name, response)
+        return self._build_structure(endpoint_name, response)
 
     def _build_structure(self, endpoint_name, data):
         """
