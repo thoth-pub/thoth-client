@@ -155,7 +155,7 @@ class ThothMutation():
                 ("lastName", True),
                 ("fullName", True)
             ],
-            "return_value": "workId"
+            "return_value": "contributionId"
         },
         "createAffiliation": {
             "fields": [
