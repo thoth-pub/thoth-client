@@ -22,7 +22,7 @@ jobs:
           # Upgrade pip
           python3 -m pip install --upgrade pip
           # Install build deps
-          python3 -m pip install setuptools wheel twine==3.7.1
+          python3 -m pip install setuptools wheel
           # If requirements.txt exists, install from it
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           # Install the package from setup.py
@@ -31,7 +31,7 @@ jobs:
       - name: Build and publish to PyPI
         run: |
           python3 setup.py sdist bdist_wheel
-          python3 -m twine upload dist/*
+          pipx run twine upload dist/*
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
