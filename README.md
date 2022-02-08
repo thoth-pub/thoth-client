@@ -9,7 +9,7 @@ Install is either via pip or cloning the repository.
 
 From pip:
 ```sh
-python3 -m pip install thothlibrary==0.10.4
+python3 -m pip install thothlibrary==0.10.5
 ```
 
 Or from the repo:
