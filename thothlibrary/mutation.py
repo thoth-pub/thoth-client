@@ -121,7 +121,9 @@ class ThothMutation():
                 ("seriesName", True),
                 ("issnPrint", True),
                 ("issnDigital", True),
-                ("seriesUrl", True)
+                ("seriesUrl", True),
+                ("seriesDescription", True),
+                ("seriesCfpUrl", True)
             ],
             "return_value": "seriesId"
         },
