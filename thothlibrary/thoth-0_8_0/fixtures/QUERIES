@@ -556,7 +556,7 @@
             "toc",
             "coverUrl",
             "coverCaption",
-            "publications { isbn publicationType locations { locationId landingPage fullTextUrl locationPlatform } __typename }",
+            "publications { isbn publicationType publicationId locations { locationId landingPage fullTextUrl locationPlatform } __typename }",
             "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
             "contributions { fullName contributionType mainContribution contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
