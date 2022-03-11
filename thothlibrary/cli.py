@@ -35,7 +35,7 @@ class ThothAPI:
         A Thoth CLI client
         """
         self.endpoint = "https://api.thoth.pub"
-        self.version = "0.6.0"
+        self.version = "0.8.0"
 
         self.thoth_email = getenv('THOTH_EMAIL')
         self.thoth_pwd = getenv('THOTH_PWD')

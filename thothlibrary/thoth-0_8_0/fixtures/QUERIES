@@ -1,0 +1,626 @@
+{
+    "contribution": {
+        "fields": [
+            "contributionId",
+            "contributionType",
+            "mainContribution",
+            "biography",
+            "affiliations { affiliationId institution { institutionName ror fundings { program projectName projectShortname grantNumber jurisdiction } } }",
+            "__typename",
+            "firstName",
+            "lastName",
+            "fullName",
+            "contributionOrdinal",
+            "workId",
+            "work { fullTitle }",
+            "contributor {firstName lastName fullName orcid __typename website contributorId}"
+        ],
+        "parameters": [
+            "contributionId"
+        ]
+    },
+    "contributionCount": {
+        "parameters": [
+            "filter",
+            "publishers",
+            "contributionType"
+        ]
+    },
+    "contributions": {
+        "fields": [
+            "contributionId",
+            "contributionType",
+            "mainContribution",
+            "biography",
+            "affiliations { affiliationId institution { institutionName ror fundings { program projectName projectShortname grantNumber jurisdiction } } }",
+            "__typename",
+            "firstName",
+            "lastName",
+            "fullName",
+            "contributionOrdinal",
+            "workId",
+            "work { fullTitle }",
+            "contributor {firstName lastName fullName orcid __typename website contributorId}"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers",
+            "contributionType"
+        ]
+    },
+    "contributor": {
+        "fields": [
+            "contributorId",
+            "firstName",
+            "lastName",
+            "fullName",
+            "orcid",
+            "__typename",
+            "contributions { contributionId contributionType work { workId fullTitle} }"
+        ],
+        "parameters": [
+            "contributorId"
+        ]
+    },
+    "contributorCount": {
+        "parameters": [
+            "filter"
+        ]
+    },
+    "contributors": {
+        "fields": [
+            "contributorId",
+            "firstName",
+            "lastName",
+            "fullName",
+            "orcid",
+            "__typename",
+            "contributions { contributionId contributionType work { workId fullTitle} }"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order"
+        ]
+    },
+    "institution": {
+        "fields": [
+            "institutionId",
+            "institutionName",
+            "institutionDoi",
+            "fundings { grantNumber program projectName jurisdiction work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+            "__typename"
+        ],
+        "parameters": [
+            "institutionId"
+        ]
+    },
+    "funderCount": {
+        "parameters": [
+            "filter"
+        ]
+    },
+    "institutions": {
+        "fields": [
+            "institutionId",
+            "institutionName",
+            "institutionDoi",
+            "ror",
+            "countryCode",
+            "fundings { grantNumber program projectName jurisdiction work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+            "affiliations { affiliationOrdinal position contribution { fullName contributionType mainContribution contributionOrdinal } }",
+            "__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order"
+        ]
+    },
+    "funding": {
+        "fields": [
+            "fundingId",
+            "workId",
+            "institution { institutionId institutionDoi ror countryCode updatedAt createdAt }",
+            "program",
+            "grantNumber",
+            "projectName",
+            "projectShortname",
+            "jurisdiction",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+            "__typename"
+        ],
+        "parameters": [
+            "fundingId"
+        ]
+    },
+    "fundingCount": {},
+    "fundings": {
+        "fields": [
+            "fundingId",
+            "workId",
+            "institution { institutionId institutionDoi ror countryCode updatedAt createdAt }",
+            "program",
+            "grantNumber",
+            "projectName",
+            "projectShortname",
+            "jurisdiction",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+            "__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "publishers",
+            "order"
+        ]
+    },
+    "imprint": {
+        "fields": [
+            "imprintUrl",
+            "imprintId",
+            "imprintName",
+            "updatedAt",
+            "createdAt",
+            "publisherId",
+            "publisher { publisherName publisherId }",
+            "works { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
+        ],
+        "parameters": [
+            "imprintId"
+        ]
+    },
+    "imprintCount": {
+        "parameters": [
+            "filter",
+            "publishers"
+        ]
+    },
+    "imprints": {
+        "fields": [
+            "imprintUrl",
+            "imprintId",
+            "imprintName",
+            "updatedAt",
+            "createdAt",
+            "publisherId",
+            "publisher { publisherName publisherId }",
+            "works { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers"
+        ]
+    },
+    "issue": {
+        "fields": [
+            "issueId",
+            "seriesId",
+            "issueOrdinal",
+            "updatedAt",
+            "createdAt",
+            "series { seriesId seriesType seriesName imprintId imprint { __typename publisher { publisherName publisherId __typename } }}",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
+        ],
+        "parameters": [
+            "issueId"
+        ]
+    },
+    "issues": {
+        "fields": [
+            "issueId",
+            "seriesId",
+            "issueOrdinal",
+            "updatedAt",
+            "createdAt",
+            "series { seriesId seriesType seriesName imprintId imprint { __typename publisher { publisherName publisherId __typename } }}",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers"
+        ]
+    },
+    "issuesCount": {},
+    "language": {
+        "fields": [
+            "languageId",
+            "workId",
+            "languageCode",
+            "languageRelation",
+            "createdAt",
+            "mainLanguage",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
+        ],
+        "parameters": [
+            "languageId"
+        ]
+    },
+    "languageCount": {
+        "parameters": [
+            "languageCode",
+            "languageRelation"
+        ]
+    },
+    "languages": {
+        "fields": [
+            "languageId",
+            "workId",
+            "languageCode",
+            "languageRelation",
+            "createdAt",
+            "mainLanguage",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers",
+            "languageCode",
+            "languageRelation"
+        ]
+    },
+    "price": {
+        "fields": [
+            "currencyCode",
+            "publicationId",
+            "priceId",
+            "unitPrice",
+            "publication { work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+            "createdAt",
+            "updatedAt",
+            "__typename"
+        ],
+        "parameters": [
+            "priceId"
+        ]
+    },
+    "priceCount": {
+        "parameters": [
+            "currencyCode"
+        ]
+    },
+    "prices": {
+        "fields": [
+            "currencyCode",
+            "publicationId",
+            "priceId",
+            "unitPrice",
+            "publication { work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+            "createdAt",
+            "updatedAt",
+            "__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers",
+            "currencyCode"
+        ]
+    },
+    "publication": {
+        "fields": [
+            "publicationId",
+            "publicationType",
+            "workId",
+            "isbn",
+            "locations { locationId landingPage locationPlatform canonical }",
+            "createdAt",
+            "updatedAt",
+            "prices { currencyCode unitPrice __typename}",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+            "__typename"
+        ],
+        "parameters": [
+            "publicationId"
+        ]
+    },
+    "publicationCount": {
+        "parameters": [
+            "filter",
+            "publishers",
+            "publicationType"
+        ]
+    },
+    "publications": {
+        "fields": [
+            "publicationId",
+            "publicationType",
+            "workId",
+            "isbn",
+            "createdAt",
+            "locations { locationId landingPage locationPlatform canonical }",
+            "updatedAt",
+            "prices { currencyCode unitPrice __typename}",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+            "__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers",
+            "publicationType"
+        ]
+    },
+    "publisher": {
+        "fields": [
+            "imprints { imprintUrl imprintId imprintName __typename}updatedAt",
+            "createdAt",
+            "publisherId",
+            "publisherName",
+            "publisherShortname",
+            "publisherUrl",
+            "__typename"
+        ],
+        "parameters": [
+            "publisherId"
+        ]
+    },
+    "publisherCount": {
+        "parameters": [
+            "filter",
+            "publishers"
+        ]
+    },
+    "publishers": {
+        "fields": [
+            "imprints { imprintUrl imprintId imprintName __typename}updatedAt",
+            "createdAt",
+            "publisherId",
+            "publisherName",
+            "publisherShortname",
+            "publisherUrl",
+            "__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers"
+        ]
+    },
+    "series": {
+        "fields": [
+            "seriesId",
+            "seriesType",
+            "seriesName",
+            "updatedAt",
+            "createdAt",
+            "imprintId",
+            "imprint { __typename publisher { publisherName publisherId __typename } }",
+            "issues { issueId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } } }",
+            "__typename"
+        ],
+        "parameters": [
+            "seriesId"
+        ]
+    },
+    "seriesCount": {
+        "parameters": [
+            "filter",
+            "publishers",
+            "seriesType"
+        ]
+    },
+    "serieses": {
+        "fields": [
+            "seriesId",
+            "seriesType",
+            "seriesName",
+            "updatedAt",
+            "createdAt",
+            "imprintId",
+            "imprint { __typename publisher { publisherName publisherId __typename } }",
+            "issues { issueId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } } }",
+            "__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers",
+            "seriesType"
+        ]
+    },
+    "subject": {
+        "fields": [
+            "subjectId",
+            "workId",
+            "subjectCode",
+            "subjectType",
+            "subjectOrdinal",
+            "createdAt",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
+        ],
+        "parameters": [
+            "subjectId"
+        ]
+    },
+    "subjectCount": {
+        "parameters": [
+            "filter",
+            "subjectType"
+        ]
+    },
+    "subjects": {
+        "fields": [
+            "subjectId",
+            "workId",
+            "subjectCode",
+            "subjectType",
+            "subjectOrdinal",
+            "createdAt",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers",
+            "subjectType"
+        ]
+    },
+    "work": {
+        "fields": [
+            "workType",
+            "workStatus",
+            "fullTitle",
+            "title",
+            "subtitle",
+            "reference",
+            "edition",
+            "imprintId",
+            "doi",
+            "publicationDate",
+            "place",
+            "width",
+            "height",
+            "pageCount",
+            "pageBreakdown",
+            "imageCount",
+            "tableCount",
+            "audioCount",
+            "videoCount",
+            "license",
+            "copyrightHolder",
+            "landingPage",
+            "lccn",
+            "oclc",
+            "shortAbstract",
+            "longAbstract",
+            "generalNote",
+            "toc",
+            "workId",
+            "coverUrl",
+            "coverCaption",
+            "publications { isbn publicationType __typename }",
+            "contributions { fullName contributionType mainContribution contributor { contributorId orcid firstName lastName } contributionId contributionOrdinal __typename }",
+            "imprint { __typename publisher { publisherName publisherId __typename } }",
+            "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
+            "__typename"
+        ],
+        "parameters": [
+            "workId"
+        ]
+    },
+    "workByDoi": {
+        "fields": [
+            "workId",
+            "workType",
+            "workStatus",
+            "fullTitle",
+            "title",
+            "subtitle",
+            "reference",
+            "edition",
+            "imprintId",
+            "doi",
+            "publicationDate",
+            "place",
+            "width",
+            "height",
+            "pageCount",
+            "pageBreakdown",
+            "imageCount",
+            "tableCount",
+            "audioCount",
+            "videoCount",
+            "license",
+            "copyrightHolder",
+            "landingPage",
+            "lccn",
+            "oclc",
+            "shortAbstract",
+            "longAbstract",
+            "generalNote",
+            "toc",
+            "coverUrl",
+            "coverCaption",
+            "publications { isbn publicationType locations { locationId landingPage fullTextUrl locationPlatform } __typename }",
+            "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
+            "contributions { fullName contributionType mainContribution contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
+            "imprint { __typename publisher { publisherName publisherId __typename } }",
+            "__typename"
+        ],
+        "parameters": [
+            "doi"
+        ]
+    },
+    "workCount": {
+        "parameters": [
+            "filter",
+            "publishers",
+            "workType",
+            "workStatus"
+        ]
+    },
+    "works": {
+        "fields": [
+            "workType",
+            "workStatus",
+            "fullTitle",
+            "title",
+            "subtitle",
+            "reference",
+            "edition",
+            "imprintId",
+            "doi",
+            "publicationDate",
+            "place",
+            "width",
+            "height",
+            "pageCount",
+            "pageBreakdown",
+            "imageCount",
+            "tableCount",
+            "audioCount",
+            "videoCount",
+            "license",
+            "copyrightHolder",
+            "landingPage",
+            "lccn",
+            "oclc",
+            "shortAbstract",
+            "longAbstract",
+            "generalNote",
+            "toc",
+            "workId",
+            "coverUrl",
+            "coverCaption",
+            "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
+            "publications { isbn publicationType __typename }",
+            "contributions { fullName contributionType mainContribution contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
+            "imprint { __typename publisher { publisherName publisherId __typename } }",
+            "__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers",
+            "workType",
+            "workStatus"
+        ]
+    }
+}
