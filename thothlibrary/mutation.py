@@ -58,8 +58,6 @@ class ThothMutation():
                 ("doi", True),
                 ("publicationDate", True),
                 ("place", True),
-                ("width", False),
-                ("height", False),
                 ("pageCount", False),
                 ("pageBreakdown", True),
                 ("imageCount", False),
@@ -84,6 +82,10 @@ class ThothMutation():
             "fields": [
                 ("publicationType", False),
                 ("workId", True),
+                ("width", False),
+                ("height", False),
+                ("depth", False),
+                ("weight", False),
                 ("isbn", True)
             ],
             "return_value": "publicationId"
@@ -213,8 +215,6 @@ class ThothMutation():
                 ("doi", True),
                 ("publicationDate", True),
                 ("place", True),
-                ("width", False),
-                ("height", False),
                 ("pageCount", False),
                 ("pageBreakdown", True),
                 ("imageCount", False),
