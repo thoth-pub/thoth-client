@@ -58,8 +58,6 @@ class ThothMutation():
                 ("doi", True),
                 ("publicationDate", True),
                 ("place", True),
-                ("width", False),
-                ("height", False),
                 ("pageCount", False),
                 ("pageBreakdown", True),
                 ("imageCount", False),
@@ -84,6 +82,10 @@ class ThothMutation():
             "fields": [
                 ("publicationType", False),
                 ("workId", True),
+                ("width", False),
+                ("height", False),
+                ("depth", False),
+                ("weight", False),
                 ("isbn", True)
             ],
             "return_value": "publicationId"
@@ -213,8 +215,6 @@ class ThothMutation():
                 ("doi", True),
                 ("publicationDate", True),
                 ("place", True),
-                ("width", False),
-                ("height", False),
                 ("pageCount", False),
                 ("pageBreakdown", True),
                 ("imageCount", False),
@@ -237,7 +237,7 @@ class ThothMutation():
         }
     }
 
-    def __init__(self, mutation_name, mutation_data, units=False):
+    def __init__(self, mutation_name, mutation_data):
         """Returns new ThothMutation object with specified mutation data
 
         mutation_name: Must match one of the keys found in MUTATIONS.
@@ -245,7 +245,6 @@ class ThothMutation():
         mutation_data: Dictionary of mutation fields and their values.
         """
         self.mutation_name = mutation_name
-        self.units = units
         self.return_value = self.MUTATIONS[mutation_name]["return_value"]
         self.mutation_data = mutation_data
         self.data_str = self.generate_values()
@@ -256,17 +255,12 @@ class ThothMutation():
         values = {
             "mutation_name": self.mutation_name,
             "data": self.data_str,
-            "return_value": self.return_value,
-            "units": ""
+            "return_value": self.return_value
         }
-
-        if self.units:
-            values.update({"units": "units: {},".format(self.units)})
 
         payload = """
             mutation {
                 %(mutation_name)s(
-                    %(units)s
                     data: {
                         %(data)s
                     }
