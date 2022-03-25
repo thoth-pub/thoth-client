@@ -16,7 +16,7 @@ from .mutation import ThothMutation
 from .query import ThothQuery
 
 THOTH_ENDPOINT = "https://api.thoth.pub"
-THOTH_VERSION = "0.6.0"
+THOTH_VERSION = "0.8.0"
 
 
 class ThothClient:
