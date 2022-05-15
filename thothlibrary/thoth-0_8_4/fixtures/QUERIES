@@ -5,7 +5,7 @@
             "contributionType",
             "mainContribution",
             "biography",
-            "affiliations { affiliationId institution { institutionName ror fundings { program projectName projectShortname grantNumber jurisdiction } } }",
+            "affiliations { affiliationId institution { institutionName ror fundings { institutionId program projectName projectShortname grantNumber jurisdiction } } }",
             "__typename",
             "firstName",
             "lastName",
@@ -32,7 +32,7 @@
             "contributionType",
             "mainContribution",
             "biography",
-            "affiliations { affiliationId institution { institutionName ror fundings { program projectName projectShortname grantNumber jurisdiction } } }",
+            "affiliations { affiliationId institution { institutionName ror fundings { institutionId program projectName projectShortname projectShortname grantNumber jurisdiction } } }",
             "__typename",
             "firstName",
             "lastName",
@@ -92,7 +92,7 @@
             "institutionId",
             "institutionName",
             "institutionDoi",
-            "fundings { grantNumber program projectName jurisdiction work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+            "fundings { grantNumber program projectName projectShortname jurisdiction work institutionId { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
             "__typename"
         ],
         "parameters": [
@@ -106,7 +106,7 @@
             "institutionDoi",
             "ror",
             "countryCode",
-            "fundings { grantNumber program projectName jurisdiction work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+            "fundings { grantNumber program projectName projectShortname jurisdiction institutionId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
             "affiliations { affiliationOrdinal position contribution { fullName contributionType mainContribution contributionOrdinal } }",
             "__typename"
         ],
@@ -126,6 +126,7 @@
             "grantNumber",
             "projectName",
             "projectShortname",
+            "projectShortname",
             "jurisdiction",
             "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
             "__typename"
@@ -138,6 +139,7 @@
     "fundings": {
         "fields": [
             "fundingId",
+            "institutionId",
             "workId",
             "institution { institutionId institutionDoi ror countryCode updatedAt createdAt institutionName }",
             "program",
@@ -511,7 +513,7 @@
             "coverUrl",
             "coverCaption",
             "publications { isbn publicationType __typename }",
-            "contributions { fullName contributionType mainContribution contributor { contributorId orcid firstName lastName } contributionId contributionOrdinal __typename }",
+            "contributions { fullName contributionType mainContribution affiliations { affiliationId institution { institutionName institutionId ror fundings { institutionId program projectName projectShortname grantNumber jurisdiction } } } contributor { contributorId orcid firstName lastName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
             "__typename"
@@ -602,7 +604,7 @@
             "coverCaption",
             "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
             "publications { isbn publicationType __typename }",
-            "contributions { fullName contributionType mainContribution contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
+            "contributions { fullName contributionType mainContribution affiliations { affiliationId institution { institutionName institutionId ror fundings { institutionId program projectName projectShortname grantNumber jurisdiction } } } contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "__typename"
         ],
