@@ -617,5 +617,58 @@
             "workType",
             "workStatus"
         ]
+    },
+    "bookCount": {
+        "parameters": [
+            "filter",
+            "publishers",
+            "workStatus"
+        ]
+    },
+    "books": {
+        "fields": [
+            "workType",
+            "workStatus",
+            "fullTitle",
+            "title",
+            "subtitle",
+            "reference",
+            "edition",
+            "imprintId",
+            "doi",
+            "publicationDate",
+            "place",
+            "pageCount",
+            "pageBreakdown",
+            "imageCount",
+            "tableCount",
+            "audioCount",
+            "videoCount",
+            "license",
+            "copyrightHolder",
+            "landingPage",
+            "lccn",
+            "oclc",
+            "shortAbstract",
+            "longAbstract",
+            "generalNote",
+            "toc",
+            "workId",
+            "coverUrl",
+            "coverCaption",
+            "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
+            "publications { isbn publicationType __typename }",
+            "contributions { fullName contributionType mainContribution affiliations { affiliationId institution { institutionName institutionId ror fundings { institutionId program projectName projectShortname grantNumber jurisdiction } } } contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
+            "imprint { __typename publisher { publisherName publisherId __typename } }",
+            "__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers",
+            "workStatus"
+        ]
     }
 }
