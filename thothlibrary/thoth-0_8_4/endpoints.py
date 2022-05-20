@@ -793,3 +793,55 @@ class ThothClient0_8_4(ThothClient):
         self._dictionary_append(parameters, 'workStatus', work_status)
 
         return self._api_request("workCount", parameters, return_raw=raw)
+
+    def books(self, limit: int = 100, offset: int = 0, search: str = "",
+              order: str = None, publishers: str = None,
+              work_status: str = None, raw: bool = False):
+        """
+        Returns books
+        @param limit: the maximum number of results to return
+        @param order: a GraphQL order query statement
+        @param offset: the offset from which to retrieve results
+        @param publishers: a list of publishers to limit by
+        @param search: a filter string to search
+        @param work_status: the work status (e.g. ACTIVE)
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        if order is None:
+            order = {}
+        parameters = {
+            "offset": offset,
+            "limit": limit,
+        }
+
+        if search and not search.startswith('"'):
+            search = '"{0}"'.format(search)
+
+        self._dictionary_append(parameters, 'filter', search)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'workStatus', work_status)
+
+        return self._api_request("books", parameters, return_raw=raw)
+
+    def book_count(self, search: str = "", publishers: str = None,
+                   work_status: str = None, raw: bool = False):
+        """
+        A count of books
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit results
+        @param work_status: the work status (e.g. ACTIVE)
+        @param raw: whether to return a raw result
+        @return: a count of works
+        """
+        parameters = {}
+
+        if search and not search.startswith('"'):
+            search = '"{0}"'.format(search)
+
+        self._dictionary_append(parameters, 'filter', search)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'workStatus', work_status)
+
+        return self._api_request("bookCount", parameters, return_raw=raw)
