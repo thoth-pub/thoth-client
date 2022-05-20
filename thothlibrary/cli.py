@@ -35,7 +35,7 @@ class ThothAPI:
         A Thoth CLI client
         """
         self.endpoint = "https://api.thoth.pub"
-        self.version = "0.8.0"
+        self.version = "0.8.4"
 
         self.thoth_email = getenv('THOTH_EMAIL')
         self.thoth_pwd = getenv('THOTH_PWD')
@@ -485,7 +485,7 @@ class ThothAPI:
     @fire.decorators.SetParseFn(_raw_parse)
     def languages(self, limit=100, order=None, offset=0, publishers=None,
                   search=None, raw=False, version=None, endpoint=None,
-                  serialize=False, language_code=None, language_relation=None):
+                  serialize=False, language_codes=None, language_relation=None):
         """
         Retrieves languages from a Thoth instance
         :param int limit: the maximum number of results to return
@@ -498,7 +498,7 @@ class ThothAPI:
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
         :param language_relation: select by language relation (e.g. ORIGINAL)
-        :param language_code: select by language code (e.g. ADA)
+        :param language_codes: select by language code (e.g. ADA)
         """
         self._override_version(version=version, endpoint=endpoint)
 
@@ -506,7 +506,7 @@ class ThothAPI:
                                          offset=offset,
                                          publishers=publishers,
                                          search=search,
-                                         language_code=language_code,
+                                         language_codes=language_codes,
                                          language_relation=language_relation,
                                          raw=raw)
 
@@ -518,19 +518,19 @@ class ThothAPI:
             print(langs)
 
     @fire.decorators.SetParseFn(_raw_parse)
-    def language_count(self, language_code=None, raw=False, version=None,
+    def language_count(self, language_codes=None, raw=False, version=None,
                        endpoint=None, language_relation=None):
         """
         Retrieves a count of languages from a Thoth instance
         :param bool raw: whether to return a python object or the raw result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
-        :param language_code: the code to retrieve (e.g. CHI)
+        :param language_codes: the code to retrieve (e.g. CHI)
         :param language_relation: the relation (e.g. ORIGINAL)
         """
         self._override_version(version=version, endpoint=endpoint)
 
-        print(self._client().language_count(language_code=language_code,
+        print(self._client().language_count(language_codes=language_codes,
                                             language_relation=language_relation,
                                             raw=raw))
 
@@ -556,7 +556,7 @@ class ThothAPI:
 
     @fire.decorators.SetParseFn(_raw_parse)
     def prices(self, limit=100, order=None, offset=0, publishers=None,
-               currency_code=None, raw=False, version=None, endpoint=None,
+               currency_codes=None, raw=False, version=None, endpoint=None,
                serialize=False):
         """
         Retrieves prices from a Thoth instance
@@ -568,14 +568,14 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
-        :param str currency_code: the currency code (e.g. GBP)
+        :param str currency_codes: the currency code (e.g. GBP)
         """
         self._override_version(version=version, endpoint=endpoint)
 
         prices = self._client().prices(limit=limit, order=order,
                                        offset=offset,
                                        publishers=publishers,
-                                       currency_code=currency_code,
+                                       currency_codes=currency_codes,
                                        raw=raw)
 
         if not raw and not serialize:
@@ -586,18 +586,19 @@ class ThothAPI:
             print(prices)
 
     @fire.decorators.SetParseFn(_raw_parse)
-    def price_count(self, currency_code=None, raw=False, version=None,
+    def price_count(self, currency_codes=None, raw=False, version=None,
                     endpoint=None):
         """
         Retrieves a count of prices from a Thoth instance
-        :param str currency_code: the currency to search by (e.g. GBP)
+        :param str currency_codes: the currency to search by (e.g. GBP)
         :param bool raw: whether to return a python object or the raw result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         """
         self._override_version(version=version, endpoint=endpoint)
 
-        print(self._client().price_count(currency_code=currency_code, raw=raw))
+        print(self._client().price_count(currency_codes=currency_codes,
+                                         raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
     def publication(self, publication_id, raw=False,
@@ -622,7 +623,7 @@ class ThothAPI:
 
     @fire.decorators.SetParseFn(_raw_parse)
     def publications(self, limit=100, order=None, offset=0, publishers=None,
-                     search=None, publication_type=None, raw=False,
+                     search=None, publication_types=None, raw=False,
                      version=None, endpoint=None, serialize=False):
         """
         Retrieves publications from a Thoth instance
@@ -631,7 +632,7 @@ class ThothAPI:
         :param int offset: the offset from which to retrieve results
         :param str publishers: a list of publishers to limit by
         :param str search: a search string to search
-        :param str publication_type: the work type (e.g. PAPERBACK)
+        :param str publication_types: the work type (e.g. PAPERBACK)
         :param bool raw: whether to return a python object or the raw result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
@@ -642,7 +643,7 @@ class ThothAPI:
         pubs = self._client().publications(limit=limit, order=order,
                                            offset=offset, publishers=publishers,
                                            search=search,
-                                           publication_type=publication_type,
+                                           publication_types=publication_types,
                                            raw=raw)
         if not raw and not serialize:
             print(*pubs, sep='\n')
@@ -653,21 +654,21 @@ class ThothAPI:
 
     @fire.decorators.SetParseFn(_raw_parse)
     def publication_count(self, publishers=None, search=None, raw=False,
-                          publication_type=None, version=None, endpoint=None):
+                          publication_types=None, version=None, endpoint=None):
         """
         Retrieves a count of publications from a Thoth instance
         :param str publishers: a list of publishers to limit by
         :param str search: a search string to search
         :param bool raw: whether to return a python object or the raw result
         :param str version: a custom Thoth version
-        :param str publication_type: the work type (e.g. MONOGRAPH)
+        :param str publication_types: the work type (e.g. MONOGRAPH)
         :param str endpoint: a custom Thoth endpoint
         """
         self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().publication_count(
             publishers=publishers, search=search,
-            publication_type=publication_type, raw=raw))
+            publication_types=publication_types, raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
     def publisher(self, publisher_id, raw=False, version=None, endpoint=None,
@@ -759,7 +760,7 @@ class ThothAPI:
 
     @fire.decorators.SetParseFn(_raw_parse)
     def serieses(self, limit=100, order=None, offset=0, publishers=None,
-                 search=None, series_type=None, raw=False, version=None,
+                 search=None, series_types=None, raw=False, version=None,
                  endpoint=None, serialize=False):
         """
         Retrieves serieses from a Thoth instance
@@ -772,7 +773,7 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
-        :param series_type: the type of serieses to return (e.g. BOOK_SERIES)
+        :param series_types: the type of serieses to return (e.g. BOOK_SERIES)
         """
         self._override_version(version=version, endpoint=endpoint)
 
@@ -780,7 +781,7 @@ class ThothAPI:
                                            offset=offset,
                                            publishers=publishers,
                                            search=search,
-                                           series_type=series_type,
+                                           series_types=series_types,
                                            raw=raw)
 
         if not raw and not serialize:
@@ -792,20 +793,20 @@ class ThothAPI:
 
     @fire.decorators.SetParseFn(_raw_parse)
     def series_count(self, publishers=None, search=None, raw=False,
-                     series_type=None, version=None, endpoint=None):
+                     series_types=None, version=None, endpoint=None):
         """
         Retrieves a count of serieses from a Thoth instance
         :param str publishers: a list of publishers to limit by
         :param str search: a search string to search
         :param bool raw: whether to return a python object or the raw result
         :param str version: a custom Thoth version
-        :param str series_type: the work type (e.g. BOOK_SERIES)
+        :param str series_types: the work type (e.g. BOOK_SERIES)
         :param str endpoint: a custom Thoth endpoint
         """
         self._override_version(version=version, endpoint=endpoint)
 
         print(self._client().series_count(publishers=publishers, search=search,
-                                          series_type=series_type, raw=raw))
+                                          series_types=series_types, raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
     def subject(self, subject_id, raw=False, version=None, endpoint=None,
@@ -830,7 +831,7 @@ class ThothAPI:
     @fire.decorators.SetParseFn(_raw_parse)
     def subjects(self, limit=100, order=None, offset=0, publishers=None,
                  search=None, raw=False, version=None, endpoint=None,
-                 serialize=False, subject_type=None):
+                 serialize=False, subject_types=None):
         """
         Retrieves subjects from a Thoth instance
         :param int limit: the maximum number of results to return
@@ -842,7 +843,7 @@ class ThothAPI:
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
         :param bool serialize: return a pickled python object
-        :param subject_type: select by subject code (e.g. BIC)
+        :param subject_types: select by subject code (e.g. BIC)
         """
         self._override_version(version=version, endpoint=endpoint)
 
@@ -850,7 +851,7 @@ class ThothAPI:
                                        offset=offset,
                                        publishers=publishers,
                                        search=search,
-                                       subject_type=subject_type,
+                                       subject_types=subject_types,
                                        raw=raw)
 
         if not raw and not serialize:
@@ -861,19 +862,19 @@ class ThothAPI:
             print(subj)
 
     @fire.decorators.SetParseFn(_raw_parse)
-    def subject_count(self, subject_type=None, raw=False, version=None,
+    def subject_count(self, subject_types=None, raw=False, version=None,
                       endpoint=None, search=None):
         """
         Retrieves a count of subjects from a Thoth instance
         :param bool raw: whether to return a python object or the raw result
         :param str version: a custom Thoth version
         :param str endpoint: a custom Thoth endpoint
-        :param str subject_type: the type to retrieve (e.g. BIC)
+        :param str subject_types: the type to retrieve (e.g. BIC)
         :param str search: a search
         """
         self._override_version(version=version, endpoint=endpoint)
 
-        print(self._client().subject_count(subject_type=subject_type,
+        print(self._client().subject_count(subject_types=subject_types,
                                            search=search, raw=raw))
 
     def supported_versions(self):
@@ -919,7 +920,7 @@ class ThothAPI:
 
     @fire.decorators.SetParseFn(_raw_parse)
     def works(self, limit=100, order=None, offset=0, publishers=None,
-              search=None, work_type=None, work_status=None, raw=False,
+              search=None, work_types=None, work_status=None, raw=False,
               version=None, endpoint=None, serialize=False):
         """
         Retrieves works from a Thoth instance
@@ -928,7 +929,7 @@ class ThothAPI:
         :param int offset: the offset from which to retrieve results
         :param str publishers: a list of publishers to limit by
         :param str search: a search string to search
-        :param str work_type: the work type (e.g. MONOGRAPH)
+        :param str work_types: the work type (e.g. MONOGRAPH)
         :param str work_status: the work status (e.g. ACTIVE)
         :param bool raw: whether to return a python object or the raw result
         :param str version: a custom Thoth version
@@ -940,7 +941,7 @@ class ThothAPI:
         works = self._client().works(limit=limit, order=order, offset=offset,
                                      publishers=publishers,
                                      search=search,
-                                     work_type=work_type,
+                                     work_types=work_types,
                                      work_status=work_status,
                                      raw=raw)
 
@@ -953,7 +954,7 @@ class ThothAPI:
 
     @fire.decorators.SetParseFn(_raw_parse)
     def work_count(self, publishers=None, search=None, raw=False,
-                   work_type=None, work_status=None, version=None,
+                   work_types=None, work_status=None, version=None,
                    endpoint=None):
         """
         Retrieves a count of works from a Thoth instance
@@ -961,7 +962,7 @@ class ThothAPI:
         :param str search: a search string to search
         :param bool raw: whether to return a python object or the raw result
         :param str version: a custom Thoth version
-        :param str work_type: the work type (e.g. MONOGRAPH)
+        :param str work_types: the work type (e.g. MONOGRAPH)
         :param str work_status: the work status (e.g. ACTIVE)
         :param str endpoint: a custom Thoth endpoint
         """
@@ -969,7 +970,7 @@ class ThothAPI:
 
         print(self._client().work_count(publishers=publishers,
                                         search=search,
-                                        work_type=work_type,
+                                        work_types=work_types,
                                         work_status=work_status,
                                         raw=raw))
 

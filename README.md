@@ -9,7 +9,7 @@ Install is either via pip or cloning the repository.
 
 From pip:
 ```sh
-python3 -m pip install thothlibrary==0.11.1
+python3 -m pip install thothlibrary==0.12.0
 ```
 
 Or from the repo:
@@ -37,7 +37,7 @@ python3 -m thothlibrary.cli contributors --limit=10
 python3 -m thothlibrary.cli contributor_count --search="Vincent"
 python3 -m thothlibrary.cli institution --institution_id=194614ac-d189-4a74-8bf4-74c0c9de4a81
 python3 -m thothlibrary.cli institutions --limit=10
-python3 -m thothlibrary.cli funder_count
+python3 -m thothlibrary.cli funding_count
 python3 -m thothlibrary.cli funding --funding_id=5323d3e7-3ae9-4778-8464-9400fbbb959e
 python3 -m thothlibrary.cli fundings --limit=10
 python3 -m thothlibrary.cli imprint --imprint_id=78b0a283-9be3-4fed-a811-a7d4b9df7b25
@@ -47,28 +47,28 @@ python3 -m thothlibrary.cli issue --issue_id=6bd31b4c-35a9-4177-8074-dab4896a4a3
 python3 -m thothlibrary.cli issues --limit=10
 python3 -m thothlibrary.cli issue_count
 python3 -m thothlibrary.cli language --language_id=c19e68dd-c5a3-48f1-bd56-089ee732604c
-python3 -m thothlibrary.cli languages --limit=10 --language_code=CHI
-python3 -m thothlibrary.cli language_count --language_code=CHI
+python3 -m thothlibrary.cli languages --limit=10 --language_codes=CHI
+python3 -m thothlibrary.cli language_count --language_codes=CHI
 python3 -m thothlibrary.cli price --price_id=818567dd-7d3a-4963-8704-3381b5432877
-python3 -m thothlibrary.cli prices --limit=10 --currency_code=GBP
-python3 -m thothlibrary.cli price_count --currency_code=GBP
+python3 -m thothlibrary.cli prices --limit=10 --currency_codes=GBP
+python3 -m thothlibrary.cli price_count --currency_codes=GBP
 python3 -m thothlibrary.cli publication --publication_id=27b7bdab-e9e5-4220-811e-1f370861f5e1
 python3 -m thothlibrary.cli publications --limit=10 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
-python3 -m thothlibrary.cli publication_count --publication_type="HARDBACK"
+python3 -m thothlibrary.cli publication_count --publication_types="HARDBACK"
 python3 -m thothlibrary.cli publisher --publisher_id=85fd969a-a16c-480b-b641-cb9adf979c3b
 python3 -m thothlibrary.cli publishers --limit=10 --order='{field: PUBLISHER_ID, direction: ASC}' --offset=0 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli publisher_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b" "9c41b13c-cecc-4f6a-a151-be4682915ef5"]'
 python3 -m thothlibrary.cli series --series_id=d4b47a76-abff-4047-a3c7-d44d85ccf009
 python3 -m thothlibrary.cli serieses --limit=3 --search="Classics"
-python3 -m thothlibrary.cli series_count --series_type=BOOK_SERIES
+python3 -m thothlibrary.cli series_count --series_types=BOOK_SERIES
 python3 -m thothlibrary.cli subject --subject_id=1291208f-fc43-47a4-a8e6-e132477ad57b
-python3 -m thothlibrary.cli subjects --limit=10 --subject_type=BIC
-python3 -m thothlibrary.cli subject_count --subject_type=THEMA
+python3 -m thothlibrary.cli subjects --limit=10 --subject_types=BIC
+python3 -m thothlibrary.cli subject_count --subject_types=THEMA
 python3 -m thothlibrary.cli supported_versions
 python3 -m thothlibrary.cli update_cover --doi="https://doi.org/10.11647/OBP.0278" --url="https://cdn.openbookpublishers.com/covers/10.11647/obp.0278.jpg"
 python3 -m thothlibrary.cli work --doi="https://doi.org/10.11647/OBP.0222"
 python3 -m thothlibrary.cli work --work_id="e0f748b2-984f-45cc-8b9e-13989c31dda4"
-python3 -m thothlibrary.cli works --limit=10 --order='{field: PUBLICATION_DATE, direction: DESC}' --work_status=ACTIVE --work_type=MONOGRAPH --offset=1 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
+python3 -m thothlibrary.cli works --limit=10 --order='{field: PUBLICATION_DATE, direction: DESC}' --work_status=ACTIVE --work_types=MONOGRAPH --offset=1 --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
 python3 -m thothlibrary.cli work_count --publishers='["85fd969a-a16c-480b-b641-cb9adf979c3b"]'
 ```
 
