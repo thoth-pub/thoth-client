@@ -85,10 +85,14 @@ class ThothMutation():
             "fields": [
                 ("publicationType", False),
                 ("workId", True),
-                ("width", False),
-                ("height", False),
-                ("depth", False),
-                ("weight", False),
+                ("widthMm", False),
+                ("widthIn", False),
+                ("heightMm", False),
+                ("heightIn", False),
+                ("depthMm", False),
+                ("depthIn", False),
+                ("weightG", False),
+                ("weightOz", False),
                 ("isbn", True)
             ],
             "return_value": "publicationId"
