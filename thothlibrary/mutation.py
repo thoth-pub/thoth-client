@@ -74,7 +74,10 @@ class ThothMutation():
                 ("generalNote", True),
                 ("toc", True),
                 ("coverUrl", True),
-                ("coverCaption", True)
+                ("coverCaption", True),
+                ("firstPage", True),
+                ("lastPage", True),
+                ("pageInterval", True)
             ],
             "return_value": "workId"
         },
@@ -82,10 +85,14 @@ class ThothMutation():
             "fields": [
                 ("publicationType", False),
                 ("workId", True),
-                ("width", False),
-                ("height", False),
-                ("depth", False),
-                ("weight", False),
+                ("widthMm", False),
+                ("widthIn", False),
+                ("heightMm", False),
+                ("heightIn", False),
+                ("depthMm", False),
+                ("depthIn", False),
+                ("weightG", False),
+                ("weightOz", False),
                 ("isbn", True)
             ],
             "return_value": "publicationId"
@@ -201,6 +208,15 @@ class ThothMutation():
             ],
             "return_value": "fundingId"
         },
+        "createWorkRelation": {
+            "fields": [
+                ("relatorWorkId", True),
+                ("relatedWorkId", True),
+                ("relationType", False),
+                ("relationOrdinal", False)
+            ],
+            "return_value": "workRelationId"
+        },
         "updateWork": {
             "fields": [
                 ("workId", True),
@@ -231,7 +247,10 @@ class ThothMutation():
                 ("generalNote", True),
                 ("toc", True),
                 ("coverUrl", True),
-                ("coverCaption", True)
+                ("coverCaption", True),
+                ("firstPage", True),
+                ("lastPage", True),
+                ("pageInterval", True)
             ],
             "return_value": "workId"
         }

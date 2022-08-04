@@ -55,7 +55,7 @@ class ThothClient:
         self.client.inject_token(bearer)
 
     def mutation(self, mutation_name, data):
-        """Instantiate a thoth mutation and execute"""
+        """Instantiate a thoth mutation and execute it"""
         mutation = ThothMutation(mutation_name, data)
         return mutation.run(self.client)
 
@@ -123,6 +123,10 @@ class ThothClient:
     def create_funding(self, funding):
         """Construct and trigger a mutation to add a new funding object"""
         return self.mutation("createFunding", funding)
+
+    def create_work_relation(self, work_relation):
+        """Construct and trigger a mutation to add a new work relation object"""
+        return self.mutation("createWorkRelation", work_relation)
 
     @staticmethod
     def supported_versions():
