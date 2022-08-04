@@ -204,6 +204,15 @@ class ThothMutation():
             ],
             "return_value": "fundingId"
         },
+        "createWorkRelation": {
+            "fields": [
+                ("relatorWorkId", True),
+                ("relatedWorkId", True),
+                ("relationType", False),
+                ("relationOrdinal", False)
+            ],
+            "return_value": "workRelationId"
+        },
         "updateWork": {
             "fields": [
                 ("workId", True),
