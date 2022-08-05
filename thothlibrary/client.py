@@ -72,9 +72,9 @@ class ThothClient:
         """Construct and trigger a mutation to add a new imprint object"""
         return self.mutation("createImprint", imprint)
 
-    def create_work(self, work, units="MM"):
+    def create_work(self, work):
         """Construct and trigger a mutation to add a new work object"""
-        return self.mutation("createWork", work, units)
+        return self.mutation("createWork", work)
 
     def create_publication(self, publication):
         """Construct and trigger a mutation to add a new publication object"""
