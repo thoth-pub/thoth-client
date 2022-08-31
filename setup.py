@@ -16,7 +16,8 @@ setup(
     version=__version__,
     description="Python client for Thoth's APIs",
     author="Javier Arias, Martin Paul Eve",
-    author_email="javier@arias.re",
+    author_email="info@thoth.pub",
+    url="https://github.com/thoth-pub/thoth-client",
     packages=[
         "thothlibrary",
         "thothrest",
