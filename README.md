@@ -9,12 +9,12 @@ Install is either via pip or cloning the repository.
 
 From pip:
 ```sh
-python3 -m pip install thothlibrary==0.13.1
+python3 -m pip install thothlibrary==0.14.0
 ```
 
 Or from the repo:
 ```sh
-git clone git@github.com:dqprogramming/thoth-client.git
+git clone git@github.com:thoth-pub/thoth-client.git
 cd thoth-client
 pip3 install -r ./requirements.txt
 ```
