@@ -247,10 +247,7 @@ class ThothMutation():
                 ("generalNote", True),
                 ("toc", True),
                 ("coverUrl", True),
-                ("coverCaption", True),
-                ("firstPage", True),
-                ("lastPage", True),
-                ("pageInterval", True)
+                ("coverCaption", True)
             ],
             "return_value": "workId"
         }
