@@ -128,6 +128,10 @@ class ThothClient:
         """Construct and trigger a mutation to add a new work relation object"""
         return self.mutation("createWorkRelation", work_relation)
 
+    def update_work(self, work):
+        """Construct and trigger a mutation to update a work object"""
+        return self.mutation("updateWork", work)
+
     @staticmethod
     def supported_versions():
         """
