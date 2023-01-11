@@ -217,6 +217,33 @@ class ThothMutation():
             ],
             "return_value": "workRelationId"
         },
+        "createReference": {
+            "fields": [
+                ("workId", True),
+                ("referenceOrdinal", False),
+                ("doi", True),
+                ("unstructuredCitation", True),
+                ("issn", True),
+                ("isbn", True),
+                ("journalTitle", True),
+                ("articleTitle", True),
+                ("seriesTitle", True),
+                ("volumeTitle", True),
+                ("edition", True),
+                ("author", True),
+                ("volume", True),
+                ("issue", True),
+                ("firstPage", True),
+                ("componentNumber", True),
+                ("standardDesignator", True),
+                ("standardsBodyName", True),
+                ("standardsBodyAcronym", True),
+                ("url", True),
+                ("publicationDate", True),
+                ("retrievalDate", True)
+            ],
+            "return_value": "referenceId"
+        },
         "updateWork": {
             "fields": [
                 ("workId", True),
