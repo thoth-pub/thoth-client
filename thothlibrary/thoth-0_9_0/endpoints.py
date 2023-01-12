@@ -825,6 +825,37 @@ class ThothClient0_9_0(ThothClient):
 
         return self._api_request("books", parameters, return_raw=raw)
 
+    def bookIds(self, limit: int = 100, offset: int = 0, search: str = "",
+                order: str = None, publishers: str = None,
+                work_status: str = None, raw: bool = False):
+        """
+        Returns books, in a minimal representation containing only workId
+        @param limit: the maximum number of results to return
+        @param order: a GraphQL order query statement
+        @param offset: the offset from which to retrieve results
+        @param publishers: a list of publishers to limit by
+        @param search: a filter string to search
+        @param work_status: the work status (e.g. ACTIVE)
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        if order is None:
+            order = {}
+        parameters = {
+            "offset": offset,
+            "limit": limit,
+        }
+
+        if search and not search.startswith('"'):
+            search = '"{0}"'.format(search)
+
+        self._dictionary_append(parameters, 'filter', search)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'workStatus', work_status)
+
+        return self._api_request("bookIds", parameters, return_raw=raw)
+
     def book_count(self, search: str = "", publishers: str = None,
                    work_status: str = None, raw: bool = False):
         """

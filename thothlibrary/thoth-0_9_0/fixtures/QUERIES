@@ -712,5 +712,20 @@
             "publishers",
             "workStatus"
         ]
+    },
+    "bookIds": {
+        "fields": [
+            "workId",
+            "__typename"
+        ],
+        "parameters": [
+            "limit",
+            "offset",
+            "filter",
+            "order",
+            "publishers",
+            "workStatus"
+        ],
+        "aliasOf": "books"
     }
 }
