@@ -37,13 +37,14 @@ class ThothQuery:
         self.parameters = parameters
         self.param_str = self.prepare_parameters()
         self.fields_str = self.prepare_fields()
+        self.alias_of = self.prepare_alias_of()
         self.request = self.prepare_request()
         self.raw = raw
 
     def prepare_request(self):
         """Format the query request string"""
         values = {
-            "query_name": self.query_name,
+            "query_name": self.query_name + ": " + self.alias_of if self.alias_of else self.query_name,
             "parameters": "(" + self.param_str + ")" if self.param_str else '',
             "fields": "{" + self.fields_str + "}" if self.fields_str else ''
         }
@@ -88,4 +89,11 @@ class ThothQuery:
         if self.query_name in self.QUERIES and \
                 'fields' in self.QUERIES[self.query_name]:
             return "\n".join(self.QUERIES[self.query_name]["fields"])
+        return ''
+
+    def prepare_alias_of(self):
+        """Returns the GraphQL endpoint name of which the query name is an alias, if any."""
+        if self.query_name in self.QUERIES and \
+                'aliasOf' in self.QUERIES[self.query_name]:
+            return self.QUERIES[self.query_name]["aliasOf"]
         return ''
