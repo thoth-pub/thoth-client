@@ -398,6 +398,40 @@
             "publishers"
         ]
     },
+    "reference": {
+        "fields": [
+            "referenceId",
+            "workId",
+            "referenceOrdinal",
+            "doi",
+            "unstructuredCitation",
+            "issn",
+            "isbn",
+            "journalTitle",
+            "articleTitle",
+            "seriesTitle",
+            "volumeTitle",
+            "edition",
+            "author",
+            "volume",
+            "issue",
+            "firstPage",
+            "componentNumber",
+            "standardDesignator",
+            "standardsBodyName",
+            "standardsBodyAcronym",
+            "url",
+            "publicationDate",
+            "retrievalDate",
+            "createdAt",
+            "updatedAt",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+            "__typename"
+        ],
+        "parameters": [
+            "referenceId"
+        ]
+    },
     "series": {
         "fields": [
             "seriesId",
