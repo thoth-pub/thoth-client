@@ -975,6 +975,38 @@ class ThothAPI:
                                         raw=raw))
 
     @fire.decorators.SetParseFn(_raw_parse)
+    def books(self, limit=100, order=None, offset=0, publishers=None,
+              search=None, work_status=None, raw=False, version=None,
+              endpoint=None, serialize=False):
+        """
+        Retrieves books from a Thoth instance
+        :param int limit: the maximum number of results to return
+        :param int order: a GraphQL order query statement
+        :param int offset: the offset from which to retrieve results
+        :param str publishers: a list of publishers to limit by
+        :param str search: a search string to search
+        :param str work_status: the work status (e.g. ACTIVE)
+        :param bool raw: whether to return a python object or the raw result
+        :param str version: a custom Thoth version
+        :param str endpoint: a custom Thoth endpoint
+        :param bool serialize: return a pickled python object
+        """
+        self._override_version(version=version, endpoint=endpoint)
+
+        books = self._client().books(limit=limit, order=order, offset=offset,
+                                     publishers=publishers,
+                                     search=search,
+                                     work_status=work_status,
+                                     raw=raw)
+
+        if not raw and not serialize:
+            print(*books, sep='\n')
+        elif serialize:
+            print(json.dumps(books))
+        elif raw:
+            print(books)
+
+    @fire.decorators.SetParseFn(_raw_parse)
     def update_cover(self, doi=None, work_id=None, url=None, version=None,
                      endpoint=None):
         """

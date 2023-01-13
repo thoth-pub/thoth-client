@@ -13,6 +13,7 @@ cd ../../../
 
 bash -c "python3 -m thothlibrary.cli contributions --version=0.9.0 --limit=2 --raw > thothlibrary/thoth-0_9_0/tests/fixtures/contributions.json"
 bash -c "python3 -m thothlibrary.cli works --version=0.9.0 --limit=2 --raw > thothlibrary/thoth-0_9_0/tests/fixtures/works.json"
+bash -c "python3 -m thothlibrary.cli books --version=0.9.0 --limit=2 --raw > thothlibrary/thoth-0_9_0/tests/fixtures/books.json"
 bash -c "python3 -m thothlibrary.cli publications --version=0.9.0 --limit=2 --raw > thothlibrary/thoth-0_9_0/tests/fixtures/publications.json"
 bash -c "python3 -m thothlibrary.cli publishers --version=0.9.0 --limit=4 --raw > thothlibrary/thoth-0_9_0/tests/fixtures/publishers.json"
 bash -c "python3 -m thothlibrary.cli publisher --version=0.9.0 --publisher_id=85fd969a-a16c-480b-b641-cb9adf979c3b --raw > thothlibrary/thoth-0_9_0/tests/fixtures/publisher.json"
@@ -41,6 +42,7 @@ bash -c "python3 -m thothlibrary.cli funding --version=0.9.0 --funding_id=5323d3
 
 bash -c "echo '{\"data\": {\"contributions\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/contributions_bad.json"
 bash -c "echo '{\"data\": {\"works\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/works_bad.json"
+bash -c "echo '{\"data\": {\"books\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/books_bad.json"
 bash -c "echo '{\"data\": {\"publications\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/publications_bad.json"
 bash -c "echo '{\"data\": {\"publishers\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/publishers_bad.json"
 bash -c "echo '{\"data\": {\"publisher\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/publisher_bad.json"

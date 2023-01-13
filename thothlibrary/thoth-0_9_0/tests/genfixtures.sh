@@ -15,6 +15,7 @@ cd ../../../
 
 bash -c "python3 -m thothlibrary.cli contributions --version=0.9.0 --limit=2 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/contributions.pickle"
 bash -c "python3 -m thothlibrary.cli works --version=0.9.0 --limit=2 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/works.pickle"
+bash -c "python3 -m thothlibrary.cli books --version=0.9.0 --limit=2 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/books.pickle"
 bash -c "python3 -m thothlibrary.cli publications --version=0.9.0 --limit=2 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/publications.pickle"
 bash -c "python3 -m thothlibrary.cli publishers --version=0.9.0 --limit=4 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/publishers.pickle"
 bash -c "python3 -m thothlibrary.cli publisher --version=0.9.0 --publisher_id=85fd969a-a16c-480b-b641-cb9adf979c3b --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/publisher.pickle"

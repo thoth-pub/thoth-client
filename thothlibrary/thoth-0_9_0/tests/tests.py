@@ -11,14 +11,14 @@ import requests_mock
 from thothlibrary import ThothClient
 
 
-class Thoth060Tests(unittest.TestCase):
+class Thoth090Tests(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # we set this fake endpoint to ensure that the tests are definitely
         # running against the local objects, rather than any remote server
         self.endpoint = "https://api.test060.thoth.pub"
-        self.version = "0.6.0"
+        self.version = "0.9.0"
 
     def test_contribution(self):
         """
@@ -1042,6 +1042,36 @@ class Thoth060Tests(unittest.TestCase):
         with requests_mock.Mocker() as m:
             mock_response, thoth_client = self._setup_mocker('works', m)
             self._raw_tester(mock_response, thoth_client.works)
+        return None
+
+    def test_books(self):
+        """
+        Tests that good input to books produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self._setup_mocker('books', m)
+            self._pickle_tester('books', thoth_client.books)
+        return None
+
+    def test_books_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self._setup_mocker('books_bad', m)
+            self._pickle_tester('books', thoth_client.books, negative=True)
+        return None
+
+    def test_books_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self._setup_mocker('books', m)
+            self._raw_tester(mock_response, thoth_client.books)
         return None
 
     def _raw_tester(self, mock_response, method_to_call, lambda_mode=False):
