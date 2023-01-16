@@ -16,7 +16,7 @@ from .mutation import ThothMutation
 from .query import ThothQuery
 
 THOTH_ENDPOINT = "https://api.thoth.pub"
-THOTH_VERSION = "0.8.4"
+THOTH_VERSION = "0.9.0"
 
 
 class ThothClient:
@@ -127,6 +127,10 @@ class ThothClient:
     def create_work_relation(self, work_relation):
         """Construct and trigger a mutation to add a new work relation object"""
         return self.mutation("createWorkRelation", work_relation)
+
+    def create_reference(self, reference):
+        """Construct and trigger a mutation to add a new reference object"""
+        return self.mutation("createReference", reference)
 
     def update_work(self, work):
         """Construct and trigger a mutation to update a work object"""

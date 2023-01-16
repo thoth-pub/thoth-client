@@ -27,7 +27,8 @@ setup(
         "thothlibrary.thoth-0_5_0",
         "thothlibrary.thoth-0_6_0",
         "thothlibrary.thoth-0_8_0",
-        "thothlibrary.thoth-0_8_4"
+        "thothlibrary.thoth-0_8_4",
+        "thothlibrary.thoth-0_9_0"
     ],
     include_package_data=True,
     install_requires=["graphqlclient", "requests", "munch"],
