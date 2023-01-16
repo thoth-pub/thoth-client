@@ -15,6 +15,7 @@ cd ../../../
 
 bash -c "python3 -m thothlibrary.cli contributions --version=0.9.0 --limit=2 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/contributions.pickle"
 bash -c "python3 -m thothlibrary.cli works --version=0.9.0 --limit=2 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/works.pickle"
+bash -c "python3 -m thothlibrary.cli books --version=0.9.0 --limit=2 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/books.pickle"
 bash -c "python3 -m thothlibrary.cli publications --version=0.9.0 --limit=2 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/publications.pickle"
 bash -c "python3 -m thothlibrary.cli publishers --version=0.9.0 --limit=4 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/publishers.pickle"
 bash -c "python3 -m thothlibrary.cli publisher --version=0.9.0 --publisher_id=85fd969a-a16c-480b-b641-cb9adf979c3b --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/publisher.pickle"
@@ -40,3 +41,5 @@ bash -c "python3 -m thothlibrary.cli institutions --version=0.9.0 --limit=10 --s
 bash -c "python3 -m thothlibrary.cli institution --version=0.9.0 --institution_id=194614ac-d189-4a74-8bf4-74c0c9de4a81 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/institution.pickle"
 bash -c "python3 -m thothlibrary.cli fundings --version=0.9.0 --limit=10 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/fundings.pickle"
 bash -c "python3 -m thothlibrary.cli funding --version=0.9.0 --funding_id=5323d3e7-3ae9-4778-8464-9400fbbb959e --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/funding.pickle"
+bash -c "python3 -m thothlibrary.cli references --version=0.9.0 --limit=10 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/references.pickle"
+bash -c "python3 -m thothlibrary.cli reference --version=0.9.0 --reference_id=bafb182d-2667-436d-93df-7a9842733a03 --serialize > thothlibrary/thoth-0_9_0/tests/fixtures/reference.pickle"

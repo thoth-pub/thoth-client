@@ -594,6 +594,40 @@ class ThothClient0_9_0(ThothClient):
 
         return self._api_request("publisherCount", parameters, return_raw=raw)
 
+    def reference(self, reference_id: str, raw: bool = False):
+        """
+        Returns a reference by ID
+        @param reference_id: the ID to fetch
+        @param raw: whether to return a python object or the raw result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'referenceId': '"' + reference_id + '"'
+        }
+
+        return self._api_request("reference", parameters, return_raw=raw)
+
+    def references(self, limit: int = 100, offset: int = 0, order: str = None,
+                   search: str = "", publishers: str = None,
+                   raw: bool = False):
+        """
+        Return references
+        @param limit: the limit on the number of results
+        @param offset: the offset from which to begin
+        @param order: the order for the returned results
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit the results
+        @param raw: whether to return a raw result
+        @return: an object or raw result
+        """
+        parameters = self._order_limit_filter_offset_setup(order=order,
+                                                           search=search,
+                                                           limit=limit,
+                                                           offset=offset)
+        self._dictionary_append(parameters, 'publishers', publishers)
+
+        return self._api_request("references", parameters, return_raw=raw)
+
     def series(self, series_id: str, raw: bool = False):
         """
         Returns a series by ID
