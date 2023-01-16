@@ -147,7 +147,7 @@
             "projectName",
             "projectShortname",
             "jurisdiction",
-            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+            "work { workId fullTitle doi publicationDate place contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
             "__typename"
         ],
         "parameters": [
@@ -166,7 +166,7 @@
             "createdAt",
             "publisherId",
             "publisher { publisherName publisherId }",
-            "works { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
+            "works { workId fullTitle doi publicationDate place contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution contributionOrdinal } }__typename"
         ],
         "parameters": [
             "imprintId"
@@ -522,7 +522,7 @@
             "subjectType",
             "subjectOrdinal",
             "createdAt",
-            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
+            "work { workId fullTitle doi publicationDate place contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution contributionOrdinal } }__typename"
         ],
         "parameters": [
             "subjectId"

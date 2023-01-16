@@ -39,6 +39,8 @@ bash -c "python3 -m thothlibrary.cli institutions --version=0.9.0 --limit=10 --r
 bash -c "python3 -m thothlibrary.cli institution --version=0.9.0 --institution_id=194614ac-d189-4a74-8bf4-74c0c9de4a81 --raw > thothlibrary/thoth-0_9_0/tests/fixtures/institution.json"
 bash -c "python3 -m thothlibrary.cli fundings --version=0.9.0 --limit=10 --raw > thothlibrary/thoth-0_9_0/tests/fixtures/fundings.json"
 bash -c "python3 -m thothlibrary.cli funding --version=0.9.0 --funding_id=5323d3e7-3ae9-4778-8464-9400fbbb959e --raw > thothlibrary/thoth-0_9_0/tests/fixtures/funding.json"
+bash -c "python3 -m thothlibrary.cli references --version=0.9.0 --limit=10 --raw > thothlibrary/thoth-0_9_0/tests/fixtures/references.json"
+bash -c "python3 -m thothlibrary.cli reference --version=0.9.0 --reference_id=bafb182d-2667-436d-93df-7a9842733a03 --raw > thothlibrary/thoth-0_9_0/tests/fixtures/reference.json"
 
 bash -c "echo '{\"data\": {\"contributions\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/contributions_bad.json"
 bash -c "echo '{\"data\": {\"works\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/works_bad.json"
@@ -70,3 +72,5 @@ bash -c "echo '{\"data\": {\"funders\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0
 bash -c "echo '{\"data\": {\"funder\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/funder_bad.json"
 bash -c "echo '{\"data\": {\"fundings\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/fundings_bad.json"
 bash -c "echo '{\"data\": {\"funding\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/funding_bad.json"
+bash -c "echo '{\"data\": {\"references\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/references_bad.json"
+bash -c "echo '{\"data\": {\"reference\": [\"1\"] } }'  > thothlibrary/thoth-0_9_0/tests/fixtures/reference_bad.json"

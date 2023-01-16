@@ -769,6 +769,77 @@ class Thoth090Tests(unittest.TestCase):
             self._raw_tester(mock_response, thoth_client.publishers)
         return None
 
+    def test_reference(self):
+        """
+        Tests that good input to reference produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self._setup_mocker('reference', m)
+            self._pickle_tester('reference',
+                                lambda:
+                                thoth_client.reference(
+                                    reference_id='bafb182d-2667-436d-93df-7a9842733a03'))
+        return None
+
+    def test_reference_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self._setup_mocker('reference_bad',
+                                                             m)
+            self._pickle_tester('reference',
+                                lambda: thoth_client.reference(
+                                    reference_id='bafb182d-2667-436d-93df-7a9842733a03'),
+                                negative=True)
+        return None
+
+    def test_reference_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self._setup_mocker('reference', m)
+            self._raw_tester(mock_response,
+                             lambda: thoth_client.reference(
+                                 reference_id='bafb182d-2667-436d-93df-7a9842733a03',
+                                 raw=True),
+                             lambda_mode=True)
+        return None
+
+    def test_references(self):
+        """
+        Tests that good input to references produces saved good output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self._setup_mocker('references', m)
+            self._pickle_tester('references', thoth_client.references)
+        return None
+
+    def test_references_bad_input(self):
+        """
+        Tests that bad input produces bad output
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self._setup_mocker('references_bad', m)
+            self._pickle_tester('references', thoth_client.references,
+                                negative=True)
+
+    def test_references_raw(self):
+        """
+        A test to ensure valid passthrough of raw json
+        @return: None if successful
+        """
+        with requests_mock.Mocker() as m:
+            mock_response, thoth_client = self._setup_mocker('references', m)
+            self._raw_tester(mock_response, thoth_client.references)
+        return None
+
     def test_series(self):
         """
         Tests that good input to series produces saved good output
