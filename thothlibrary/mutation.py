@@ -229,7 +229,7 @@ class ThothMutation():
                 ("articleTitle", True),
                 ("seriesTitle", True),
                 ("volumeTitle", True),
-                ("edition", True),
+                ("edition", False),
                 ("author", True),
                 ("volume", True),
                 ("issue", True),
