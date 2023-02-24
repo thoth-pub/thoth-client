@@ -136,6 +136,10 @@ class ThothClient:
         """Construct and trigger a mutation to update a work object"""
         return self.mutation("updateWork", work)
 
+    def update_institution(self, institution):
+        """Construct and trigger a mutation to update an institution object"""
+        return self.mutation("updateInstitution", institution)
+
     @staticmethod
     def supported_versions():
         """
