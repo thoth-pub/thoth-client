@@ -229,7 +229,7 @@ class ThothMutation():
                 ("articleTitle", True),
                 ("seriesTitle", True),
                 ("volumeTitle", True),
-                ("edition", True),
+                ("edition", False),
                 ("author", True),
                 ("volume", True),
                 ("issue", True),
@@ -280,6 +280,16 @@ class ThothMutation():
                 ("pageInterval", True)
             ],
             "return_value": "workId"
+        },
+        "updateInstitution": {
+            "fields": [
+                ("institutionId", True),
+                ("institutionName", True),
+                ("institutionDoi", True),
+                ("ror", True),
+                ("countryCode", False)
+            ],
+            "return_value": "institutionId"
         }
     }
 
