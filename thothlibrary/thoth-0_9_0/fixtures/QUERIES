@@ -93,6 +93,7 @@
             "institutionName",
             "institutionDoi",
             "fundings { grantNumber program projectName projectShortname jurisdiction institutionId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+            "affiliations { affiliationOrdinal position contribution { fullName contributionType mainContribution contributionOrdinal } }",
             "__typename"
         ],
         "parameters": [
