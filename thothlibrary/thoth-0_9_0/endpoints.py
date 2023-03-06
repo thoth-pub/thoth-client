@@ -755,7 +755,7 @@ class ThothClient0_9_0(ThothClient):
         @param offset: the offset from which to retrieve results
         @param publishers: a list of publishers to limit by
         @param search: a filter string to search
-        @param work_types: the work type (e.g. MONOGRAPH)
+        @param work_types: the work types (e.g. [MONOGRAPH, TEXTBOOK])
         @param work_status: the work status (e.g. ACTIVE)
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
@@ -811,7 +811,7 @@ class ThothClient0_9_0(ThothClient):
         A count of works
         @param search: a search string
         @param publishers: a list of publishers by which to limit results
-        @param work_types: the work type (e.g. MONOGRAPH)
+        @param work_types: the work types (e.g. [MONOGRAPH, TEXTBOOK])
         @param work_status: the work status (e.g. ACTIVE)
         @param raw: whether to return a raw result
         @return: a count of works
