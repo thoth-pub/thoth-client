@@ -31,7 +31,14 @@ setup(
         "thothlibrary.thoth-0_9_0"
     ],
     include_package_data=True,
-    install_requires=["graphqlclient", "requests", "munch"],
+    install_requires=[
+        "requests==2.31.0",
+        "fire==0.5.0",
+        "munch==3.0.0",
+        "requests_mock==1.11.0",
+        "ascii_magic==2.3.0",
+        "graphqlclient==0.2.4",
+    ],
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     license="Apache 2.0",
