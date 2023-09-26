@@ -7,7 +7,7 @@ This programme is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
 
-
+import re
 import json
 import urllib
 from .errors import ThothError
@@ -344,7 +344,7 @@ class ThothMutation():
         """Returns a set of mutation statements based on object attributes."""
         def sanitise(text):
             """Escape quotes and linebreaks"""
-            tmp = text.replace("\n", "\\n")
+            tmp = re.sub(r'(\r\n?|\n)', r'\\n', text)
             return tmp.replace('"', '''\\"''')
         values = []
         for key, enclose in self.MUTATIONS[self.mutation_name]["fields"]:
