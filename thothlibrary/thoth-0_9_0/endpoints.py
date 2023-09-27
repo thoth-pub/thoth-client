@@ -216,6 +216,22 @@ class ThothClient0_9_0(ThothClient):
 
         return self._api_request("institutions", parameters, return_raw=raw)
 
+    def institution_count(self, search: str = "", raw: bool = False):
+        """
+        Return a count of institutions
+        @param search: a search string
+        @param raw: whether to return the raw result
+        @return: a count of institutions
+        """
+        parameters = {}
+
+        if search and not search.startswith('"'):
+            search = '"{0}"'.format(search)
+
+        self._dictionary_append(parameters, 'filter', search)
+
+        return self._api_request("institutionCount", parameters, return_raw=raw)
+
     def funding_count(self, search: str = "", raw: bool = False):
         """
         A count of funders
