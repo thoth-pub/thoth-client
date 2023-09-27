@@ -8,6 +8,8 @@ jobs:
   build-and-publish:
     name: Build and publish to PyPI
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -28,10 +30,8 @@ jobs:
           # Install the package from setup.py
           python3 setup.py install
 
-      - name: Build and publish to PyPI
-        run: |
-          python3 setup.py sdist bdist_wheel
-          pipx run twine upload dist/*
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Build package
+        run: python3 setup.py sdist bdist_wheel
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
