@@ -290,10 +290,16 @@ class ThothMutation():
                 ("countryCode", False)
             ],
             "return_value": "institutionId"
+        },
+        "deleteLocation": {
+            "fields": [
+                ("locationId", True),
+            ],
+            "return_value": "locationId"
         }
     }
 
-    def __init__(self, mutation_name, mutation_data):
+    def __init__(self, mutation_name, mutation_data, nested):
         """Returns new ThothMutation object with specified mutation data
 
         mutation_name: Must match one of the keys found in MUTATIONS.
@@ -304,9 +310,9 @@ class ThothMutation():
         self.return_value = self.MUTATIONS[mutation_name]["return_value"]
         self.mutation_data = mutation_data
         self.data_str = self.generate_values()
-        self.request = self.prepare_request()
+        self.request = self.prepare_request(nested)
 
-    def prepare_request(self):
+    def prepare_request(self, nested):
         """Format the mutation request string"""
         values = {
             "mutation_name": self.mutation_name,
@@ -314,17 +320,29 @@ class ThothMutation():
             "return_value": self.return_value
         }
 
-        payload = """
-            mutation {
-                %(mutation_name)s(
-                    data: {
-                        %(data)s
+        if nested:
+            payload = """
+                mutation {
+                    %(mutation_name)s(
+                        data: {
+                            %(data)s
+                        }
+                    ) {
+                        %(return_value)s
                     }
-                ) {
-                    %(return_value)s
                 }
-            }
-        """
+            """
+        else:
+            payload = """
+                mutation {
+                    %(mutation_name)s(
+                        %(data)s
+                    ) {
+                        %(return_value)s
+                    }
+                }
+            """
+
         return payload % values
 
     def run(self, client):

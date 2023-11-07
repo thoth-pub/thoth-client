@@ -54,9 +54,9 @@ class ThothClient:
         bearer = "Bearer {}".format(auth.get_token())
         self.client.inject_token(bearer)
 
-    def mutation(self, mutation_name, data):
+    def mutation(self, mutation_name, data, nested=True):
         """Instantiate a thoth mutation and execute it"""
-        mutation = ThothMutation(mutation_name, data)
+        mutation = ThothMutation(mutation_name, data, nested)
         return mutation.run(self.client)
 
     def query(self, query_name, parameters, raw=False):
@@ -139,6 +139,10 @@ class ThothClient:
     def update_institution(self, institution):
         """Construct and trigger a mutation to update an institution object"""
         return self.mutation("updateInstitution", institution)
+
+    def delete_location(self, location):
+        """Construct and trigger a mutation to delete a location object"""
+        return self.mutation("deleteLocation", location, nested=False)
 
     @staticmethod
     def supported_versions():
