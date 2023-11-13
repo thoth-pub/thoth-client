@@ -415,6 +415,7 @@
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
             "relations { relationOrdinal relationType relatedWork { doi __typename } __typename }",
+            "references { doi unstructuredCitation __typename }",
             "__typename"
         ]
     },
