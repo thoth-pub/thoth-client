@@ -410,10 +410,13 @@
             "pageInterval",
             "issues { issueOrdinal series { seriesName issnPrint issnDigital } }",
             "languages { languageCode }",
-            "publications { isbn publicationType locations { canonical fullTextUrl } __typename }",
-            "contributions { fullName contributionType mainContribution affiliations { affiliationId institution { institutionName institutionId ror fundings { institutionId program projectName projectShortname grantNumber jurisdiction } } } contributor { contributorId orcid firstName lastName } contributionId contributionOrdinal __typename }",
+            "publications { isbn publicationType publicationId locations { locationId canonical landingPage fullTextUrl locationPlatform } __typename }",
+            "contributions { fullName firstName lastName contributionType mainContribution affiliations { affiliationId affiliationOrdinal institution { institutionName institutionId ror fundings { institutionId program projectName projectShortname grantNumber jurisdiction } } } contributor { contributorId orcid firstName lastName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
+            "relations { relationOrdinal relationType relatedWork { doi __typename } __typename }",
+            "references { doi unstructuredCitation __typename }",
+            "fundings { grantNumber institution { institutionName institutionDoi ror __typename } __typename }",
             "__typename"
         ]
     },
