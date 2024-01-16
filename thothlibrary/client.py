@@ -137,7 +137,7 @@ class ThothClient:
         return self.mutation("updateWork", work)
 
     def update_contributor(self, contributor):
-        """Construct and trigger a mutation to update a work object"""
+        """Construct and trigger a mutation to update a contributor object"""
         return self.mutation("updateContributor", contributor)
 
     def update_institution(self, institution):
