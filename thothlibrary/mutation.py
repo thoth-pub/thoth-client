@@ -291,6 +291,17 @@ class ThothMutation():
             ],
             "return_value": "institutionId"
         },
+        "updateContributor": {
+            "fields": [
+                ("contributorId", True),
+                ("firstName", True),
+                ("lastName", True),
+                ("fullName", True),
+                ("orcid", True),
+                ("website", True)
+            ],
+            "return_value": "contributorId"
+        },
         "deleteLocation": {
             "fields": [
                 ("locationId", True),
