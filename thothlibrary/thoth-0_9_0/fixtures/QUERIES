@@ -41,6 +41,7 @@
             "lastName",
             "fullName",
             "orcid",
+            "website",
             "__typename",
             "contributions { contributionId contributionType work { workId fullTitle} }"
         ]
