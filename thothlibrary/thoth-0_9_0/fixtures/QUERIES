@@ -334,7 +334,7 @@
             "createdAt",
             "imprintId",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
-            "issues { issueId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } } }",
+            "issues { issueId issueOrdinal work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } } }",
             "__typename"
         ]
     },
