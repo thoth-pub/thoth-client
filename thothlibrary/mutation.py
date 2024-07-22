@@ -361,10 +361,10 @@ class ThothMutation():
         result = ""
         try:
             result = client.execute(self.request)
-            if "errors" in result:
+            serialised = json.loads(result)
+            if "errors" in serialised:
                 raise AssertionError
-            return json.loads(result)[
-                "data"][self.mutation_name][self.return_value]
+            return serialised["data"][self.mutation_name][self.return_value]
         except (KeyError, TypeError, ValueError, AssertionError,
                 json.decoder.JSONDecodeError, urllib.error.HTTPError):
             raise ThothError(self.request, result)
