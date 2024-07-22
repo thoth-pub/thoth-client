@@ -10,7 +10,7 @@ it under the terms of the Apache License v2.0.
 import re
 import json
 import urllib
-from .errors import ThothError
+from .errors import ThothError, ResponseEmptyError, GraphQLError
 
 
 class ThothMutation():
@@ -361,12 +361,16 @@ class ThothMutation():
         result = ""
         try:
             result = client.execute(self.request)
+            if result == "":
+                raise ResponseEmptyError(self.request, "None")
             serialised = json.loads(result)
             if "errors" in serialised:
-                raise AssertionError
+                raise GraphQLError(self.request, result)
             return serialised["data"][self.mutation_name][self.return_value]
-        except (KeyError, TypeError, ValueError, AssertionError,
-                json.decoder.JSONDecodeError, urllib.error.HTTPError):
+        except (KeyError, TypeError, ValueError, json.decoder.JSONDecodeError,
+                urllib.error.HTTPError) as error:
+            if result == "":
+                result = error
             raise ThothError(self.request, result)
 
     def generate_values(self):

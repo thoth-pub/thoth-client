@@ -14,3 +14,11 @@ class ThothError(Exception):
         message = "GraphQL Error.\nRequest:\n{}\n\nResponse:\n{}".format(
             request, response)
         super().__init__(message)
+
+
+class ResponseEmptyError(ThothError):
+    """Empty response returned from GraphQL when content was expected."""
+
+
+class GraphQLError(ThothError):
+    """GraphQL response contains `errors` field with specific information."""
