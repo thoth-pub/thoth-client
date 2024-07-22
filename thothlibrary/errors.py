@@ -22,3 +22,7 @@ class ResponseEmptyError(ThothError):
 
 class GraphQLError(ThothError):
     """GraphQL response contains `errors` field with specific information."""
+
+
+class AuthorizationError(ThothError):
+    """An authorization error occurred."""
