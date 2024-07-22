@@ -28,5 +28,5 @@ class ThothAuthenticator():  # pylint: disable=too-few-public-methods
             token = response.json()['token']
         except (KeyError, TypeError, ValueError, AssertionError,
                 json.decoder.JSONDecodeError, urllib.error.HTTPError):
-            raise AuthorizationError(self.auth_endpoint, response)
+            raise AuthorizationError(self.auth_endpoint, response.text)
         return token
