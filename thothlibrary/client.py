@@ -11,6 +11,7 @@ import pkgutil
 import re
 import thothlibrary
 from .auth import ThothAuthenticator
+from .errors import ResponseEmptyError
 from .graphql import GraphQLClientRequests as GraphQLClient
 from .mutation import ThothMutation
 from .query import ThothQuery
@@ -57,12 +58,24 @@ class ThothClient:
     def mutation(self, mutation_name, data, nested=True):
         """Instantiate a thoth mutation and execute it"""
         mutation = ThothMutation(mutation_name, data, nested)
-        return mutation.run(self.client)
+        max_retries = 2
+        for attempt in range(max_retries + 1):
+            try:
+                return mutation.run(self.client)
+            except ResponseEmptyError:
+                if attempt == max_retries:
+                    raise
 
     def query(self, query_name, parameters, raw=False):
         """Instantiate a thoth query and execute"""
         query = ThothQuery(query_name, parameters, self.QUERIES, raw=raw)
-        return query.run(self.client)
+        max_retries = 2
+        for attempt in range(max_retries + 1):
+            try:
+                return query.run(self.client)
+            except ResponseEmptyError:
+                if attempt == max_retries:
+                    raise
 
     def create_publisher(self, publisher):
         """Construct and trigger a mutation to add a new publisher object"""
