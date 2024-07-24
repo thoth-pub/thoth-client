@@ -12,7 +12,7 @@ import json
 
 import requests
 
-from .errors import ThothError
+from .errors import ThothError, ResponseEmptyError, GraphQLError
 
 
 class ThothQuery:
@@ -62,15 +62,18 @@ class ThothQuery:
         result = ""
         try:
             result = client.execute(self.request)
+            if result == "":
+                raise ResponseEmptyError(self.request, "None")
             serialised = json.loads(result)
             if "errors" in serialised:
-                raise AssertionError
+                raise GraphQLError(self.request, result)
             if self.raw:
                 return result
             return serialised["data"][self.query_name]
-        except (KeyError, TypeError, ValueError, AssertionError,
-                json.decoder.JSONDecodeError,
-                requests.exceptions.RequestException):
+        except (KeyError, TypeError, ValueError, json.decoder.JSONDecodeError,
+                requests.exceptions.RequestException) as error:
+            if result == "":
+                result = error
             raise ThothError(self.request, result)
 
     def prepare_parameters(self):
