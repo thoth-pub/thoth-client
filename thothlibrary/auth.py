@@ -10,7 +10,7 @@ it under the terms of the Apache License v2.0.
 import json
 import urllib
 import requests
-from .errors import ThothError
+from .errors import AuthorizationError
 
 
 class ThothAuthenticator():  # pylint: disable=too-few-public-methods
@@ -24,9 +24,9 @@ class ThothAuthenticator():  # pylint: disable=too-few-public-methods
         try:
             response = requests.post(self.auth_endpoint, json=self.payload)
             if response.status_code == 401:
-                raise ThothError(self.auth_endpoint, 'Wrong credentials')
+                raise AuthorizationError(self.auth_endpoint, 'Wrong credentials')
             token = response.json()['token']
         except (KeyError, TypeError, ValueError, AssertionError,
                 json.decoder.JSONDecodeError, urllib.error.HTTPError):
-            raise ThothError(self.auth_endpoint, response)
+            raise AuthorizationError(self.auth_endpoint, response.text)
         return token
