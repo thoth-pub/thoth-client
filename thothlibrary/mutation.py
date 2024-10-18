@@ -77,7 +77,8 @@ class ThothMutation():
                 ("coverCaption", True),
                 ("firstPage", True),
                 ("lastPage", True),
-                ("pageInterval", True)
+                ("pageInterval", True),
+                ("withdrawnDate", True)
             ],
             "return_value": "workId"
         },
@@ -277,7 +278,8 @@ class ThothMutation():
                 ("coverCaption", True),
                 ("firstPage", True),
                 ("lastPage", True),
-                ("pageInterval", True)
+                ("pageInterval", True),
+                ("withdrawnDate", True)
             ],
             "return_value": "workId"
         },
