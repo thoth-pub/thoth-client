@@ -189,7 +189,7 @@
             "landingPage",
             "fullTextUrl",
             "locationPlatform",
-            "canonical",
+            "canonical"
         ]
     },
     "price": {
