@@ -444,6 +444,19 @@ class ThothClient0_9_0(ThothClient):
 
         return self._api_request("languageCount", parameters, return_raw=raw)
 
+    def location(self, location_id: str, raw: bool = False):
+        """
+        Returns a location by ID
+        @param location_id: the ID to fetch
+        @param raw: whether to return a python object or the raw result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'locationId': '"' + location_id + '"'
+        }
+
+        return self._api_request("location", parameters, return_raw=raw)
+
     def price(self, price_id: str, raw: bool = False):
         """
         Returns a price by ID
