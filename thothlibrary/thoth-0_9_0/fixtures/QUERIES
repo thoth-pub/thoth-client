@@ -182,6 +182,16 @@
             "work { workId fullTitle doi publicationDate place contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution contributionOrdinal } }__typename"
         ]
     },
+    "location": {
+        "fields": [
+            "locationId",
+            "publicationId",
+            "landingPage",
+            "fullTextUrl",
+            "locationPlatform",
+            "canonical",
+        ]
+    },
     "price": {
         "fields": [
             "currencyCode",

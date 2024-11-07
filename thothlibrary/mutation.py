@@ -304,6 +304,16 @@ class ThothMutation():
             ],
             "return_value": "contributorId"
         },
+        "updateLocation": {
+            "fields": [
+                ("locationId", True),
+                ("landingPage", True),
+                ("fullTextUrl", True),
+                ("locationPlatform", False),
+                ("canonical", False)
+            ],
+            "return_value": "locationId"
+        },
         "deleteLocation": {
             "fields": [
                 ("locationId", True),
