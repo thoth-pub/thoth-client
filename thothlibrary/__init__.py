@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """GraphQL client for Thoth"""
 
-__version__ = "0.28.1"
+__version__ = "0.28.2"
 __author__ = "Javier Arias <javi@openbookpublishers.com>"
 __copyright__ = "Copyright (c) 2020 Open Book Publishers"
 __license__ = "Apache 2.0"
