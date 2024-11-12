@@ -157,6 +157,10 @@ class ThothClient:
         """Construct and trigger a mutation to update an institution object"""
         return self.mutation("updateInstitution", institution)
 
+    def update_location(self, location):
+        """Construct and trigger a mutation to update a location object"""
+        return self.mutation("updateLocation", location)
+
     def delete_location(self, location):
         """Construct and trigger a mutation to delete a location object"""
         return self.mutation("deleteLocation", location, nested=False)
