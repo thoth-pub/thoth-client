@@ -307,6 +307,7 @@ class ThothMutation():
         "updateLocation": {
             "fields": [
                 ("locationId", True),
+                ("publicationId", True),
                 ("landingPage", True),
                 ("fullTextUrl", True),
                 ("locationPlatform", False),
