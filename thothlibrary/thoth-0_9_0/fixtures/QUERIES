@@ -230,7 +230,7 @@
             "locations { locationId landingPage locationPlatform canonical }",
             "createdAt",
             "updatedAt",
-            "prices { currencyCode unitPrice __typename}",
+            "prices { priceId currencyCode unitPrice __typename}",
             "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
             "__typename"
         ]
@@ -245,7 +245,7 @@
             "createdAt",
             "locations { locationId landingPage locationPlatform canonical }",
             "updatedAt",
-            "prices { currencyCode unitPrice __typename}",
+            "prices { priceId currencyCode unitPrice __typename}",
             "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
             "__typename"
         ]
