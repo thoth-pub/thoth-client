@@ -315,6 +315,15 @@ class ThothMutation():
             ],
             "return_value": "locationId"
         },
+        "updatePrice": {
+            "fields": [
+                ("priceId", True),
+                ("publicationId", True),
+                ("currencyCode", False),
+                ("unitPrice", False)
+            ],
+            "return_value": "priceId"
+        },
         "deleteLocation": {
             "fields": [
                 ("locationId", True),
