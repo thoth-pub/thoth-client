@@ -542,7 +542,7 @@ class ThothClient0_9_0(ThothClient):
                                                            limit=limit,
                                                            offset=offset)
         self._dictionary_append(parameters, 'publishers', publishers)
-        self._dictionary_append(parameters, 'publicationType',
+        self._dictionary_append(parameters, 'publicationTypes',
                                 publication_types)
 
         return self._api_request("publications", parameters, return_raw=raw)
