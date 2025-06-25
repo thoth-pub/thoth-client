@@ -315,6 +315,23 @@ class ThothMutation():
             ],
             "return_value": "locationId"
         },
+        "updatePublication": {
+            "fields": [
+                ("publicationId", True),
+                ("publicationType", False),
+                ("workId", True),
+                ("widthMm", False),
+                ("widthIn", False),
+                ("heightMm", False),
+                ("heightIn", False),
+                ("depthMm", False),
+                ("depthIn", False),
+                ("weightG", False),
+                ("weightOz", False),
+                ("isbn", True)
+            ],
+            "return_value": "publicationId"
+        },
         "updatePrice": {
             "fields": [
                 ("priceId", True),
