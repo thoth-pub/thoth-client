@@ -870,7 +870,8 @@ class ThothClient0_9_0(ThothClient):
 
     def books(self, limit: int = 100, offset: int = 0, search: str = "",
               order: str = None, publishers: str = None, work_status: str = None,
-              work_statuses: str = None, updated_at_with_relations: str = None, raw: bool = False):
+              work_statuses: str = None, work_types: str = None,
+              updated_at_with_relations: str = None, raw: bool = False):
         """
         Returns books
         @param limit: the maximum number of results to return
@@ -880,6 +881,7 @@ class ThothClient0_9_0(ThothClient):
         @param search: a filter string to search
         @param work_status: (deprecated) the work status (e.g. ACTIVE)
         @param work_statuses: the work statuses (e.g. [ACTIVE])
+        @param work_types: the work types (e.g. [MONOGRAPH])
         @param updated_at_with_relations: timestamp and choice of greater/less than, for limiting results by last update time
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
@@ -899,6 +901,7 @@ class ThothClient0_9_0(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'workStatus', work_status)
         self._dictionary_append(parameters, 'workStatuses', work_statuses)
+        self._dictionary_append(parameters, 'workTypes', work_types)
         self._dictionary_append(
             parameters, 'updatedAtWithRelations', updated_at_with_relations)
 

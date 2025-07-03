@@ -3,7 +3,7 @@
 
 import os
 from setuptools import setup
-# from thothlibrary import __version__
+from thothlibrary import __version__
 
 ROOTDIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -13,7 +13,7 @@ with open(os.path.join(ROOTDIR, "README.md")) as in_file:
 
 setup(
     name="thothlibrary",
-    version="0.9.0",
+    version=__version__,
     description="Python client for Thoth's APIs",
     author="Javier Arias, Martin Paul Eve",
     author_email="info@thoth.pub",
