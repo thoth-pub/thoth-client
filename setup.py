@@ -32,8 +32,8 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        "requests==2.32.3",
-        "fire==0.6.0",
+        "requests==2.32.5",
+        "fire==0.7.1",
         "munch==3.0.0",
         "requests_mock==1.12.1",
         "ascii_magic==2.3.0",
