@@ -1,7 +1,7 @@
 """
 CLI for Thoth's export API.
 
-(c) Delta Q Programming LLP, July 2021
+Copyright (c) 2026 Thoth Open Metadata
 This program is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """

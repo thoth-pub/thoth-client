@@ -2,7 +2,7 @@
 """
 Token helpers for authenticated Thoth requests.
 
-(c) Open Book Publishers, February 2020
+Copyright (c) 2026 Thoth Open Metadata
 This programme is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """

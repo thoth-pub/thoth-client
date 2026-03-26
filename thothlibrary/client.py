@@ -1,7 +1,7 @@
 """
 GraphQL client for Thoth
 
-(c) Open Book Publishers, February 2020 and (c) ΔQ Programming LLP, July 2021
+Copyright (c) 2026 Thoth Open Metadata
 This programme is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
