@@ -26,3 +26,12 @@ class GraphQLError(ThothError):
 
 class AuthorizationError(ThothError):
     """An authorization error occurred."""
+
+
+class ThothRESTError(Exception):
+    """Exception to report Thoth export API errors."""
+
+    def __init__(self, request, response):
+        message = "REST Error.\nRequest:\n{}\n\nResponse:\n{}".format(
+            request, response)
+        super().__init__(message)
