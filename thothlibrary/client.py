@@ -1,67 +1,66 @@
 """
 GraphQL client for Thoth
 
-(c) Open Book Publishers, February 2020 and (c) ΔQ Programming LLP, July 2021
+Copyright (c) 2026 Thoth Open Metadata
 This programme is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
 import importlib
-import pkgutil
 
-import re
-import thothlibrary
-from .auth import ThothAuthenticator
+from munch import Munch
+
 from .errors import ResponseEmptyError
 from .graphql import GraphQLClientRequests as GraphQLClient
 from .mutation import ThothMutation
 from .query import ThothQuery
 
 THOTH_ENDPOINT = "https://api.thoth.pub"
-THOTH_VERSION = "0.9.0"
+THOTH_VERSION = "1.0.0"
+V1_MODULE = importlib.import_module("thothlibrary.thoth-1_0_0.endpoints")
 
 
 class ThothClient:
-    """Client to Thoth's GraphQL API"""
-    QUERIES = {}  # populated according to each version's requirements
-
-    def __new__(cls, thoth_endpoint=THOTH_ENDPOINT, version=THOTH_VERSION):
-        # this new call is the only bit of "magic"
-        # it basically subs in the sub-class of the correct version and returns
-        # an instance of that, instead of the generic class
-        version_replaced = version.replace('.', '_')
-        module = 'thothlibrary.thoth-{0}.endpoints'.format(version_replaced)
-        endpoints = importlib.import_module(module)
-
-        version_endpoints = getattr(
-            endpoints, 'ThothClient{0}'.format(version_replaced))
-
-        return version_endpoints(thoth_endpoint=thoth_endpoint,
-                                 version=version)
+    """Client to Thoth's GraphQL API."""
+    QUERIES = V1_MODULE.QUERIES
 
     def __init__(self, thoth_endpoint=THOTH_ENDPOINT, version=THOTH_VERSION):
-        """Returns new ThothClient object at the specified GraphQL endpoint
-
-        thoth_endpoint: Must be the full URL (eg. 'http://localhost').
-        """
+        """Returns a ThothClient object at the specified GraphQL endpoint."""
+        if version != THOTH_VERSION:
+            raise ValueError(
+                "This client only supports Thoth schema version {0}".format(
+                    THOTH_VERSION
+                )
+            )
         self.thoth_endpoint = thoth_endpoint
-        self.auth_endpoint = "{}/account/login".format(thoth_endpoint)
         self.graphql_endpoint = "{}/graphql".format(thoth_endpoint)
         self.client = GraphQLClient(self.graphql_endpoint)
-        self.version = version.replace('.', '_')
+        self.version = THOTH_VERSION
 
-    def login(self, email, password):
-        """Obtain an authentication token"""
-        auth = ThothAuthenticator(self.auth_endpoint, email, password)
-        bearer = "Bearer {}".format(auth.get_token())
+    def set_token(self, token):
+        """Inject a personal access token for authenticated requests."""
+        bearer = "Bearer {}".format(token)
         self.client.inject_token(bearer)
 
-    def mutation(self, mutation_name, data, nested=True):
+    def login(self, token):
+        """Alias for PAT-based authentication."""
+        self.set_token(token)
+
+    def mutation(self, mutation_name, data, nested=True, extra_args=None):
         """Instantiate a thoth mutation and execute it"""
-        mutation = ThothMutation(mutation_name, data, nested)
+        mutation = ThothMutation(mutation_name, data, nested,
+                                 extra_args=extra_args)
         max_retries = 2
         for attempt in range(max_retries + 1):
             try:
-                return mutation.run(self.client)
+                result = mutation.run(self.client)
+                if isinstance(result, dict):
+                    return Munch.fromDict(result)
+                if isinstance(result, list):
+                    return [
+                        Munch.fromDict(item) if isinstance(item, dict)
+                        else item for item in result
+                    ]
+                return result
             except ResponseEmptyError:
                 if attempt == max_retries:
                     raise
@@ -175,21 +174,8 @@ class ThothClient:
 
     @staticmethod
     def supported_versions():
-        """
-        Shows the versions of Thoth that this API supports
-        @return: a list of version strings
-        """
-        regex = r'thoth-(\d+_\d+_\d+)'
-
-        versions = []
-
-        for module in pkgutil.iter_modules(thothlibrary.__path__):
-            match = re.match(regex, module.name)
-
-            if match:
-                versions.append(match.group(1).replace('_', '.'))
-
-        return versions
+        """Shows the only supported schema version."""
+        return [THOTH_VERSION]
 
     def _api_request(self, endpoint_name: str, parameters,
                      return_raw: bool = False):
@@ -213,9 +199,8 @@ class ThothClient:
         @param data: the data
         @return: an object form of the output
         """
-        module = 'thothlibrary.thoth-{0}.structures'.format(self.version)
-        structures = importlib.import_module(module)
-        builder = getattr(structures, 'StructureBuilder')(endpoint_name, data)
+        structures = importlib.import_module("thothlibrary.thoth-1_0_0.structures")
+        builder = getattr(structures, "StructureBuilder")(endpoint_name, data)
 
         return builder.create_structure()
 
@@ -231,3 +216,128 @@ class ThothClient:
         if value:
             input_dict[key] = value
         return input_dict
+
+
+def _mutation_method(mutation_name, *, nested=True, markup=False):
+    def _method(self, data, markup_format=None):
+        extra_args = {}
+        if markup and markup_format:
+            extra_args["markupFormat"] = markup_format
+        return self.mutation(mutation_name, data, nested=nested,
+                             extra_args=extra_args or None)
+
+    return _method
+
+
+for method_name, mutation_name, nested, markup in [
+    ("create_title", "createTitle", True, True),
+    ("create_abstract", "createAbstract", True, True),
+    ("create_biography", "createBiography", True, True),
+    ("create_additional_resource", "createAdditionalResource", True, True),
+    ("create_award", "createAward", True, True),
+    ("create_endorsement", "createEndorsement", True, True),
+    ("create_book_review", "createBookReview", True, True),
+    ("create_work_featured_video", "createWorkFeaturedVideo", True, False),
+    ("create_contact", "createContact", True, False),
+    ("update_publisher", "updatePublisher", True, False),
+    ("update_imprint", "updateImprint", True, False),
+    ("update_contribution", "updateContribution", True, False),
+    ("update_series", "updateSeries", True, False),
+    ("update_issue", "updateIssue", True, False),
+    ("update_language", "updateLanguage", True, False),
+    ("update_funding", "updateFunding", True, False),
+    ("update_subject", "updateSubject", True, False),
+    ("update_affiliation", "updateAffiliation", True, False),
+    ("update_work_relation", "updateWorkRelation", True, False),
+    ("update_reference", "updateReference", True, False),
+    ("update_additional_resource", "updateAdditionalResource", True, True),
+    ("update_award", "updateAward", True, True),
+    ("update_endorsement", "updateEndorsement", True, True),
+    ("update_book_review", "updateBookReview", True, True),
+    ("update_work_featured_video", "updateWorkFeaturedVideo", True, False),
+    ("update_contact", "updateContact", True, False),
+    ("update_title", "updateTitle", True, True),
+    ("update_abstract", "updateAbstract", True, True),
+    ("update_biography", "updateBiography", True, True),
+    ("delete_work", "deleteWork", False, False),
+    ("delete_publisher", "deletePublisher", False, False),
+    ("delete_imprint", "deleteImprint", False, False),
+    ("delete_contributor", "deleteContributor", False, False),
+    ("delete_contribution", "deleteContribution", False, False),
+    ("delete_publication", "deletePublication", False, False),
+    ("delete_series", "deleteSeries", False, False),
+    ("delete_issue", "deleteIssue", False, False),
+    ("delete_language", "deleteLanguage", False, False),
+    ("delete_title", "deleteTitle", False, False),
+    ("delete_institution", "deleteInstitution", False, False),
+    ("delete_funding", "deleteFunding", False, False),
+    ("delete_price", "deletePrice", False, False),
+    ("delete_subject", "deleteSubject", False, False),
+    ("delete_affiliation", "deleteAffiliation", False, False),
+    ("delete_work_relation", "deleteWorkRelation", False, False),
+    ("delete_reference", "deleteReference", False, False),
+    ("delete_additional_resource", "deleteAdditionalResource", False, False),
+    ("delete_award", "deleteAward", False, False),
+    ("delete_endorsement", "deleteEndorsement", False, False),
+    ("delete_book_review", "deleteBookReview", False, False),
+    ("delete_work_featured_video", "deleteWorkFeaturedVideo", False, False),
+    ("delete_abstract", "deleteAbstract", False, False),
+    ("delete_biography", "deleteBiography", False, False),
+    ("delete_contact", "deleteContact", False, False),
+    ("move_affiliation", "moveAffiliation", False, False),
+    ("move_contribution", "moveContribution", False, False),
+    ("move_issue", "moveIssue", False, False),
+    ("move_reference", "moveReference", False, False),
+    ("move_additional_resource", "moveAdditionalResource", False, False),
+    ("move_award", "moveAward", False, False),
+    ("move_endorsement", "moveEndorsement", False, False),
+    ("move_book_review", "moveBookReview", False, False),
+    ("move_subject", "moveSubject", False, False),
+    ("move_work_relation", "moveWorkRelation", False, False),
+    ("init_publication_file_upload", "initPublicationFileUpload", True, False),
+    ("init_frontcover_file_upload", "initFrontcoverFileUpload", True, False),
+    ("init_additional_resource_file_upload",
+     "initAdditionalResourceFileUpload", True, False),
+    ("init_work_featured_video_file_upload",
+     "initWorkFeaturedVideoFileUpload", True, False),
+    ("complete_file_upload", "completeFileUpload", True, False),
+]:
+    setattr(ThothClient, method_name,
+            _mutation_method(mutation_name, nested=nested, markup=markup))
+
+
+for method_name, (query_name, arg_name, gql_arg_name) in V1_MODULE.SINGLE_ID_QUERIES.items():
+    setattr(
+        ThothClient,
+        method_name,
+        V1_MODULE._single_id_method(
+            query_name,
+            arg_name,
+            gql_arg_name,
+            markup=method_name in {"title", "abstract", "biography"},
+        ),
+    )
+
+for method_name, (query_name, arg_name) in V1_MODULE.SINGLE_DOI_QUERIES.items():
+    setattr(ThothClient, method_name,
+            V1_MODULE._single_doi_method(query_name, arg_name))
+
+for method_name, (query_name, mapping) in V1_MODULE.LIST_QUERIES.items():
+    setattr(ThothClient, method_name,
+            V1_MODULE._list_method(query_name, mapping))
+
+for method_name, (query_name, mapping) in V1_MODULE.COUNT_QUERIES.items():
+    setattr(ThothClient, method_name,
+            V1_MODULE._count_method(query_name, mapping))
+
+ThothClient._quote = staticmethod(V1_MODULE.ThothClient1_0_0._quote)
+
+for helper_name in [
+    "_query_parameters",
+    "_single_id_request",
+    "_single_doi_request",
+]:
+    setattr(ThothClient, helper_name,
+            getattr(V1_MODULE.ThothClient1_0_0, helper_name))
+
+ThothClient.bookIds = V1_MODULE.ThothClient1_0_0.bookIds
