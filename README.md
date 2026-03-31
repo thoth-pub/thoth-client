@@ -1,4 +1,4 @@
-Python client for Thoth's GraphQL and REST APIs. Currently supports Thoth version 0.6.0.
+Python client for Thoth's APIs. This release supports the Thoth `1.0.0` GraphQL schema and uses personal access tokens for authenticated GraphQL requests.
 
 [![Release](https://img.shields.io/github/release/openbookpublishers/thoth-client.svg?colorB=58839b)](https://github.com/openbookpublishers/thoth-client/releases) [![PyPi version](https://badgen.net/pypi/v/thothlibrary/)](https://pypi.org/project/thothlibrary)
 
@@ -9,7 +9,7 @@ Install is either via pip or cloning the repository.
 
 From pip:
 ```sh
-python3 -m pip install thothlibrary==0.31.0
+python3 -m pip install thothlibrary==1.0.0
 ```
 
 Or from the repo:
@@ -24,10 +24,13 @@ pip3 install -r ./requirements.txt
 from thothlibrary import ThothClient
 
 thoth = ThothClient()
+thoth.set_token("your-pat")
 print(thoth.works())
 ```
 
 ### CLI GraphQL Usage
+Set `THOTH_PAT` for authenticated commands such as mutations.
+
 ```sh
 python3 -m thothlibrary.cli contribution --contribution_id=29e4f46b-851a-4d7b-bb41-e6f305fc2b11
 python3 -m thothlibrary.cli contributions --limit=10
@@ -83,29 +86,11 @@ print(client.formats())
 
 ### CLI REST Usage
 ```sh
-python3 -m thothrest.cli
-python3 -m thothrest.cli formats
-python3 -m thothrest.cli formats --return-json
-python3 -m thothrest.cli work onix_3.0::project_muse e0f748b2-984f-45cc-8b9e-13989c31dda4
+python3 -m thothlibrary.rest_cli formats
+python3 -m thothlibrary.rest_cli formats --return_json
+python3 -m thothlibrary.rest_cli work onix_3.0::project_muse e0f748b2-984f-45cc-8b9e-13989c31dda4
 ```
 
-## Thoth Django
-The thothdjango folder includes models, an import routine, subject-code support, and admin procedures to use Thoth in a django app. The import provides unidirectional synchronization from remote Thoth imports to a local database for use in a Django app.
-
 ## Test Suite
-Tests for GraphQL queries are versioned in the thoth-[ver] folder of thothlibrary.
-
-Tests confirm that current code produces good, known object outputs from stored GraphQL input.
-
-## Versioning
-The Thoth API is not yet considered stable and functionality changes between versions. The recommended way to add a new version compatibility is:
-
-1. Read the latest Thoth changelog to understand the changes.
-2. Copy the latest thoth-[ver] folder to the correctly named new version.
-3. Find and replace the strings specified in genfixtures.sh and genjson.sh. Update the version string in tests and endpoints.
-4. Run genjson.sh _only_ from inside the tests directory of the new version. This will fetch the latest server JSON responses and store it inside the fixtures directory for these tests. If there are any errors, then the command line CLI has encountered a breaking change that must first be fixed.
-5. Run the test suite for the latest version and examine breakages. It is possible that breakages are not actually full breakdown, but merely a change in the serialized object. Nonetheless, fix these by subclassing the previous versions of the API and overriding broken methods. In the cases of total breakage, a non-subclassed rewrite may be more appropriate. (May also apply at major version breaks.)
-6. When the test suite passes, or a new object format has been decided and tests rewritten, run genfixtures.sh to freeze the current test suite.
-7. Include the new version directory in the list of packages in `setup.py`
-8. Update `THOTH_VERSION` in `thothlibrary/client.py`
-
+The GraphQL test suite is focused on the retained `1.0.0` client surface under `thothlibrary/thoth-1_0_0/tests`.
+The export API client is covered by focused tests under `thothlibrary/tests`.

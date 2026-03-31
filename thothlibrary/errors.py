@@ -2,7 +2,7 @@
 """
 GraphQL client for Thoth
 
-(c) Open Book Publishers, February 2020
+Copyright (c) 2026 Thoth Open Metadata
 This programme is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
@@ -26,3 +26,12 @@ class GraphQLError(ThothError):
 
 class AuthorizationError(ThothError):
     """An authorization error occurred."""
+
+
+class ThothRESTError(Exception):
+    """Exception to report Thoth export API errors."""
+
+    def __init__(self, request, response):
+        message = "REST Error.\nRequest:\n{}\n\nResponse:\n{}".format(
+            request, response)
+        super().__init__(message)

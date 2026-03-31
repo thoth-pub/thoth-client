@@ -20,15 +20,8 @@ setup(
     url="https://github.com/thoth-pub/thoth-client",
     packages=[
         "thothlibrary",
-        "thothrest",
-        "thothdjango",
-        "thothlibrary.thoth-0_4_2",
-        "thothrest.thoth-0_4_2",
-        "thothlibrary.thoth-0_5_0",
-        "thothlibrary.thoth-0_6_0",
-        "thothlibrary.thoth-0_8_0",
-        "thothlibrary.thoth-0_8_4",
-        "thothlibrary.thoth-0_9_0"
+        "thothlibrary.tests",
+        "thothlibrary.thoth-1_0_0",
     ],
     include_package_data=True,
     install_requires=[
