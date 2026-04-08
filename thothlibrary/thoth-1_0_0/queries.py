@@ -129,7 +129,7 @@ WORK_FULL_FIELDS = [
         "text(markupFormat: JATS_XML) reviewOrdinal __typename }"
     ),
     (
-        "workFeaturedVideos { workFeaturedVideoId title url width height "
+        "featuredVideo { workFeaturedVideoId title url width height "
         "file { fileId fileType cdnUrl __typename } __typename }"
     ),
     (
@@ -166,7 +166,7 @@ WORK_LIST_FIELDS = [
     "awards { awardId awardOrdinal __typename }",
     "endorsements { endorsementId endorsementOrdinal __typename }",
     "bookReviews { bookReviewId reviewOrdinal __typename }",
-    "workFeaturedVideos { workFeaturedVideoId title __typename }",
+    "featuredVideo { workFeaturedVideoId title __typename }",
     "imprint { imprintId imprintName " + PUBLISHER_LINK + " __typename }",
     "__typename",
 ]
