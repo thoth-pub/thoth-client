@@ -88,7 +88,7 @@ NEW_AFFILIATION = [
 NEW_INSTITUTION = ["institutionName", "institutionDoi", "ror", "countryCode"]
 NEW_LOCATION = [
     "publicationId", "landingPage", "fullTextUrl", "locationPlatform",
-    "canonical",
+    "canonical", "checksum",
 ]
 NEW_FUNDING = [
     "workId", "institutionId", "program", "projectName", "projectShortname",
