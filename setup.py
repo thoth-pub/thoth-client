@@ -25,7 +25,7 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        "requests==2.32.5",
+        "requests==2.33.0",
         "fire==0.7.1",
         "munch==3.0.0",
         "requests_mock==1.12.1",
