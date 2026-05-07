@@ -184,7 +184,7 @@ QUOTED_CONTRIBUTION = {
 }
 QUOTED_AFFILIATION = {"contributionId", "institutionId", "position"}
 QUOTED_INSTITUTION = {"institutionName", "institutionDoi", "ror"}
-QUOTED_LOCATION = {"publicationId", "landingPage", "fullTextUrl"}
+QUOTED_LOCATION = {"publicationId", "landingPage", "fullTextUrl", "checksum"}
 QUOTED_FUNDING = {
     "workId", "institutionId", "program", "projectName", "projectShortname",
     "grantNumber",
