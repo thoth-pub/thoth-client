@@ -1,17 +1,54 @@
 """GraphQL field selections for the Thoth 1.0.0 client."""
 
-CANONICAL_TITLES = (
-    "titles(order: {field: CANONICAL, direction: DESC}, markupFormat: JATS_XML)"
-    " { titleId localeCode fullTitle title subtitle canonical __typename }"
-)
-CANONICAL_ABSTRACTS = (
-    "abstracts(order: {field: CANONICAL, direction: DESC}, markupFormat: JATS_XML)"
-    " { abstractId localeCode content abstractType canonical __typename }"
-)
+DEFAULT_WORK_MARKUP_FORMAT = "JATS_XML"
+WORK_MARKUP_FORMATS = ("JATS_XML", "PLAIN_TEXT", "HTML", "MARKDOWN")
+
+
+def _canonical_titles(markup_format):
+    return (
+        "titles(order: {field: CANONICAL, direction: DESC}, markupFormat: "
+        + markup_format
+        + ") { titleId localeCode fullTitle title subtitle canonical __typename }"
+    )
+
+
+def _canonical_abstracts(markup_format):
+    return (
+        "abstracts(order: {field: CANONICAL, direction: DESC}, markupFormat: "
+        + markup_format
+        + ") { abstractId localeCode content abstractType canonical __typename }"
+    )
+
+
+CANONICAL_TITLES = _canonical_titles(DEFAULT_WORK_MARKUP_FORMAT)
+CANONICAL_ABSTRACTS = _canonical_abstracts(DEFAULT_WORK_MARKUP_FORMAT)
 CANONICAL_BIOGRAPHIES = (
     "biographies(order: {field: CANONICAL, direction: DESC}, markupFormat: JATS_XML)"
     " { biographyId localeCode content canonical __typename }"
 )
+
+
+def render_work_fields(fields, markup_format=None):
+    """Return work fields rendered for one request's canonical markup format."""
+    if markup_format is None:
+        markup_format = DEFAULT_WORK_MARKUP_FORMAT
+    if markup_format not in WORK_MARKUP_FORMATS:
+        raise ValueError(
+            "Unsupported work markup_format {0!r}; expected one of: {1}".format(
+                markup_format,
+                ", ".join(WORK_MARKUP_FORMATS),
+            )
+        )
+
+    canonical_titles = _canonical_titles(markup_format)
+    canonical_abstracts = _canonical_abstracts(markup_format)
+    return [
+        canonical_titles if field == CANONICAL_TITLES
+        else canonical_abstracts if field == CANONICAL_ABSTRACTS
+        else field
+        for field in fields
+    ]
+
 
 WORK_LINK = (
     "work { workId doi publicationDate place "

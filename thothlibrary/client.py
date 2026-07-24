@@ -65,9 +65,15 @@ class ThothClient:
                 if attempt == max_retries:
                     raise
 
-    def query(self, query_name, parameters, raw=False):
+    def query(self, query_name, parameters, raw=False, fields=None):
         """Instantiate a thoth query and execute"""
-        query = ThothQuery(query_name, parameters, self.QUERIES, raw=raw)
+        query = ThothQuery(
+            query_name,
+            parameters,
+            self.QUERIES,
+            raw=raw,
+            fields=fields,
+        )
         max_retries = 2
         for attempt in range(max_retries + 1):
             try:
@@ -178,15 +184,21 @@ class ThothClient:
         return [THOTH_VERSION]
 
     def _api_request(self, endpoint_name: str, parameters,
-                     return_raw: bool = False):
+                     return_raw: bool = False, fields=None):
         """
         Makes a request to the API
         @param endpoint_name: the name of the endpoint
         @param return_raw: whether to return raw data or an object (default)
         @param parameters: the parameters to pass to GraphQL
+        @param fields: optional per-request GraphQL field selection override
         @return: an object or JSON of the request
         """
-        response = self.query(endpoint_name, parameters, raw=return_raw)
+        response = self.query(
+            endpoint_name,
+            parameters,
+            raw=return_raw,
+            fields=fields,
+        )
 
         if return_raw:
             return response
@@ -315,16 +327,31 @@ for method_name, (query_name, arg_name, gql_arg_name) in V1_MODULE.SINGLE_ID_QUE
             arg_name,
             gql_arg_name,
             markup=method_name in {"title", "abstract", "biography"},
+            work_markup=method_name in V1_MODULE.WORK_QUERY_METHODS,
         ),
     )
 
 for method_name, (query_name, arg_name) in V1_MODULE.SINGLE_DOI_QUERIES.items():
-    setattr(ThothClient, method_name,
-            V1_MODULE._single_doi_method(query_name, arg_name))
+    setattr(
+        ThothClient,
+        method_name,
+        V1_MODULE._single_doi_method(
+            query_name,
+            arg_name,
+            work_markup=method_name in V1_MODULE.WORK_QUERY_METHODS,
+        ),
+    )
 
 for method_name, (query_name, mapping) in V1_MODULE.LIST_QUERIES.items():
-    setattr(ThothClient, method_name,
-            V1_MODULE._list_method(query_name, mapping))
+    setattr(
+        ThothClient,
+        method_name,
+        V1_MODULE._list_method(
+            query_name,
+            mapping,
+            work_markup=method_name in V1_MODULE.WORK_QUERY_METHODS,
+        ),
+    )
 
 for method_name, (query_name, mapping) in V1_MODULE.COUNT_QUERIES.items():
     setattr(ThothClient, method_name,
