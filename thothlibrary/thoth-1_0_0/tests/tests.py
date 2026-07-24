@@ -5,11 +5,26 @@ it under the terms of the Apache License v2.0.
 """
 import json
 import unittest
+from copy import deepcopy
+from importlib import import_module
 
 import requests_mock
 
 from thothlibrary import ThothClient
 from thothlibrary.client import THOTH_VERSION
+
+queries = import_module("thothlibrary.thoth-1_0_0.queries")
+
+
+WORK_METHODS = (
+    ("work_by_id", {"work_id": "work-1"}),
+    ("work_by_doi", {"doi": "10.0000/example"}),
+    ("book_by_doi", {"doi": "10.0000/example"}),
+    ("chapter_by_doi", {"doi": "10.0000/example"}),
+    ("works", {"limit": 10}),
+    ("books", {"limit": 10}),
+    ("chapters", {"limit": 10}),
+)
 
 
 class Thoth100Tests(unittest.TestCase):
@@ -25,8 +40,193 @@ class Thoth100Tests(unittest.TestCase):
     def _query_text(mocker):
         return json.loads(mocker.last_request.text)["query"]
 
+    def _capture_work_query(self, method_name, method_kwargs,
+                            markup_format=None, include_format=False,
+                            client=None):
+        kwargs = dict(method_kwargs)
+        kwargs["raw"] = True
+        if include_format:
+            kwargs["markup_format"] = markup_format
+
+        with requests_mock.Mocker() as mocker:
+            mocker.post(self.graphql_endpoint, json={"data": {}})
+            getattr(client or self._client(), method_name)(**kwargs)
+            return self._query_text(mocker)
+
+    def _assert_canonical_format(self, query, markup_format):
+        lines = {line.strip() for line in query.splitlines()}
+        self.assertIn(
+            (
+                "titles(order: {field: CANONICAL, direction: DESC}, "
+                "markupFormat: "
+                + markup_format
+                + ") { titleId localeCode fullTitle title subtitle canonical "
+                "__typename }"
+            ),
+            lines,
+        )
+        self.assertIn(
+            (
+                "abstracts(order: {field: CANONICAL, direction: DESC}, "
+                "markupFormat: "
+                + markup_format
+                + ") { abstractId localeCode content abstractType canonical "
+                "__typename }"
+            ),
+            lines,
+        )
+
     def test_default_version_is_v1(self):
         self.assertEqual(THOTH_VERSION, "1.0.0")
+
+    def test_work_methods_default_canonical_markup_to_jats_xml(self):
+        for method_name, method_kwargs in WORK_METHODS:
+            with self.subTest(method=method_name):
+                query = self._capture_work_query(method_name, method_kwargs)
+                self._assert_canonical_format(query, "JATS_XML")
+
+    def test_work_methods_render_plain_text_canonical_markup(self):
+        for method_name, method_kwargs in WORK_METHODS:
+            with self.subTest(method=method_name):
+                query = self._capture_work_query(
+                    method_name,
+                    method_kwargs,
+                    markup_format="PLAIN_TEXT",
+                    include_format=True,
+                )
+                self._assert_canonical_format(query, "PLAIN_TEXT")
+                root_lines = [
+                    line.strip()
+                    for line in query.splitlines()
+                    if line.strip().startswith((
+                        "work(",
+                        "workByDoi(",
+                        "bookByDoi(",
+                        "chapterByDoi(",
+                        "works(",
+                        "books(",
+                        "chapters(",
+                    ))
+                ]
+                self.assertEqual(len(root_lines), 1)
+                self.assertNotIn("markupFormat", root_lines[0])
+
+    def test_work_methods_treat_none_as_default_markup(self):
+        for method_name, method_kwargs in WORK_METHODS:
+            with self.subTest(method=method_name):
+                query = self._capture_work_query(
+                    method_name,
+                    method_kwargs,
+                    markup_format=None,
+                    include_format=True,
+                )
+                self._assert_canonical_format(query, "JATS_XML")
+
+    def test_work_markup_html_and_markdown_are_unquoted_enums(self):
+        for markup_format in ("HTML", "MARKDOWN"):
+            with self.subTest(markup_format=markup_format):
+                query = self._capture_work_query(
+                    "work_by_id",
+                    {"work_id": "work-1"},
+                    markup_format=markup_format,
+                    include_format=True,
+                )
+                self._assert_canonical_format(query, markup_format)
+                self.assertNotIn(
+                    'markupFormat: "{0}"'.format(markup_format),
+                    query,
+                )
+
+    def test_work_markup_only_changes_top_level_titles_and_abstracts(self):
+        query = self._capture_work_query(
+            "work_by_id",
+            {"work_id": "work-1"},
+            markup_format="PLAIN_TEXT",
+            include_format=True,
+        )
+
+        self._assert_canonical_format(query, "PLAIN_TEXT")
+        self.assertIn(queries.CANONICAL_BIOGRAPHIES, query)
+        self.assertIn(
+            "relatedWork { workId doi " + queries.CANONICAL_TITLES,
+            query,
+        )
+        self.assertIn(
+            "title(markupFormat: JATS_XML) "
+            "description(markupFormat: JATS_XML)",
+            query,
+        )
+        self.assertIn(
+            "awards { awardId title(markupFormat: JATS_XML) "
+            "prizeStatement(markupFormat: JATS_XML)",
+            query,
+        )
+        self.assertIn(
+            "endorsements { endorsementId authorName "
+            "text(markupFormat: JATS_XML)",
+            query,
+        )
+        self.assertIn(
+            "bookReviews { bookReviewId title(markupFormat: JATS_XML) "
+            "text(markupFormat: JATS_XML)",
+            query,
+        )
+
+    def test_invalid_work_markup_is_rejected_before_http_request(self):
+        invalid_values = (
+            "XML",
+            "",
+            'PLAIN_TEXT) { workId } mutation { deleteWork',
+        )
+        for method_name, method_kwargs in WORK_METHODS:
+            for markup_format in invalid_values:
+                with self.subTest(
+                    method=method_name,
+                    markup_format=markup_format,
+                ):
+                    kwargs = dict(method_kwargs)
+                    kwargs["markup_format"] = markup_format
+                    with requests_mock.Mocker() as mocker:
+                        with self.assertRaisesRegex(
+                            ValueError,
+                            "Unsupported work markup_format",
+                        ):
+                            getattr(self._client(), method_name)(**kwargs)
+                        self.assertEqual(mocker.call_count, 0)
+
+    def test_work_markup_does_not_leak_between_requests_or_clients(self):
+        original_queries = deepcopy(ThothClient.QUERIES)
+        first_client = self._client()
+        second_client = self._client()
+
+        plain_query = self._capture_work_query(
+            "work_by_id",
+            {"work_id": "work-1"},
+            markup_format="PLAIN_TEXT",
+            include_format=True,
+            client=first_client,
+        )
+        default_query = self._capture_work_query(
+            "work_by_id",
+            {"work_id": "work-2"},
+            client=first_client,
+        )
+        html_query = self._capture_work_query(
+            "work_by_id",
+            {"work_id": "work-3"},
+            markup_format="HTML",
+            include_format=True,
+            client=second_client,
+        )
+
+        self._assert_canonical_format(plain_query, "PLAIN_TEXT")
+        self._assert_canonical_format(default_query, "JATS_XML")
+        self._assert_canonical_format(html_query, "HTML")
+        self.assertEqual(ThothClient.QUERIES, original_queries)
+        self.assertIs(
+            ThothClient.QUERIES["work"]["fields"],
+            queries.WORK_FULL_FIELDS,
+        )
 
     def test_work_query_uses_multilingual_fields(self):
         payload = {
@@ -74,11 +274,13 @@ class Thoth100Tests(unittest.TestCase):
 
         with requests_mock.Mocker() as mocker:
             mocker.post(self.graphql_endpoint, json=payload)
-            result = self._client().work_by_id(work_id="work-1")
+            result = self._client().work_by_id(
+                work_id="work-1",
+                markup_format="PLAIN_TEXT",
+            )
             query = self._query_text(mocker)
 
-        self.assertIn("titles(order:", query)
-        self.assertIn("abstracts(order:", query)
+        self._assert_canonical_format(query, "PLAIN_TEXT")
         self.assertNotIn("\n                shortAbstract", query)
         self.assertNotIn("\n                longAbstract", query)
         self.assertNotIn("\n                biography", query)

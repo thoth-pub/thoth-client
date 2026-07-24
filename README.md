@@ -9,7 +9,7 @@ Install is either via pip or cloning the repository.
 
 From pip:
 ```sh
-python3 -m pip install thothlibrary==1.1.2
+python3 -m pip install thothlibrary==1.2.0
 ```
 
 Or from the repo:
@@ -27,6 +27,23 @@ thoth = ThothClient()
 thoth.set_token("your-pat")
 print(thoth.works())
 ```
+
+Canonical titles and abstracts returned by work queries can be rendered in a
+specific markup format:
+
+```python
+work = thoth.work_by_id(
+    work_id="e0f748b2-984f-45cc-8b9e-13989c31dda4",
+    markup_format="PLAIN_TEXT",
+)
+```
+
+`markup_format` accepts the case-sensitive GraphQL enum strings `JATS_XML`,
+`PLAIN_TEXT`, `HTML`, and `MARKDOWN`. `JATS_XML` remains the default when the
+argument is omitted or set to `None`; the Python string is rendered as an
+unquoted GraphQL enum value. The option controls only the canonical work titles
+and abstracts selected by `work_by_id`, `work_by_doi`, `book_by_doi`,
+`chapter_by_doi`, `works`, `books`, and `chapters`.
 
 ### CLI GraphQL Usage
 Set `THOTH_PAT` for authenticated commands such as mutations.

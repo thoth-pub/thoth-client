@@ -4,7 +4,18 @@ This program is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
 
-from .queries import QUERIES
+from .queries import QUERIES, render_work_fields
+
+
+WORK_QUERY_METHODS = frozenset({
+    "work_by_id",
+    "work_by_doi",
+    "book_by_doi",
+    "chapter_by_doi",
+    "works",
+    "books",
+    "chapters",
+})
 
 
 SINGLE_ID_QUERIES = {
@@ -302,15 +313,24 @@ class ThothClient1_0_0:
         return parameters
 
     def _single_id_request(self, query_name, gql_name, value, raw=False,
-                           **extra_parameters):
+                           fields=None, **extra_parameters):
         parameters = {gql_name: self._quote(value)}
         for key, extra_value in extra_parameters.items():
             self._dictionary_append(parameters, key, extra_value)
-        return self._api_request(query_name, parameters, return_raw=raw)
+        return self._api_request(
+            query_name,
+            parameters,
+            return_raw=raw,
+            fields=fields,
+        )
 
-    def _single_doi_request(self, query_name, doi, raw=False):
-        return self._api_request(query_name, {"doi": self._quote(doi)},
-                                 return_raw=raw)
+    def _single_doi_request(self, query_name, doi, raw=False, fields=None):
+        return self._api_request(
+            query_name,
+            {"doi": self._quote(doi)},
+            return_raw=raw,
+            fields=fields,
+        )
 
     def bookIds(self, limit=100, offset=0, search="", order=None,
                 publishers=None, work_status=None, work_statuses=None,
@@ -343,33 +363,72 @@ class ThothClient1_0_0:
         return self._build_structure("bookIds", ids)
 
 
-def _single_id_method(query_name, arg_name, gql_arg_name, markup=False):
+def _work_fields(query_name, markup_format):
+    return render_work_fields(
+        QUERIES[query_name]["fields"],
+        markup_format=markup_format,
+    )
+
+
+def _single_id_method(query_name, arg_name, gql_arg_name, markup=False,
+                      work_markup=False):
     def _method(self, raw=False, **kwargs):
         extra_parameters = {}
         if markup and kwargs.get("markup_format"):
             extra_parameters["markupFormat"] = kwargs["markup_format"]
+        fields = None
+        if work_markup:
+            fields = _work_fields(query_name, kwargs.get("markup_format"))
         return self._single_id_request(query_name, gql_arg_name,
                                        kwargs[arg_name], raw=raw,
+                                       fields=fields,
                                        **extra_parameters)
 
+    if work_markup:
+        _method.__doc__ = (
+            "Query a work by ID. markup_format controls canonical work "
+            "titles and abstracts."
+        )
     return _method
 
 
-def _single_doi_method(query_name, arg_name):
+def _single_doi_method(query_name, arg_name, work_markup=False):
     def _method(self, raw=False, **kwargs):
-        return self._single_doi_request(query_name, kwargs[arg_name], raw=raw)
+        fields = None
+        if work_markup:
+            fields = _work_fields(query_name, kwargs.get("markup_format"))
+        return self._single_doi_request(
+            query_name,
+            kwargs[arg_name],
+            raw=raw,
+            fields=fields,
+        )
 
+    if work_markup:
+        _method.__doc__ = (
+            "Query a work by DOI. markup_format controls canonical work "
+            "titles and abstracts."
+        )
     return _method
 
 
-def _list_method(query_name, mapping):
+def _list_method(query_name, mapping, work_markup=False):
     def _method(self, raw=False, **kwargs):
+        fields = None
+        if work_markup:
+            fields = _work_fields(query_name, kwargs.get("markup_format"))
         return self._api_request(
             query_name,
             self._query_parameters(kwargs, mapping),
             return_raw=raw,
+            fields=fields,
         )
 
+    if work_markup:
+        _method.__doc__ = (
+            "Query works. markup_format controls canonical work titles "
+            "and abstracts."
+        )
     return _method
 
 
@@ -393,15 +452,31 @@ for method_name, (query_name, arg_name, gql_arg_name) in SINGLE_ID_QUERIES.items
             arg_name,
             gql_arg_name,
             markup=method_name in {"title", "abstract", "biography"},
+            work_markup=method_name in WORK_QUERY_METHODS,
         ),
     )
 
 for method_name, (query_name, arg_name) in SINGLE_DOI_QUERIES.items():
-    setattr(ThothClient1_0_0, method_name,
-            _single_doi_method(query_name, arg_name))
+    setattr(
+        ThothClient1_0_0,
+        method_name,
+        _single_doi_method(
+            query_name,
+            arg_name,
+            work_markup=method_name in WORK_QUERY_METHODS,
+        ),
+    )
 
 for method_name, (query_name, mapping) in LIST_QUERIES.items():
-    setattr(ThothClient1_0_0, method_name, _list_method(query_name, mapping))
+    setattr(
+        ThothClient1_0_0,
+        method_name,
+        _list_method(
+            query_name,
+            mapping,
+            work_markup=method_name in WORK_QUERY_METHODS,
+        ),
+    )
 
 for method_name, (query_name, mapping) in COUNT_QUERIES.items():
     setattr(ThothClient1_0_0, method_name, _count_method(query_name, mapping))

@@ -25,7 +25,7 @@ class ThothQuery:
        and sanitised.
     """
 
-    def __init__(self, query_name, parameters, queries, raw=False):
+    def __init__(self, query_name, parameters, queries, raw=False, fields=None):
         """Returns new ThothQuery object
 
         mutation_name: Must match one of the keys found in MUTATIONS.
@@ -35,6 +35,7 @@ class ThothQuery:
         self.QUERIES = queries
         self.query_name = query_name
         self.parameters = parameters
+        self.fields = fields
         self.param_str = self.prepare_parameters()
         self.fields_str = self.prepare_fields()
         self.alias_of = self.prepare_alias_of()
@@ -89,6 +90,8 @@ class ThothQuery:
 
     def prepare_fields(self):
         """Returns a string with all query fields."""
+        if self.fields is not None:
+            return "\n".join(self.fields)
         if self.query_name in self.QUERIES and \
                 'fields' in self.QUERIES[self.query_name]:
             return "\n".join(self.QUERIES[self.query_name]["fields"])
