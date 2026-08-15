@@ -329,12 +329,24 @@ publishing via OIDC).
 
 Consequences:
 
-- **publishing a GitHub release is also a PyPI publication action.** There is
-  no separate "just tag it" step that avoids publishing;
-- release, tag and publication must always be authorized separately and
+- **creating or pushing a Git tag alone does not trigger this workflow.** A
+  standalone tag does not emit a `release: published` event, so tagging by
+  itself does not cause a PyPI publication under the current configuration;
+- **publishing a GitHub release does trigger this workflow, and is therefore
+  also a PyPI publication action** under the current configuration;
+- Git tag creation, GitHub release publication and PyPI publication are
+  **separate controlled actions** for authorization purposes, even though the
+  current workflow couples the second to the third operationally. Authorization
+  to create a tag is not authorization to create or publish a GitHub release,
+  and neither is authorization to publish to PyPI;
+- where an authorized action carries an automatic side effect — as release
+  publication carries PyPI publication here — that side effect must be
+  explicitly anticipated and explicitly authorized before the action is taken;
+- tag, release and publication actions must always be authorized separately and
   explicitly, naming the version;
-- creating or updating an ordinary pull request is **not** release
-  authorization, and merging a pull request is not release authorization;
+- creating or updating an ordinary pull request is **not** tag, release or
+  publication authorization. Neither is merging a pull request: merge
+  authorization authorizes only the merge;
 - an approved independent review authorizes nothing beyond the review decision.
 
 Opening a pull request must not trigger this workflow, because it requires a
@@ -382,7 +394,8 @@ An `APPROVED` review authorizes nothing beyond the review decision. It does not
 authorize:
 
 - merge;
-- a GitHub tag or release;
+- Git tag creation;
+- GitHub release publication;
 - PyPI publication;
 - deployment;
 - production activation.
